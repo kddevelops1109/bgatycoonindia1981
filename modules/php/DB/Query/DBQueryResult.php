@@ -18,8 +18,16 @@ class DBQueryResult {
   protected $result;
 
   public function __construct($status, $result) {
-    $this->$status = $status;
+    $this->status = $status;
     $this->result = $result;
+  }
+
+  public function getStatus() {
+    return $this->status;
+  }
+
+  public function getResult() {
+    return $this->result;
   }
 
   /**

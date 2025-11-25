@@ -1,11 +1,16 @@
 <?php
 namespace Bga\Games\tycoonindianew\Util;
 
+use Bga\GameFramework\Components\Counters\PlayerCounter;
+use Bga\GameFramework\Components\Counters\TableCounter;
+
 class DataUtil {
-  const DATA_TYPE_STRING = ["name" => "string", "abbreviation" => "%s"];
-  const DATA_TYPE_INT = ["name" => "int", "abbreviation" => "%d"];
-  const DATA_TYPE_BOOL = ["name" => "bool", "abbreviation" => "%d"];
-  const DATA_TYPE_OBJ = ["name" => "obj", "abbreviation" => "%s"];
+  const DATA_TYPE_STRING = "string";
+  const DATA_TYPE_INT = "int";
+  const DATA_TYPE_BOOL = "bool";
+  const DATA_TYPE_OBJ = "obj";
+  const DATA_TYPE_PLAYER_COUNTER = "playerCounter";
+  const DATA_TYPE_TABLE_COUNTER = "tableCounter";
 
   /**
    * Get the value parsed from given val and data type
@@ -15,14 +20,17 @@ class DataUtil {
   public static function getValue($val, $type) {
     $value = null;
 
-    if ($type == self::DATA_TYPE_INT["name"]) {
+    if ($type == self::DATA_TYPE_INT) {
       $value = intval($val);
     }
-    elseif ($type == self::DATA_TYPE_BOOL["name"]) {
+    elseif ($type == self::DATA_TYPE_BOOL) {
       $value = boolval($val);
     }
-    elseif ($type == self::DATA_TYPE_OBJ["name"]) {
+    elseif ($type == self::DATA_TYPE_OBJ) {
       $value = json_decode(strval($val), true);
+    }
+    elseif ($type == self::DATA_TYPE_PLAYER_COUNTER || $type == self::DATA_TYPE_TABLE_COUNTER) {
+      $value = $val;
     }
     else {
       $value = strval($val);

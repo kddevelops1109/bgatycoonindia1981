@@ -36,10 +36,10 @@ class InsertDBQuery extends DBQuery {
 
       $columns[] = $column;
       
-      if ($dataType == DataUtil::DATA_TYPE_STRING["name"]) {
+      if ($dataType == DataUtil::DATA_TYPE_STRING) {
         $values[] = addslashes($value);
       }
-      elseif ($dataType == DataUtil::DATA_TYPE_OBJ["name"]) {
+      elseif ($dataType == DataUtil::DATA_TYPE_OBJ) {
         $values[] = addslashes(json_encode($value));
       }
       else {

@@ -37,11 +37,11 @@ class CompositeDBFilter extends DBFilter {
     }
 
     if ($this->join == self::JOIN_AND) {
-      $sqlComponents[] = implode(StringUtil::addSpaces(self::JOIN_AND), $sqlFilters);
+      $sqlComponents[] = implode(StringUtil::encloseSpaces(self::JOIN_AND), $sqlFilters);
     }
     elseif ($this->join == self::JOIN_OR) {
       $sqlComponents[] = DBQuery::CHAR_BRACKET_START;
-      $sqlComponents[] = implode(StringUtil::addSpaces(self::JOIN_OR), $sqlFilters);
+      $sqlComponents[] = implode(StringUtil::encloseSpaces(self::JOIN_OR), $sqlFilters);
       $sqlComponents[] = DBQuery::CHAR_BRACKET_END;
     }
 

@@ -47,7 +47,7 @@ class SimpleDBFilter extends DBFilter {
     if ($this->operator == self::OPERATOR_IN) {
       $values = [];
       foreach ($this->value as $val) {
-        if ($this->dataType == DataUtil::DATA_TYPE_STRING["name"]) {
+        if ($this->dataType == DataUtil::DATA_TYPE_STRING) {
           $values[] = addslashes($val);
         }
         else {
@@ -58,7 +58,7 @@ class SimpleDBFilter extends DBFilter {
       $sqlComponents[] = DBQuery::CHAR_BRACKET_START . implode(", ", $values) . DBQuery::CHAR_BRACKET_END;
     }
     else {
-      if ($this->dataType == DataUtil::DATA_TYPE_STRING["name"]) {
+      if ($this->dataType == DataUtil::DATA_TYPE_STRING) {
         $sqlComponents[] = DBQuery::encloseStringValue(($this->value));
       }
       else {

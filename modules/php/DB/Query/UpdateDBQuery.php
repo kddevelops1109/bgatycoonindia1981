@@ -34,13 +34,13 @@ class UpdateDBQuery extends FilteredDBQuery {
       $dataType = strval($data["type"]);
       $value = DataUtil::getValue($data["value"], $dataType);
 
-      if ($dataType == DataUtil::DATA_TYPE_STRING["name"]) {
+      if ($dataType == DataUtil::DATA_TYPE_STRING) {
         $updates[] = DBQuery::encloseIdentifier($column) . " = " . DBQuery::encloseStringValue(addslashes($value));
       }
-      elseif ($dataType == DataUtil::DATA_TYPE_OBJ["name"]) {
+      elseif ($dataType == DataUtil::DATA_TYPE_OBJ) {
         $updates[] = DBQuery::encloseIdentifier($column) . " = " . DBQuery::encloseStringValue(addslashes(json_encode($value)));
       }
-      elseif ($dataType == DataUtil::DATA_TYPE_BOOL["name"]) {
+      elseif ($dataType == DataUtil::DATA_TYPE_BOOL) {
         if ($value) {
           $updates[] = DBQuery::encloseIdentifier($column) . " = 1";
         }

@@ -1,27 +1,22 @@
 <?php
 namespace Bga\Games\tycoonindianew\Models;
 
+use Bga\GameFramework\Components\Counters\PlayerCounter;
+use Bga\GameFramework\Components\Counters\TableCounter;
+use Bga\Games\tycoonindianew\Game;
+
 use BGA\Games\tycoonindianew\DB\Filter\DBFilter;
 use Bga\Games\tycoonindianew\DB\Filter\SimpleDBFilter;
+
 use Bga\Games\tycoonindianew\DB\Query\InsertDBQuery;
 use Bga\Games\tycoonindianew\DB\Query\UpdateDBQuery;
 
 use Bga\Games\tycoonindianew\Managers\DBManager;
 
 use Bga\Games\tycoonindianew\Util\DataUtil;
-use BgaVisibleSystemException;
 
+#[\AllowDynamicProperties]
 abstract class DBObject implements \JsonSerializable {
-
-  /**
-   * Constants - Method calls
-   */
-  const METHOD_CALL_GET = "get";
-  const METHOD_CALL_SET = "set";
-  const METHOD_CALL_RESET = "reset";
-  const METHOD_CALL_IS = "is";
-  const METHOD_CALL_INC = "inc";
-  const METHOD_CALL_DEC = "dec";
 
   /**
    * Table that this DB object represents
@@ -52,12 +47,22 @@ abstract class DBObject implements \JsonSerializable {
    * @param array $arr
    */
   public function __construct($arr) {
-    foreach ($this->dbFields as $field) {
+    foreach ($this->dbFields as $column => $field) {
       $fieldName = $field["name"];
       $fieldType = $field["type"];
 
-      if ($arr[$fieldName] != null) {
-        $this->$fieldName = DataUtil::getValue($arr[$fieldName], $fieldType);
+       if (array_key_exists($fieldName, $arr)) {
+        if ($fieldType == DataUtil::DATA_TYPE_PLAYER_COUNTER) {
+          $value = Game::get()->counterFactory->createPlayerCounter($column);
+        }
+        elseif ($fieldType == DataUtil::DATA_TYPE_TABLE_COUNTER) {
+          $value = Game::get()->counterFactory->createTableCounter($column);
+        }
+        else {
+          $value = DataUtil::getValue($arr[$fieldName], $fieldType);
+        }
+
+        $this->$fieldName = $value;
       }
     }
   }
@@ -67,15 +72,8 @@ abstract class DBObject implements \JsonSerializable {
    */
   public function getPrimaryKeyFieldValue()
   {
-    foreach ($this->dbFields as $field) {
-      $fieldName = $field["name"];
-
-      if ($fieldName == $this->primaryKey) {
-        return $this->$fieldName;
-      }
-    }
-
-    return null;
+    $primaryKeyFieldName = $this->primaryKey["name"];
+    return $this->$primaryKeyFieldName;
   }
 
   /**
@@ -84,9 +82,9 @@ abstract class DBObject implements \JsonSerializable {
    */
   public function insert() {
     $datas = [];
-    foreach ($this->dbFields as $field) {
+    foreach ($this->dbFields as $column => $field) {
       $datas[] = [
-        "column" => $field["column"],
+        "column" => $column,
         "type" => $field["type"],
         "value" => DataUtil::getValue($this->$field["name"], $field["type"])
       ];
@@ -121,7 +119,7 @@ abstract class DBObject implements \JsonSerializable {
 
   private function getDbFieldByName(string $name) {
     $field = null;
-    foreach ($this->dbFields as $_field) {
+    foreach ($this->dbFields as $column => $_field) {
       if ($_field["name"] == $name) {
         $field = $_field;
         break;
@@ -131,16 +129,12 @@ abstract class DBObject implements \JsonSerializable {
     return $field;
   }
 
-  private function getFieldType(string $name) {
-    $type = null;
-    foreach ($this->dbFields as $field) {
-      if ($field["name"] == $name) {
-        $type = $field["type"];
-        break;
-      }
-    }
+  private function getDbFieldType(string $name): string {
+    return $this->getDbFieldByName($name)["type"];
+  }
 
-    return $type;
+  private function getDbFieldByColumn(string $column) {
+    return $this->dbFields[$column];
   }
 
   /**
@@ -150,133 +144,266 @@ abstract class DBObject implements \JsonSerializable {
    * @return void
    */
   public function __call($method, $args) {
-    $methodCall = null;
-    $fieldName = null;
+    $methodFieldResult = $this->determineFieldNameAndMethodCallFromMethod($method);
     
-    $field = [];
+    $methodCall = $methodFieldResult["methodCall"];
+    $fieldName = $methodFieldResult["fieldName"];
+
+    $field = $this->getFieldFromFieldName($fieldName);
+    
+    // Proceed only if a valid field was found in the method
+    if (isset($field) && !empty($field)) {
+      $fieldType = $field["type"];
+
+      if ($methodCall == self::METHOD_CALL_GET) {
+        return $this->getValue($field, $args);
+      }
+      elseif ($methodCall == self::METHOD_CALL_SET) {
+        $this->setValue($field, $args);
+      }
+      elseif (in_array($methodCall, [self::METHOD_CALL_INC, self:: METHOD_CALL_DEC]) && in_array($fieldType, [DataUtil::DATA_TYPE_INT, DataUtil::DATA_TYPE_PLAYER_COUNTER, DataUtil::DATA_TYPE_TABLE_COUNTER])) {
+        $methodCall == self::METHOD_CALL_INC ? $this->incValue($field, $args) : $this->decValue($field, $args);
+      }
+      elseif ($methodCall == self::METHOD_CALL_IS) {
+        return $this->isValue($field);
+      }
+      elseif ($methodCall == self::METHOD_CALL_RESET) {
+        $this->resetValue($field);
+      }
+    }
+  }
+
+  private function getValue($field, $args): mixed {
+    $fieldName = strval($field["name"]);
+    $fieldType = strval($field["type"]);
+
+    $value = null;
+
+    if ($fieldType == DataUtil::DATA_TYPE_OBJ) {
+      $jsonValue = DataUtil::getValue($this->$fieldName, $fieldType);
+      if (!empty($args)) {
+        $value = json_decode($jsonValue, true);
+        if (array_key_exists($args[0], $value)) {
+          $value = $value[$args[0]];
+        }
+      }
+      else {
+        $value = json_decode($jsonValue, true);
+      }
+    }
+    else {
+      $value = DataUtil::getValue($this->$fieldName, $fieldType);
+    }
+
+    // throw new BgaVisibleSystemException(print_r(array("field" => $field, "value" => $value), true));
+
+    return $value;
+  }
+
+  private function setValue($field, $args) {
+    $fieldName = strval($field["name"]);
+    $fieldType = strval($field["type"]);
+
+    $value = null;
+
+    if ($fieldType == DataUtil::DATA_TYPE_OBJ) {
+      if (sizeof($args) > 1) {
+        $key = $args[0];
+        $value = $args[1];
+
+        $decoded_json = json_decode($this->$fieldName, true);
+        $decoded_json[$key] = $value;
+
+        // Encode and update
+        $this->$fieldName = json_encode($decoded_json);
+      }
+      else {
+        $value = $args[0];
+        if (is_string($value)) {
+          $this->$fieldName = $value;
+        }
+        elseif (is_array($value)) {
+          $this->$fieldName = json_encode($value);
+        }
+      }
+    }
+    elseif (in_array($fieldType, [DataUtil::DATA_TYPE_PLAYER_COUNTER, DataUtil::DATA_TYPE_TABLE_COUNTER])) {
+      $counter = $this->$fieldName;
+      $value = DataUtil::getValue($args[0], DataUtil::DATA_TYPE_INT);
+
+      if ($counter instanceof PlayerCounter) {
+        $player_id = intval($args[1]);
+        $counter->set($player_id, $value);
+      }
+      elseif ($counter instanceof TableCounter) {
+        $counter->set($value);
+      }
+    }
+    else {
+      $value = DataUtil::getValue($args[0], $fieldType);
+      $this->$fieldName = $value;
+    }
+
+    if ($value != null) {
+      // Update value in DB
+      $id_field = Industrialist::FIELD_PLAYER_ID;
+      $filter = new SimpleDBFilter(Industrialist::COLUMN_PLAYER_ID, DataUtil::DATA_TYPE_INT, SimpleDBFilter::OPERATOR_EQUALS, $this->$id_field);
+
+      $this->update([$fieldName => $value], $filter);
+    }
+  }
+
+  private function incValue($field, $args) {
+    $fieldName = strval($field["name"]);
+    $fieldType = strval($field["type"]);
+
+    $value = null;
+
+    if ($fieldType == DataUtil::DATA_TYPE_INT) {
+      $value = DataUtil::getValue($this->$fieldName, $fieldType);
+
+      if (!empty($args)) {
+        $this->$fieldName = $value + DataUtil::getValue($args[0], DataUtil::DATA_TYPE_INT);
+      }
+      else {
+        $this->$fieldName = $value + 1;
+      }
+    }
+    else {
+      $counter = $this->$fieldName;
+      if ($counter instanceof PlayerCounter) {
+        $player_id = DataUtil::getValue($args[0], DataUtil::DATA_TYPE_INT);
+        
+        $value = 1;
+        if (sizeof($args) > 2) {
+          $value = DataUtil::getValue($args[1], DataUtil::DATA_TYPE_INT);
+        }
+        
+        $counter->inc($player_id, $value);
+      }
+      elseif ($counter instanceof TableCounter) {
+        $value = 1;
+        if (!empty($args)) {
+          $value = DataUtil::getValue($args[0], DataUtil::DATA_TYPE_INT);
+        }
+
+        $counter->inc($value);
+      }
+    }
+
+    // Update value in DB
+    if ($value != null) {
+      $id_field = Industrialist::FIELD_PLAYER_ID;
+      $filter = new SimpleDBFilter(Industrialist::COLUMN_PLAYER_ID, DataUtil::DATA_TYPE_INT, SimpleDBFilter::OPERATOR_EQUALS, $this->$id_field);
+
+      $this->update([$fieldName => $value], $filter);
+    }
+  }
+
+  private function decValue($field, $args) {
+    $fieldName = strval($field["name"]);
+    $fieldType = strval($field["type"]);
+
+    $value = null;
+
+    if ($fieldType == DataUtil::DATA_TYPE_INT) {
+      $value = DataUtil::getValue($this->$fieldName, $fieldType);
+
+      if (!empty($args)) {
+        $this->$fieldName = $value - DataUtil::getValue($args[0], DataUtil::DATA_TYPE_INT);
+      }
+      else {
+        $this->$fieldName = $value - 1;
+      }
+    }
+    else {
+      $counter = $this->$fieldName;
+      if ($counter instanceof PlayerCounter) {
+        $player_id = DataUtil::getValue($args[0], DataUtil::DATA_TYPE_INT);
+        
+        $value = 1;
+        if (sizeof($args) > 2) {
+          $value = DataUtil::getValue($args[1], DataUtil::DATA_TYPE_INT);
+        }
+        
+        $counter->inc($player_id, (0 - $value));
+      }
+      elseif ($counter instanceof TableCounter) {
+        $value = 1;
+        if (!empty($args)) {
+          $value = DataUtil::getValue($args[0], DataUtil::DATA_TYPE_INT);
+        }
+
+        $counter->inc((0 - $value));
+      }
+    }
+
+    // Update value in DB
+    if ($value != null) {
+      $id_field = Industrialist::FIELD_PLAYER_ID;
+      $filter = new SimpleDBFilter(Industrialist::COLUMN_PLAYER_ID, DataUtil::DATA_TYPE_INT, SimpleDBFilter::OPERATOR_EQUALS, $this->$id_field);
+
+      $this->update([$fieldName => $value], $filter);
+    }
+  }
+
+  private function isValue($field) {
+    $fieldName = strval($field["name"]);
+    $fieldType = strval($field["type"]);
+
+    if ($fieldType == DataUtil::DATA_TYPE_BOOL) {
+      return DataUtil::getValue($this->$fieldName, $fieldType);
+    }
+    else {
+      return null;
+    }
+  }
+
+  private function resetValue($field) {
+    $fieldName = strval($field["name"]);
+    $fieldType = strval($field["type"]);
+
+    if ($fieldType == DataUtil::DATA_TYPE_BOOL) {
+      $this->$fieldName = false;
+    }
+
+    // Update value in DB
+    $id_field = Industrialist::FIELD_PLAYER_ID;
+    $filter = new SimpleDBFilter(Industrialist::COLUMN_PLAYER_ID, DataUtil::DATA_TYPE_INT, SimpleDBFilter::OPERATOR_EQUALS, $this->$id_field);
+
+    $this->update([$fieldName => 0], $filter);
+  }
+
+  private function determineFieldNameAndMethodCallFromMethod($method) {
+    $result = ["methodCall" => null, "fieldName" => null];
 
     // If the method contains one of the valid method calls, then update the same and parse the field name from the method
     foreach ([self::METHOD_CALL_GET, self::METHOD_CALL_SET, self::METHOD_CALL_RESET, self::METHOD_CALL_IS, self::METHOD_CALL_INC, self::METHOD_CALL_DEC] as $call) {
       if (str_starts_with($call, $method)) {
-        $methodCall = $call;
-        $fieldName = lcfirst(substr($method, strlen($call)));
+        $result["methodCall"] = $call;
+        $result["fieldName"] = lcfirst(substr($method, strlen($call)));
 
         break;
       }
     }
 
-    $validAccessibleMethod = false;
+    return $result;
+  }
 
-    // Find valid field in method, among db object's db and static fields, only if method call and field in method name were both found
-    if ($methodCall != null && $fieldName != null) {
-      foreach (array_merge($this->dbFields, $this->staticFields) as $_field) {
+  private function getFieldFromFieldName($fieldName) {
+    $field = [];
+
+    // Find valid field in method
+    if ($fieldName != null) {
+      foreach (array_merge(array_values($this->dbFields), $this->staticFields) as $_field) {
         if ($_field["name"] == $fieldName) {
           $field = $_field;
           break;
         }
       }
-      
-      // Proceed only if a valid field was found in the method
-      if (isset($field) && !empty($field)) {
-        $fieldType = strval($field["type"]);
-        if ($fieldType == DataUtil::DATA_TYPE_BOOL["name"] && in_array($methodCall, [self::METHOD_CALL_RESET, self::METHOD_CALL_IS], true) ||
-            $fieldType != DataUtil::DATA_TYPE_BOOL["name"] && $methodCall == self::METHOD_CALL_GET ||
-            $fieldType == DataUtil::DATA_TYPE_INT["name"] && in_array($methodCall, [self::METHOD_CALL_INC, self::METHOD_CALL_DEC], true) ||
-            $methodCall == self::METHOD_CALL_SET) {
-          
-          $validAccessibleMethod = true;
-        }
-      }
     }
 
-    // If valid accessible method, then process it
-    if ($validAccessibleMethod) {
-      if ($methodCall == self::METHOD_CALL_GET) {
-        return $this->getFieldValue($field["name"]);
-      }
-      else {
-        $valueToSetInDb = null;
-        if ($methodCall == self::METHOD_CALL_SET) {
-          $key = null;
-
-          if ($field["type"] == DataUtil::DATA_TYPE_OBJ["name"] && sizeof($args) > 1) {
-            $key = $args[0];
-            $value = DataUtil::getValue($args[1], $field["type"]);
-          }
-          else {
-            $value = DataUtil::getValue($args[0], $field["type"]);
-          }
-
-          // Update only if value has not changed
-          if ($value != null && $value != $this->getFieldValue($field["name"])) {
-            $valueToSetInDb = $value;
-
-            if ($field["type"] == DataUtil::DATA_TYPE_OBJ["name"]) {
-              if ($key != null) {
-                $this->$field["name"][$key] = $value;
-              }
-              else {
-                $this->$field["name"] = json_encode($value);
-              }
-              
-              $valueToSetInDb = addslashes(strval($this->$field["name"]));
-            }
-            elseif ($field["type"] == DataUtil::DATA_TYPE_STRING["name"]) {
-              $this->$field["name"] = $value;
-              $valueToSetInDb = addslashes($value);
-            }
-            elseif ($field["type"] == DataUtil::DATA_TYPE_BOOL["name"]) {
-              if (boolval($value) == true) {
-                $this->$field["name"] = 1;
-                $valueToSetInDb = 1;
-              }
-              else {
-                $this->$field["name"] = 0;
-                $valueToSetInDb = 0;
-              }
-            }
-            else {
-              $this->$field["name"] = $value;
-              $valueToSetInDb = $value;
-            }
-          }
-        }
-        elseif ($methodCall == self::METHOD_CALL_RESET) {
-          $this->$field["name"] = 0;
-        }
-        elseif ($methodCall == self::METHOD_CALL_INC) {
-          $amount = intval($args[0]);
-          if ($amount > 0) {
-            $currentValue = DataUtil::getValue($this->$field["name"], "int");
-            $this->$field["name"] = $currentValue + $amount;
-            $valueToSetInDb = $currentValue + $amount;
-          }
-        }
-        elseif ($methodCall == self::METHOD_CALL_DEC) {
-          $amount = intval($args[0]);
-          if ($amount > 0) {
-            $currentValue = DataUtil::getValue($this->$field["name"], "int");
-            $this->$field["name"] = $currentValue - $amount;
-            $valueToSetInDb = $currentValue - $amount;
-          }
-        }
-
-        if ($valueToSetInDb != null) {
-          $datas = [
-            ["column" => $field["column"], "type" => $field["type"], "value" => $valueToSetInDb]
-          ];
-          $filter = new SimpleDBFilter($this->primaryKey["column"], $this->primaryKey["type"], SimpleDBFilter::OPERATOR_EQUALS, $this->$primaryKey["name"]);
-
-          $query = new UpdateDBQuery($this->table, $datas, $filter);
-
-          DBManager::execute($query);
-        }
-      }
-    }
-    else {
-      // throw new BgaVisibleSystemException("Call to inaccessible method '" . $method . "'");
-      return null;
-    }
+    return $field;
   }
 
   /**
@@ -286,12 +413,18 @@ abstract class DBObject implements \JsonSerializable {
   protected function getFieldValue($name) {
     $value = null;
 
-    foreach ($this->dbFields as $field) {
+    foreach ($this->dbFields as $column => $field) {
       $fieldName = $field["name"];
       $fieldType = $field["type"];
 
       if ($fieldName == $name) {
-        $value = DataUtil::getValue($this->$fieldName, $fieldType);
+        if (in_array($fieldType, [DataUtil::DATA_TYPE_PLAYER_COUNTER, DataUtil::DATA_TYPE_TABLE_COUNTER])) {
+          $value = $this->$fieldName;
+        }
+        else {
+          $value = DataUtil::getValue($this->$fieldName, $fieldType);
+        }
+
         break;
       }
     }
@@ -309,7 +442,7 @@ abstract class DBObject implements \JsonSerializable {
    */
   public function getDbData(): array {
     $data = [];
-    foreach ($this->dbFields as $field) {
+    foreach ($this->dbFields as $column => $field) {
       $fieldName = $field["name"];
       
       $data[$fieldName] = $this->getFieldValue($fieldName);
@@ -340,4 +473,14 @@ abstract class DBObject implements \JsonSerializable {
   public function getData() {
     return array_merge($this->getDbData(), $this->getStaticData());
   }
+
+  /**
+   * Constants - Method calls
+   */
+  const METHOD_CALL_GET = "get";
+  const METHOD_CALL_SET = "set";
+  const METHOD_CALL_RESET = "reset";
+  const METHOD_CALL_IS = "is";
+  const METHOD_CALL_INC = "inc";
+  const METHOD_CALL_DEC = "dec";
 }

@@ -42,7 +42,7 @@ class SelectDBQuery extends FilteredDBQuery {
   protected $bAssociative;
 
   public function __construct($table, $columns, $filter = [], $orderBy = null, $direction = null, $limit = 0, $bUniqueValue = false, $bAssociative = false) {
-    $this->escapeColumns($columns);
+    $this->encloseColumns($columns);
     
     $this->orderBy = $orderBy;
     $this->direction = $direction;
@@ -53,7 +53,7 @@ class SelectDBQuery extends FilteredDBQuery {
     return parent::__construct($table, DBQuery::DB_OPERATION_SELECT, $filter);
   }
 
-  private function escapeColumns($columns) {
+  private function encloseColumns($columns) {
     $this->columns = [];
     foreach ($columns as $column) {
       $this->columns[] = DBQuery::encloseIdentifier($column);
