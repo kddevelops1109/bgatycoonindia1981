@@ -20,7 +20,9 @@ namespace Bga\Games\tycoonindianew;
 
 use Bga\Games\tycoonindianew\States\PlayerTurn;
 use Bga\GameFramework\Components\Counters\PlayerCounter;
+use Bga\Games\tycoonindianew\Managers\CardsManager;
 use Bga\Games\tycoonindianew\Managers\IndustrialistsManager;
+use Bga\Games\tycoonindianew\Models\Cards\CorporateAgendaCard;
 
 class Game extends \Bga\GameFramework\Table
 {
@@ -204,6 +206,9 @@ class Game extends \Bga\GameFramework\Table
 
         // TODO: Setup the initial game situation here.
         IndustrialistsManager::setupNewGame($players);
+        
+        // Setup cards
+        CardsManager::getInstance(CorporateAgendaCard::CARD_TYPE)->setupNewGame($players);
 
         // Activate first player once everything has been initialized and ready.
         $this->activeNextPlayer();

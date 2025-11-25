@@ -1,5 +1,5 @@
 <?php
-namespace Bga\Games\tycoonindianew\DB\Query;
+namespace Bga\Games\tycoonindianew\Query;
 
 class SelectDBQuery extends FilteredDBQuery {
 
@@ -41,7 +41,7 @@ class SelectDBQuery extends FilteredDBQuery {
    */
   protected $bAssociative;
 
-  public function __construct($table, $columns, $filter = [], $orderBy = null, $direction = null, $limit = 0, $bUniqueValue = false, $bAssociative = false) {
+  public function __construct($table, $columns, $filter, $orderBy = null, $direction = null, $limit = 0, $bUniqueValue = false, $bAssociative = false) {
     $this->encloseColumns($columns);
     
     $this->orderBy = $orderBy;

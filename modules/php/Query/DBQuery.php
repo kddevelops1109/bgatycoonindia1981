@@ -1,5 +1,5 @@
 <?php
-namespace Bga\Games\tycoonindianew\DB\Query;
+namespace Bga\Games\tycoonindianew\Query;
 
 abstract class DBQuery {
 

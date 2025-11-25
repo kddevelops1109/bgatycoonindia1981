@@ -1,7 +1,7 @@
 <?php
-namespace Bga\Games\tycoonindianew\DB\Query;
+namespace Bga\Games\tycoonindianew\Query;
 
-use Bga\Games\tycoonindianew\DB\Filter\DBFilter;
+use Bga\Games\tycoonindianew\Filter\DBFilter;
 
 abstract class FilteredDBQuery extends DBQuery {
 

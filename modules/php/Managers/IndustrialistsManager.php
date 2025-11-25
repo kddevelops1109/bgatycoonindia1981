@@ -2,13 +2,17 @@
 namespace Bga\Games\tycoonindianew\Managers;
 
 use Bga\GameFramework\Components\Counters\PlayerCounter;
-use Bga\Games\tycoonindianew\DB\Filter\SimpleDBFilter;
+
 use Bga\Games\tycoonindianew\Game;
 
-use Bga\Games\tycoonindianew\DB\Query\SelectDBQuery;
-use Bga\Games\tycoonindianew\DB\Query\DBQueryResult;
+use Bga\Games\tycoonindianew\Cache\FilterCache;
+
+use Bga\Games\tycoonindianew\Filter\SimpleDBFilter;
 
 use Bga\Games\tycoonindianew\Models\Industrialist;
+
+use Bga\Games\tycoonindianew\Query\SelectDBQuery;
+use Bga\Games\tycoonindianew\Query\DBQueryResult;
 
 use Bga\Games\tycoonindianew\Util\DataUtil;
 
@@ -37,9 +41,11 @@ class IndustrialistsManager {
    */
   public static function setupNewGame($players) {
     foreach ($players as $player_id => $player) {
-      $player_no = intval(Game::get()->getPlayerNoById($player_id));
-      $player_name = strval(Game::get()->getPlayerNameById($player_id));
-      $player_color = strval(Game::get()->getPlayerColorById($player_id));
+      $game = Game::get();
+
+      $player_no = intval($game->getPlayerNoById($player_id));
+      $player_name = strval($game->getPlayerNameById($player_id));
+      $player_color = strval($game->getPlayerColorById($player_id));
 
       $arr = [
         Industrialist::FIELD_PLAYER_ID => $player_id,
@@ -58,10 +64,16 @@ class IndustrialistsManager {
       $industrialist = new Industrialist($arr);
       self::$industrialists[$player_id] = $industrialist;
 
-      $operator = SimpleDBFilter::OPERATOR_EQUALS;
+      $filterKey = FilterCache::KEY_PLAYER_ID_SEARCH . "[" . $player_id . "]";
+      $filter = FilterCache::getInstance()->findByKey($filterKey);
+      if ($filter == null) {
+        $filter = FilterCache::getInstance()->getSimpleCachedFilter($filterKey, Industrialist::COLUMN_PLAYER_ID, DataUtil::DATA_TYPE_INT, SimpleDBFilter::OPERATOR_EQUALS, $player_id);
+      }
 
       // Update industrialist (player) data in db
-      $industrialist->update($arr, new SimpleDBFilter(Industrialist::COLUMN_PLAYER_ID, DataUtil::DATA_TYPE_INT, $operator, $player_id));
+      if ($filter != null) {
+        $industrialist->update($arr, $filter);
+      }
     }
 
     // Initialize player counters
@@ -150,6 +162,7 @@ class IndustrialistsManager {
       self::COUNTER_INDUSTRIALIST_SHARES_REMAINING,
       self::COUNTER_INDUSTRIALIST_LEAST_SHARE_VALUE,
       self::COUNTER_INDUSTRIALIST_UNBUILT_PLANTS,
+      self::COUNTER_INDUSTRIALIST_BUILT_PLANTS,
       self::COUNTER_INDUSTRIALIST_POLICIES_GAINED,
       self::COUNTER_INDUSTRIALIST_UNBUILT_INDUSTRIES,
       self::COUNTER_INDUSTRIALIST_BUILT_INDUSTRIES
@@ -164,7 +177,10 @@ class IndustrialistsManager {
         $counter = self::$counters[$counterName];
       }
       else {
-        $counter = Game::get()->counterFactory->createPlayerCounter($counterName);
+        $min = self::minCounterValue($counterName);
+        $max = self::maxCounterValue($counterName);
+
+        $counter = Game::get()->counterFactory->createPlayerCounter($counterName, $min, $max);
       }
 
       if (!is_null($counter) && $counter instanceof PlayerCounter) {
@@ -175,7 +191,7 @@ class IndustrialistsManager {
         foreach ($player_ids as $player_id) {
           $initialValue = self::initialValue($counterName, $game->getPlayerNoById($player_id));
           if ($initialValue > 0) {
-            self::setPlayerCounterValue($player_id, $counterName, $initialValue);
+            $counter->set($player_id, $initialValue);
           }
         }
       }
@@ -184,12 +200,85 @@ class IndustrialistsManager {
     }
   }
 
+  protected static function loadFromDb(int $player_id) {
+    $industrialist = null;
+
+    // Retrieve or create filter
+    $filterKey = FilterCache::KEY_PLAYER_ID_SEARCH . "[" . $player_id . "]";
+    $filter = FilterCache::getInstance()->findByKey($filterKey);
+    if ($filter == null) {
+      $filter = FilterCache::getInstance()->getSimpleCachedFilter($filterKey, Industrialist::COLUMN_PLAYER_ID, DataUtil::DATA_TYPE_INT, SimpleDBFilter::OPERATOR_EQUALS, $player_id);
+    }
+
+    // Create select query
+    $query = new SelectDBQuery(
+      Industrialist::TABLE_NAME,
+      array_keys(Industrialist::dbFieldMappings()),
+      $filter,
+      Industrialist::COLUMN_PLAYER_ID,
+      SelectDBQuery::ORDER_BY_ASCENDING,
+      1,
+      true,
+      false
+    );
+
+    // Get and process query result
+    $queryResult = DBManager::execute($query);
+    if (!is_null($queryResult) && $queryResult instanceof DBQueryResult && $queryResult->getStatus() == DBQueryResult::STATUS_SUCCESS) {
+      $result = $queryResult->getResult();
+      if (is_array($result)) {
+        $game = Game::get();
+
+        $player_no = intval($game->getPlayerNoById($player_id));
+        $player_name = strval($game->getPlayerNameById($player_id));
+        $player_color = strval($game->getPlayerColorById($player_id));
+
+        $arr = [
+          Industrialist::FIELD_PLAYER_ID => $player_id,
+          Industrialist::FIELD_PLAYER_NO => $player_no,
+          Industrialist::FIELD_PLAYER_NAME => $player_name,
+          Industrialist::FIELD_PLAYER_COLOR => $player_color,
+          Industrialist::FIELD_PLAYER_COLOR_NAME => self::COLOR_NAMES[$player_color],
+          Industrialist::FIELD_PLAYER_ELIMINATED => $result[Industrialist::COLUMN_PLAYER_ELIMINATED] == 1,
+          Industrialist::FIELD_PLAYER_SCORE => $result[Industrialist::COLUMN_PLAYER_SCORE],
+          Industrialist::FIELD_PLAYER_SCORE_AUX => $result[Industrialist::COLUMN_PLAYER_SCORE_AUX],
+          Industrialist::FIELD_PLAYER_ZOMBIE => $result[Industrialist::COLUMN_PLAYER_ZOMBIE] == 1,
+          Industrialist::FIELD_PLAYER_IS_TYCOON => $result[Industrialist::COLUMN_PLAYER_IS_TYCOON] == 1,
+          Industrialist::FIELD_PLAYER_IS_NEXT_TYCOON => $result[Industrialist::COLUMN_PLAYER_IS_NEXT_TYCOON] == 1
+        ];
+
+        $industrialist = new Industrialist($arr);
+        self::$industrialists[$player_id] = $industrialist;
+      }
+    }
+
+    return $industrialist;
+  }
+
+  /**
+   * Return industrialist object for given player id
+   * @param int $player_id
+   * @return Industrialist
+   */
+  public static function get(int $player_id): Industrialist {
+    $industrialist = null;
+    if (array_key_exists($player_id, self::$industrialists)) {
+      $industrialist = self::$industrialists[$player_id];
+    }
+    else {
+      $industrialist = self::loadFromDb($player_id);
+    }
+
+    return $industrialist;
+  }
+
   public static function getAll() {
     if (empty(self::$industrialists)) {
       // If no industrialists exist in memory, then load them from the database
       $queryResult = DBManager::execute(new SelectDBQuery(
         Industrialist::TABLE_NAME,
-        array_keys(Industrialist::dbFieldMappings())
+        array_keys(Industrialist::dbFieldMappings()),
+        null
       ));
 
       if ($queryResult != null && $queryResult instanceof DBQueryResult && $queryResult->getStatus() == DBQueryResult::STATUS_SUCCESS) {
@@ -247,6 +336,58 @@ class IndustrialistsManager {
   }
 
   /**
+   * Minimum value given counter can have
+   * @param string $counterName
+   * @return int
+   */
+  private static function minCounterValue(string $counterName) {
+    $min = self::MIN_DEFAULT;
+    if ($counterName == self::COUNTER_INDUSTRIALIST_LOAN_INTAKE_LEVEL) {
+      $min = self::MIN_LOAN_INTAKE_LEVEL;
+    }
+
+    return $min;
+  }
+
+  /**
+   * Maximum value given counter can have
+   * @param string $counterName
+   * @return int|null
+   */
+  private static function maxCounterValue(string $counterName) {
+    $max = null;
+    if ($counterName == self::COUNTER_INDUSTRIALIST_LOAN_INTAKE_LEVEL) {
+      $max = self::MAX_LOAN_INTAKE_LEVEL;
+    }
+    elseif (str_contains("rank", $counterName)) {
+      $max = self::MAX_RANK;
+    }
+    elseif ($counterName == self::COUNTER_INDUSTRIALIST_PROMISSARY_NOTES) {
+      $max = self::MAX_PROMISSARY_NOTES;
+    }
+    elseif (in_array($counterName, [self::COUNTER_INDUSTRIALIST_FINANCE, self::COUNTER_INDUSTRIALIST_MINERALS, self::COUNTER_INDUSTRIALIST_FUEL, self::COUNTER_INDUSTRIALIST_AGRO, self::COUNTER_INDUSTRIALIST_POWER, self::COUNTER_INDUSTRIALIST_TRANSPORT])) {
+      $max = self::MAX_SECTOR_LEVEL;
+    }
+    elseif ($counterName == self::COUNTER_INDUSTRIALIST_ACTIONS_REMAINING) {
+      $max = self::MAX_ACTIONS;
+    }
+    elseif ($counterName == self::COUNTER_INDUSTRIALIST_TYCOON_ACTIONS_REMAINING) {
+      $max = self::MAX_TYCOON_ACTIONS;
+    }
+    elseif ($counterName == self::COUNTER_INDUSTRIALIST_SHARES_REMAINING) {
+      $max = self::MAX_SHARES_REMAINING;
+    }
+    elseif ($counterName == self::COUNTER_INDUSTRIALIST_UNBUILT_PLANTS) {
+      $max = self::MAX_UNBUILT_PLANTS;
+    }
+    elseif ($counterName == self::COUNTER_INDUSTRIALIST_BUILT_PLANTS) {
+      $max = self::MAX_BUILT_PLANTS;
+    }
+
+    return $max;
+  }
+
+  /**
    * Return initial setup influence for player
    * @param int $player_no
    * @return int
@@ -286,7 +427,20 @@ class IndustrialistsManager {
   const INITIAL_SHARE_VALUES = [30, 35, 40, 45, 50, 55, 60, 65, 70];
   const INITIAL_UNBUILT_PLANTS = 9;
 
-  /** Constants - DB Columns */
+  /** Constants - Min and Max Values */
+  const MIN_DEFAULT = 0;
+  const MAX_RANK = 4;
+  const MIN_LOAN_INTAKE_LEVEL = 30;
+  const MAX_LOAN_INTAKE_LEVEL = 60;
+  const MAX_PROMISSARY_NOTES = 7;
+  const MAX_SECTOR_LEVEL = 7;
+  const MAX_ACTIONS = 2;
+  const MAX_TYCOON_ACTIONS = 1;
+  const MAX_SHARES_REMAINING = 9;
+  const MAX_UNBUILT_PLANTS = 9;
+  const MAX_BUILT_PLANTS = 9;
+
+  /** Constants - Counters */
   const COLUMN_PLAYER_ID = "player_id";
   const COUNTER_INDUSTRIALIST_INFLUENCE = "influence";
   const COUNTER_INDUSTRIALIST_INFLUENCE_RANK = "influence_rank";
@@ -315,6 +469,7 @@ class IndustrialistsManager {
   const COUNTER_INDUSTRIALIST_SHARES_REMAINING = "shares_remaining";
   const COUNTER_INDUSTRIALIST_LEAST_SHARE_VALUE = "least_share_value";
   const COUNTER_INDUSTRIALIST_UNBUILT_PLANTS = "unbuilt_plants";
+  const COUNTER_INDUSTRIALIST_BUILT_PLANTS = "built_plants";
   const COUNTER_INDUSTRIALIST_POLICIES_GAINED = "policies_gained";
   const COUNTER_INDUSTRIALIST_UNBUILT_INDUSTRIES = "unbuilt_industries";
   const COUNTER_INDUSTRIALIST_BUILT_INDUSTRIES = "built_industries";

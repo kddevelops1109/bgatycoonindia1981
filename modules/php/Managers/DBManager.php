@@ -3,9 +3,9 @@ namespace Bga\Games\tycoonindianew\Managers;
 
 use Bga\Games\tycoonindianew\Game;
 
-use Bga\Games\tycoonindianew\DB\Query\DBQuery;
-use Bga\Games\tycoonindianew\DB\Query\DBQueryResult;
-use Bga\Games\tycoonindianew\DB\Query\SelectDBQuery;
+use Bga\Games\tycoonindianew\Query\DBQuery;
+use Bga\Games\tycoonindianew\Query\DBQueryResult;
+use Bga\Games\tycoonindianew\Query\SelectDBQuery;
 
 class DBManager {
 
@@ -24,7 +24,7 @@ class DBManager {
     }
   }
 
-  private static function executeSelectQuery($query): DBQueryResult {
+  private static function executeSelectQuery(DBQuery $query): DBQueryResult {
     $result = null;
 
     $props = $query->props();

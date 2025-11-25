@@ -5,11 +5,11 @@ use Bga\GameFramework\Components\Counters\PlayerCounter;
 use Bga\GameFramework\Components\Counters\TableCounter;
 use Bga\Games\tycoonindianew\Game;
 
-use BGA\Games\tycoonindianew\DB\Filter\DBFilter;
-use Bga\Games\tycoonindianew\DB\Filter\SimpleDBFilter;
+use Bga\Games\tycoonindianew\Filter\DBFilter;
+use Bga\Games\tycoonindianew\Filter\SimpleDBFilter;
 
-use Bga\Games\tycoonindianew\DB\Query\InsertDBQuery;
-use Bga\Games\tycoonindianew\DB\Query\UpdateDBQuery;
+use Bga\Games\tycoonindianew\Query\InsertDBQuery;
+use Bga\Games\tycoonindianew\Query\UpdateDBQuery;
 
 use Bga\Games\tycoonindianew\Managers\DBManager;
 

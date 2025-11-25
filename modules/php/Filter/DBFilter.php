@@ -1,5 +1,5 @@
 <?php
-namespace BGA\Games\tycoonindianew\DB\Filter;
+namespace Bga\Games\tycoonindianew\Filter;
 
 abstract class DBFilter {
 

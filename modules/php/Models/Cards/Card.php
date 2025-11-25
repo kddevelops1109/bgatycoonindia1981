@@ -1,6 +1,7 @@
 <?php
-namespace Bga\Games\tycoonindianew\Models;
+namespace Bga\Games\tycoonindianew\Models\Cards;
 
+use Bga\Games\tycoonindianew\Models\DBObject;
 use Bga\Games\tycoonindianew\Util\DataUtil;
 
 /**
@@ -21,7 +22,13 @@ abstract class Card extends DBObject {
     $this->dbFields = self::dbFieldMappings();
     $this->staticFields = self::staticFieldMappings();
 
-    return parent::__construct($arr);
+    parent::__construct($arr);
+
+    foreach (array_keys(self::staticFieldMappings()) as $fieldName) {
+      if (array_key_exists($fieldName, $arr)) {
+        $this->$fieldName = $arr[$fieldName];
+      }
+    }
   }
 
   public static function dbFieldMappings() {
@@ -31,7 +38,7 @@ abstract class Card extends DBObject {
       self::COLUMN_CARD_TYPE_ARG => ["name" => self::FIELD_CARD_TYPE_ARG, "type" => DataUtil::DATA_TYPE_INT, "column" => self::COLUMN_CARD_TYPE_ARG, "readOnly" => false],
       self::COLUMN_CARD_LOCATION => ["name" => self::FIELD_CARD_LOCATION, "type" => DataUtil::DATA_TYPE_STRING, "column" => self::COLUMN_CARD_LOCATION, "readOnly" => false],
       self::COLUMN_CARD_LOCATION_ARG => ["name" => self::FIELD_CARD_LOCATION_ARG, "type" => DataUtil::DATA_TYPE_INT, "column" => self::COLUMN_CARD_LOCATION_ARG, "readOnly" => false],
-      self::COLUMN_CARD_NAME => ["name" => self::FIELD_CARD_NAME, "type" => DataUtil::DATA_TYPE_STRING, "column" => self::COLUMN_CARD_NAME, "readOnly" => false],
+      self::COLUMN_CARD_NAME => ["name" => self::FIELD_CARD_NAME, "type" => DataUtil::DATA_TYPE_INT, "column" => self::COLUMN_CARD_NAME, "readOnly" => false],
       self::COLUMN_CARD_PROMOTERS => ["name" => self::FIELD_CARD_PROMOTERS, "type" => DataUtil::DATA_TYPE_INT, "column" => self::COLUMN_CARD_PROMOTERS, "readOnly" => false]
     ];
   }
@@ -41,14 +48,42 @@ abstract class Card extends DBObject {
   }
 
   /**
-   * Constants
+   * Play methods
+   */
+
+  // abstract public function play();
+
+  /**
+   * End Game Scoring methods
+   */
+
+  /**
+   * Returns the end game asset value this card gives to eligible player(s)
+   * @return int End game asset value
+   */
+  abstract public function endgameAssetValue(): int;
+
+  /**
+   * Returns the end game influence this card gives to eligible player(s)
+   * @return int End game influence
+   */
+  abstract public function endgameInfluence(): int;
+
+  /**
+   * Returns the end game favor this card gives to eligible player(s)
+   * @return int End game favor
+   */
+  abstract public function endgameFavor(): int;
+
+  /**
+   * Constants - Misc
    */
   const TABLE_NAME = "tycoon_card";
+  const OBJECT_NAME_DECK = "module.common.deck";
 
   /**
    * Constants - DB Fields
    */
-  
   const FIELD_CARD_ID = "cardId";
   const FIELD_CARD_TYPE = "cardType";
   const FIELD_CARD_TYPE_ARG = "cardTypeArg";
@@ -68,4 +103,13 @@ abstract class Card extends DBObject {
   const COLUMN_CARD_LOCATION_ARG = "card_location_arg";
   const COLUMN_CARD_NAME = "card_name";
   const COLUMN_CARD_PROMOTERS = "card_promoters";
+
+  /**
+   * Constants - Common Locations
+   */
+  const LOCATION_DECK = "deck";
+  const LOCATION_DISPLAY = "display";
+  const LOCATION_TABLEAU = "tableau";
+  const LOCATION_HAND = "hand";
+  const LOCATION_DISCARD = "discard";
 }

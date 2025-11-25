@@ -1,8 +1,8 @@
 <?php
-namespace Bga\Games\tycoonindianew\DB\Filter;
+namespace Bga\Games\tycoonindianew\Filter;
 
-use Bga\Games\tycoonindianew\DB\Filter\DBFilter;
-use Bga\Games\tycoonindianew\DB\Query\DBQuery;
+use Bga\Games\tycoonindianew\Filter\DBFilter;
+use Bga\Games\tycoonindianew\Query\DBQuery;
 use Bga\Games\tycoonindianew\Util\StringUtil;
 
 class CompositeDBFilter extends DBFilter {
