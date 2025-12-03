@@ -1,10 +1,14 @@
 <?php
 namespace Bga\Games\tycoonindianew\Query;
 
+use Bga\Games\tycoonindianew\Type\KeywordType;
+use Bga\Games\tycoonindianew\Type\OperationType;
+use Bga\Games\tycoonindianew\Util\StringUtil;
+
 class DeleteDBQuery extends FilteredDBQuery {
 
   public function __construct($table, $filter) {
-    return parent::__construct($table, $filter, DBQuery::DB_OPERATION_DELETE);
+    return parent::__construct($table, $filter, OperationType::DELETE);
   }
 
   public function props(): array {
@@ -15,10 +19,10 @@ class DeleteDBQuery extends FilteredDBQuery {
   }
 
   public function build(): string {
-    $sqlComponents = [DBQuery::DB_OPERATION_DELETE, DBQuery::KEYWORD_FROM, DBQuery::encloseIdentifier($this->table)];
+    $sqlComponents = [OperationType::DELETE->name, KeywordType::FROM->value, StringUtil::encloseDatabaseIdentifier($this->table)];
 
     if (!is_null($this->filter)) {
-      $sqlComponents[] = DBQuery::KEYWORD_WHERE;
+      $sqlComponents[] = KeywordType::WHERE->value;
       $sqlComponents[] = $this->filter->build();
     }
 
@@ -31,7 +35,7 @@ class DeleteDBQuery extends FilteredDBQuery {
     return print_r(
       [
         "table" => $this->table,
-        "operation" => $this->operation,
+        "operation" => $this->operation->name,
         "sql" => $this->sql,
         "filter" => $this->filter->stringify()
       ],

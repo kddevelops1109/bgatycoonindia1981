@@ -1,7 +1,13 @@
 <?php
 namespace Bga\Games\tycoonindianew\Query;
 
+use Bga\Games\tycoonindianew\Type\CharType;
+use Bga\Games\tycoonindianew\Type\DataType;
+use Bga\Games\tycoonindianew\Type\KeywordType;
+use Bga\Games\tycoonindianew\Type\OperationType;
+
 use Bga\Games\tycoonindianew\Util\DataUtil;
+use Bga\Games\tycoonindianew\Util\StringUtil;
 
 class InsertDBQuery extends DBQuery {
 
@@ -13,7 +19,7 @@ class InsertDBQuery extends DBQuery {
 
   public function __construct($table, $datas) {
     $this->datas = $datas;
-    return parent::__construct($table, DBQuery::DB_OPERATION_INSERT);
+    return parent::__construct($table, OperationType::INSERT->name);
   }
 
   public function props(): array {
@@ -24,32 +30,32 @@ class InsertDBQuery extends DBQuery {
   }
 
   public function build(): string {
-    $sqlComponents = [DBQuery::DB_OPERATION_INSERT, DBQuery::KEYWORD_INTO, DBQuery::encloseIdentifier($this->table)];
+    $sqlComponents = [OperationType::INSERT->name, KeywordType::INTO->value, StringUtil::encloseDatabaseIdentifier($this->table)];
 
     $columns = [];
     $values = [];
 
     foreach ($this->datas as $data) {
       $column = strval($data["column"]);
-      $dataType = strval($data["type"]);
+      $dataType = $data["type"];
       $value = DataUtil::getValue($data["value"], $dataType);
 
       $columns[] = $column;
       
-      if ($dataType == DataUtil::DATA_TYPE_STRING) {
-        $values[] = addslashes($value);
+      if ($dataType == DataType::STRING) {
+        $values[] = StringUtil::encloseStringDatabaseValue($value);
       }
-      elseif ($dataType == DataUtil::DATA_TYPE_OBJ) {
-        $values[] = addslashes(json_encode($value));
+      elseif ($dataType == DataType::OBJ) {
+        $values[] = StringUtil::encloseStringDatabaseValue(json_encode($value));
       }
       else {
         $values[] = $value;
       }
     }
 
-    $sqlComponents[] = DBQuery::CHAR_BRACKET_START . implode(", ", $columns) . DBQuery::CHAR_BRACKET_END;
-    $sqlComponents[] = DBQuery::KEYWORD_VALUES;
-    $sqlComponents[] = DBQuery::CHAR_BRACKET_START . implode(", ", $values) . DBQuery::CHAR_BRACKET_END;
+    $sqlComponents[] = CharType::BRACKET_START->value . implode(", ", $columns) . CharType::BRACKET_END->value;
+    $sqlComponents[] = KeywordType::VALUES->value;
+    $sqlComponents[] = CharType::BRACKET_START->value . implode(", ", $values) . CharType::BRACKET_END->value;
 
     $this->sql = implode(" ", $sqlComponents);
 
@@ -60,7 +66,7 @@ class InsertDBQuery extends DBQuery {
     return print_r(
       [
         "table" => $this->table,
-        "operation" => $this->operation,
+        "operation" => $this->operation->name,
         "sql" => $this->sql,
         "datas" => print_r($this->datas, true)
       ],

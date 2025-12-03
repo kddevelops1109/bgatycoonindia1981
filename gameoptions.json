@@ -1,1 +1,18 @@
-{}
+{
+  "100": {
+    "name": "Headline Variant",
+    "values": {
+      "0": {
+        "name": "No"
+      },
+      "1": {
+        "name": "Yes",
+        "nobeginner": true,
+        "description": "Tycoon: India 1981 comes with 12 Headline cards that mimic the Indian License Raj Bureaucracy and Red Tapism, and the eventual Liberal Era economic opportunities - in a simple yet interesting manner. Headline cards represent any of the key turning points during the 3 decade time period of the game, which can either be beneficial/detrimental to some or all players, depending on the card. Headline cards replace one of the Planning Commission slots on the board, and are dynamic, i.e, they keep changing every round!",
+        "tmdisplay": "Headline Variant",
+        "alpha": true
+      }
+    },
+    "level": "base"
+  }
+}

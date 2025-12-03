@@ -1,7 +1,12 @@
 <?php
 namespace Bga\Games\tycoonindianew\Query;
 
+use Bga\Games\tycoonindianew\Type\DataType;
+use Bga\Games\tycoonindianew\Type\KeywordType;
+use Bga\Games\tycoonindianew\Type\OperationType;
+
 use Bga\Games\tycoonindianew\Util\DataUtil;
+use Bga\Games\tycoonindianew\Util\StringUtil;
 
 class UpdateDBQuery extends FilteredDBQuery {
 
@@ -14,7 +19,7 @@ class UpdateDBQuery extends FilteredDBQuery {
   public function __construct($table, $datas, $filter) {
     $this->datas = $datas;
     
-    return parent::__construct($table, DBQuery::DB_OPERATION_UPDATE, $filter);
+    return parent::__construct($table, OperationType::UPDATE->name, $filter);
   }
 
   public function props(): array {
@@ -26,37 +31,37 @@ class UpdateDBQuery extends FilteredDBQuery {
   }
 
   public function build(): string {
-    $sqlComponents = [DBQuery::DB_OPERATION_UPDATE, DBQuery::encloseIdentifier($this->table), DBQuery::KEYWORD_SET];
+    $sqlComponents = [OperationType::UPDATE->name, StringUtil::encloseDatabaseIdentifier($this->table), KeywordType::SET->value];
 
     $updates = [];
     foreach ($this->datas as $data) {
       $column = strval($data["column"]);
-      $dataType = strval($data["type"]);
+      $dataType = $data["type"];
       $value = DataUtil::getValue($data["value"], $dataType);
 
-      if ($dataType == DataUtil::DATA_TYPE_STRING) {
-        $updates[] = DBQuery::encloseIdentifier($column) . " = " . DBQuery::encloseStringValue(addslashes($value));
+      if ($dataType == DataType::STRING) {
+        $updates[] = StringUtil::encloseDatabaseIdentifier($column) . " = " . StringUtil::encloseStringDatabaseValue(addslashes($value));
       }
-      elseif ($dataType == DataUtil::DATA_TYPE_OBJ) {
-        $updates[] = DBQuery::encloseIdentifier($column) . " = " . DBQuery::encloseStringValue(addslashes(json_encode($value)));
+      elseif ($dataType == DataType::OBJ) {
+        $updates[] = StringUtil::encloseDatabaseIdentifier($column) . " = " . StringUtil::encloseStringDatabaseValue(addslashes(json_encode($value)));
       }
-      elseif ($dataType == DataUtil::DATA_TYPE_BOOL) {
+      elseif ($dataType == DataType::BOOL) {
         if ($value) {
-          $updates[] = DBQuery::encloseIdentifier($column) . " = 1";
+          $updates[] = StringUtil::encloseDatabaseIdentifier($column) . " = 1";
         }
         else {
-          $updates[] = DBQuery::encloseIdentifier($column) . " = 0";
+          $updates[] = StringUtil::encloseDatabaseIdentifier($column) . " = 0";
         }
       }
       else {
-        $updates[] = DBQuery::encloseIdentifier($column) . " = " . $value;
+        $updates[] = StringUtil::encloseDatabaseIdentifier($column) . " = " . $value;
       }
     }
 
     $sqlComponents[] = implode(", " , $updates);
 
     if (!is_null($this->filter)) {
-      $sqlComponents[] = DBQuery::KEYWORD_WHERE;
+      $sqlComponents[] = KeywordType::WHERE->value;
       $sqlComponents[] = $this->filter->build();
     }
 
@@ -69,7 +74,7 @@ class UpdateDBQuery extends FilteredDBQuery {
     return print_r(
       [
         "table" => $this->table,
-        "operation" => $this->operation,
+        "operation" => $this->operation->name,
         "sql" => $this->sql,
         "datas" => $this->datas,
         "filter" => $this->filter->stringify()

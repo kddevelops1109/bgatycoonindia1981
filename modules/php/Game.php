@@ -19,10 +19,19 @@ declare(strict_types=1);
 namespace Bga\Games\tycoonindianew;
 
 use Bga\Games\tycoonindianew\States\PlayerTurn;
+
 use Bga\GameFramework\Components\Counters\PlayerCounter;
-use Bga\Games\tycoonindianew\Managers\CardsManager;
-use Bga\Games\tycoonindianew\Managers\IndustrialistsManager;
-use Bga\Games\tycoonindianew\Models\Cards\CorporateAgendaCard;
+
+use Bga\Games\tycoonindianew\Manager\Action\Main\Strategy\SalesStrategyMainActionManager as SSAM;
+use Bga\Games\tycoonindianew\Manager\Action\Main\Strategy\LobbyStrategyMainActionManager as LSAM;
+use Bga\Games\tycoonindianew\Manager\Action\Main\Strategy\OfficeStrategyMainActionManager as OSAM;
+use Bga\Games\tycoonindianew\Manager\Action\Main\Strategy\AdvertisingStrategyMainActionManager as ASAM;
+use Bga\Games\tycoonindianew\Manager\Action\Main\Strategy\ExportStrategyMainActionManager as ESAM;
+
+use Bga\Games\tycoonindianew\Manager\IndustrialistManager;
+use Bga\Games\tycoonindianew\Manager\Card\CardManager;
+
+use Bga\Games\tycoonindianew\Type\CardType;
 
 class Game extends \Bga\GameFramework\Table
 {
@@ -205,10 +214,15 @@ class Game extends \Bga\GameFramework\Table
         // $this->playerStats->init('player_teststat1', 0);
 
         // TODO: Setup the initial game situation here.
-        IndustrialistsManager::setupNewGame($players);
+        IndustrialistManager::instance()->setupNewGame($players);
         
         // Setup cards
-        CardsManager::getInstance(CorporateAgendaCard::CARD_TYPE)->setupNewGame($players);
+        CardManager::instance(CardType::CORPORATE_AGENDA)->setupNewGame($players);
+
+        // Setup strategy actions
+        foreach ([SSAM::instance(), LSAM::instance(), OSAM::instance(), ASAM::instance(), ESAM::instance()] as $manager) {
+          $manager->setupNewGame($players);
+        }
 
         // Activate first player once everything has been initialized and ready.
         $this->activeNextPlayer();

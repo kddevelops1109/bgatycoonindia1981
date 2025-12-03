@@ -2,28 +2,37 @@
 namespace Bga\Games\tycoonindianew\Filter;
 
 use Bga\Games\tycoonindianew\Filter\DBFilter;
-use Bga\Games\tycoonindianew\Query\DBQuery;
+
+use Bga\Games\tycoonindianew\Type\CharType;
+use Bga\Games\tycoonindianew\Type\FilterType;
+use Bga\Games\tycoonindianew\Type\JoinType;
+
 use Bga\Games\tycoonindianew\Util\StringUtil;
 
+/**
+ * Composite database filter that joins other filters, which could be simple or composite themselves
+ */
 class CompositeDBFilter extends DBFilter {
 
   /**
-   * Join for this composite filter (AND/OR)
-   * @var string
+   * Join operator for this composite filter (AND/OR).
+   *
+   * @var JoinType
    */
-  protected $join;
+  protected JoinType $join;
 
   /**
-   * Array of DB filters - simple/composite/both
-   * @var array
+   * Array of nested DBFilter objects (simple or composite).
+   *
+   * @var array<DBFilter>
    */
-  protected $filters;
+  protected array $filters;
 
   public function __construct($join, $filters) {
     $this->join = $join;
     $this->filters = $filters;
 
-    return parent::__construct(DBFilter::TYPE_COMPOSITE);
+    return parent::__construct(FilterType::COMPOSITE);
   }
 
   public function build(): string {
@@ -36,13 +45,13 @@ class CompositeDBFilter extends DBFilter {
       }
     }
 
-    if ($this->join == self::JOIN_AND) {
-      $sqlComponents[] = implode(StringUtil::encloseSpaces(self::JOIN_AND), $sqlFilters);
+    if ($this->join == JoinType::AND) {
+      $sqlComponents[] = implode(StringUtil::encloseSpaces(JoinType::AND->name), $sqlFilters);
     }
-    elseif ($this->join == self::JOIN_OR) {
-      $sqlComponents[] = DBQuery::CHAR_BRACKET_START;
-      $sqlComponents[] = implode(StringUtil::encloseSpaces(self::JOIN_OR), $sqlFilters);
-      $sqlComponents[] = DBQuery::CHAR_BRACKET_END;
+    elseif ($this->join == JoinType::OR) {
+      $sqlComponents[] = CharType::BRACKET_START;
+      $sqlComponents[] = implode(StringUtil::encloseSpaces(JoinType::OR->name), $sqlFilters);
+      $sqlComponents[] = CharType::BRACKET_END;
     }
 
     return implode("", $sqlComponents);
@@ -52,16 +61,10 @@ class CompositeDBFilter extends DBFilter {
     return print_r(
       [
         "type" => $this->type,
-        "join" => $this->join,
+        "join" => $this->join->name,
         "filters" => print_r($this->filters, true)
       ],
       true
     );
   }
-
-  /**
-   * Constants - Joins
-   */
-  const JOIN_AND = "AND";
-  const JOIN_OR = "OR";
 }

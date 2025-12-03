@@ -23,7 +23,7 @@
 -- CREATE TABLE IF NOT EXISTS `card` (
 --   `card_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 --   `card_type` varchar(16) NOT NULL,
---   `card_type_arg` int(11) NOT NULL,
+--   `card_type_arg` int(11) NOT NULL,,
 --   `card_location` varchar(16) NOT NULL,
 --   `card_location_arg` int(11) NOT NULL,
 --   PRIMARY KEY (`card_id`)
@@ -57,8 +57,38 @@ CREATE TABLE IF NOT EXISTS `tycoon_token` (
   PRIMARY KEY (`card_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+CREATE TABLE IF NOT EXISTS `tycoon_transaction` (
+  `id` varchar(32) NOT NULL,
+  `state` varchar(16) NOT NULL,
+  `round` int(11) unsigned NOT NULL DEFAULT 0,
+  `details` varchar(512) NOT NULL,
+  `promises` varchar(512) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE IF NOT EXISTS `tycoon_globals` (
   `name` varchar(50) NOT NULL,
   `value` int(10) unsigned NOT NULL,
   PRIMARY KEY(`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `tycoon_strategy_action_space` (
+  `space_id` varchar(200) NOT NULL,
+  `token` int(10) unsigned,
+  `occupied` BIT(1) NOT NULL DEFAULT b'0',
+  `player_id` int(10) unsigned,
+  `share_value` int(10),
+  PRIMARY KEY(`space_id`),
+  FOREIGN KEY(`token`) REFERENCES `tycoon_token`(`card_id`),
+  FOREIGN KEY(`player_id`) REFERENCES `player`(`player_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `tycoon_main_action_space` (
+  `space_id` varchar(200) NOT NULL,
+  `token` int(10) unsigned,
+  `occupied` BIT(1) NOT NULL DEFAULT b'0',
+  `player_id` int(10) unsigned,
+  PRIMARY KEY(`space_id`),
+  FOREIGN KEY(`token`) REFERENCES `tycoon_token`(`card_id`),
+  FOREIGN KEY(`player_id`) REFERENCES `player`(`player_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

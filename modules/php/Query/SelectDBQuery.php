@@ -1,6 +1,12 @@
 <?php
 namespace Bga\Games\tycoonindianew\Query;
 
+use Bga\Games\tycoonindianew\Filter\DBFilter;
+use Bga\Games\tycoonindianew\Type\KeywordType;
+use Bga\Games\tycoonindianew\Type\OperationType;
+use Bga\Games\tycoonindianew\Type\OrderByDirection;
+use Bga\Games\tycoonindianew\Util\StringUtil;
+
 class SelectDBQuery extends FilteredDBQuery {
 
   /**
@@ -17,9 +23,9 @@ class SelectDBQuery extends FilteredDBQuery {
 
   /**
    * Direction of ordering (ASC/DESC)
-   * @var string
+   * @var OrderByDirection
    */
-  protected $direction;
+  protected OrderByDirection $direction;
 
   /**
    * Number of records to return (0 indicates no limit)
@@ -41,7 +47,7 @@ class SelectDBQuery extends FilteredDBQuery {
    */
   protected $bAssociative;
 
-  public function __construct($table, $columns, $filter, $orderBy = null, $direction = null, $limit = 0, $bUniqueValue = false, $bAssociative = false) {
+  public function __construct(string $table, array $columns, ?DBFilter $filter = null, ?string $orderBy = null, ?OrderByDirection $direction = null, ?int $limit = null, ?bool $bUniqueValue = false, ?bool $bAssociative = false) {
     $this->encloseColumns($columns);
     
     $this->orderBy = $orderBy;
@@ -50,13 +56,13 @@ class SelectDBQuery extends FilteredDBQuery {
     $this->bUniqueValue = $bUniqueValue;
     $this->bAssociative = $bAssociative;
     
-    return parent::__construct($table, DBQuery::DB_OPERATION_SELECT, $filter);
+    return parent::__construct($table, OperationType::SELECT->name, $filter);
   }
 
   private function encloseColumns($columns) {
     $this->columns = [];
     foreach ($columns as $column) {
-      $this->columns[] = DBQuery::encloseIdentifier($column);
+      $this->columns[] = StringUtil::encloseDatabaseIdentifier($column);
     }
   }
 
@@ -75,23 +81,23 @@ class SelectDBQuery extends FilteredDBQuery {
 
   public function build(): string {
     $sqlComponents = [
-      DBQuery::DB_OPERATION_SELECT,
+      OperationType::SELECT->name,
       implode(", ", $this->columns),
-      DBQuery::KEYWORD_FROM,
-      DBQuery::encloseIdentifier($this->table)
+      KeywordType::FROM->value,
+      StringUtil::encloseDatabaseIdentifier($this->table)
     ];
 
     if (!is_null($this->filter)) {
-      $sqlComponents[] = DBQuery::KEYWORD_WHERE;
+      $sqlComponents[] = KeywordType::WHERE->value;
       $sqlComponents[] = $this->filter->build();
     }
 
     if (!is_null($this->orderBy)) {
-      $sqlComponents[] = DBQuery::KEYWORD_ORDER_BY;
-      $sqlComponents[] = DBQuery::encloseIdentifier($this->orderBy);
+      $sqlComponents[] = KeywordType::ORDER_BY->value;
+      $sqlComponents[] = StringUtil::encloseDatabaseIdentifier($this->orderBy);
 
       if (is_null($this->direction)) {
-        $sqlComponents[] = self::ORDER_BY_ASCENDING;
+        $sqlComponents[] = OrderByDirection::ASC;
       }
       else {
         $sqlComponents[] = $this->direction;
@@ -111,11 +117,11 @@ class SelectDBQuery extends FilteredDBQuery {
     return print_r(
       [
         "table" => $this->table,
-        "operation" => $this->operation,
+        "operation" => $this->operation->name,
         "sql" => $this->sql,
         "columns" => print_r($this->columns, true),
         "orderBy" => $this->orderBy,
-        "direction" => $this->direction,
+        "direction" => $this->direction->name,
         "limit" => $this->limit,
         "bUniqueValue" => $this->bUniqueValue,
         "bAssociative" => $this->bAssociative,
@@ -124,7 +130,4 @@ class SelectDBQuery extends FilteredDBQuery {
       true
     );
   }
-
-  const ORDER_BY_ASCENDING = "ASC";
-  const ORDER_BY_DESCENDING = "DESC";
 }

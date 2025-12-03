@@ -1,17 +1,13 @@
 <?php
 namespace Bga\Games\tycoonindianew\Util;
 
-use Bga\GameFramework\Components\Counters\PlayerCounter;
-use Bga\GameFramework\Components\Counters\TableCounter;
+use BackedEnum;
+use UnitEnum;
+
+use Bga\Games\tycoonindianew\Type\DataType;
 
 class DataUtil {
-  const DATA_TYPE_STRING = "string";
-  const DATA_TYPE_INT = "int";
-  const DATA_TYPE_BOOL = "bool";
-  const DATA_TYPE_OBJ = "obj";
-  const DATA_TYPE_PLAYER_COUNTER = "playerCounter";
-  const DATA_TYPE_TABLE_COUNTER = "tableCounter";
-
+  
   /**
    * Get the value parsed from given val and data type
    * @param mixed $val
@@ -20,17 +16,23 @@ class DataUtil {
   public static function getValue($val, $type) {
     $value = null;
 
-    if ($type == self::DATA_TYPE_INT) {
+    if ($type == DataType::INT) {
       $value = intval($val);
     }
-    elseif ($type == self::DATA_TYPE_BOOL) {
+    elseif ($type == DataType::BOOL) {
       $value = boolval($val);
     }
-    elseif ($type == self::DATA_TYPE_OBJ) {
+    elseif ($type == DataType::OBJ) {
       $value = json_decode(strval($val), true);
     }
-    elseif ($type == self::DATA_TYPE_PLAYER_COUNTER || $type == self::DATA_TYPE_TABLE_COUNTER) {
+    elseif ($type == DataType::PLAYER_COUNTER || $type == DataType::TABLE_COUNTER) {
       $value = $val;
+    }
+    elseif ($type == DataType::STRING && $val instanceof BackedEnum) {
+      $value = strval($val->value);
+    }
+    elseif ($type == DataType::STRING && $val instanceof UnitEnum) {
+      $value = strval($val->name);
     }
     else {
       $value = strval($val);

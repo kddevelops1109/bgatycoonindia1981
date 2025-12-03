@@ -1,32 +1,44 @@
 <?php
 namespace Bga\Games\tycoonindianew\Filter;
 
-use Bga\Games\tycoonindianew\Query\DBQuery;
+use Bga\Games\tycoonindianew\Type\CharType;
+use Bga\Games\tycoonindianew\Type\DataType;
+use Bga\Games\tycoonindianew\Type\FilterType;
+use Bga\Games\tycoonindianew\Type\OperatorType;
 
-use Bga\Games\tycoonindianew\Util\DataUtil;
+use Bga\Games\tycoonindianew\Util\StringUtil;
 
+/**
+ * Simple database filter specifying column, data type, operator and value
+ */
 class SimpleDBFilter extends DBFilter {
 
   /**
-   * Name of column being filtered on
+   * Name of the database column being filtered on.
+   *
    * @var string
    */
   protected string $column;
 
   /**
-   * Data type of the column being filtered on
-   * @var string
+   * Data type of the column (string/int/bool/etc).
+   *
+   * @var DataType
    */
-  protected string $dataType;
+  protected DataType $dataType;
 
   /**
-   * Represents the comparison operator, i.e. =/!=/>/>=/</<=/LIKE/IN
-   * @var string
+   * Comparison operator, e.g. =, !=, >, >=, <, <=, LIKE, IN.
+   *
+   * @var OperatorType
    */
-  protected string $operator;
+  protected OperatorType $operator;
 
   /**
-   * Value of the filter
+   * Value being compared against.
+   *
+   * May be scalar or array (for IN operator).
+   *
    * @var mixed
    */
   protected mixed $value;
@@ -37,16 +49,16 @@ class SimpleDBFilter extends DBFilter {
     $this->operator = $operator;
     $this->value = $value;
 
-    return parent::__construct(DBFilter::TYPE_SIMPLE);
+    return parent::__construct(FilterType::SIMPLE);
   }
 
   public function build(): string {
-    $sqlComponents = [DBQuery::encloseIdentifier($this->column), $this->operator];
+    $sqlComponents = [StringUtil::encloseDatabaseIdentifier($this->column), $this->operator->value];
 
-    if ($this->operator == self::OPERATOR_IN) {
+    if ($this->operator == OperatorType::IN) {
       $values = [];
       foreach ($this->value as $val) {
-        if ($this->dataType == DataUtil::DATA_TYPE_STRING) {
+        if ($this->dataType == DataType::STRING) {
           $values[] = addslashes($val);
         }
         else {
@@ -54,20 +66,18 @@ class SimpleDBFilter extends DBFilter {
         }
       }
 
-      $sqlComponents[] = DBQuery::CHAR_BRACKET_START . implode(", ", $values) . DBQuery::CHAR_BRACKET_END;
+      $sqlComponents[] = CharType::BRACKET_START . implode(", ", $values) . CharType::BRACKET_END;
     }
     else {
-      if ($this->dataType == DataUtil::DATA_TYPE_STRING) {
-        $sqlComponents[] = DBQuery::encloseStringValue(($this->value));
+      if ($this->dataType == DataType::STRING) {
+        $sqlComponents[] = StringUtil::encloseStringDatabaseValue(($this->value));
       }
       else {
         $sqlComponents[] = $this->value;
       }
     }
 
-    $sql = implode(" ", $sqlComponents);
-
-    return $sql;
+    return implode(" ", $sqlComponents);
   }
 
 
@@ -76,23 +86,11 @@ class SimpleDBFilter extends DBFilter {
       [
         "type" => $this->type,
         "column" => $this->column,
-        "dataType" => $this->dataType,
-        "operator" => $this->operator,
+        "dataType" => $this->dataType->value,
+        "operator" => $this->operator->value,
         "value" => $this->value
       ],
       true
     );
   }
-
-  /**
-   * Constants - Comparison operators
-   */
-  const OPERATOR_EQUALS = "=";
-  const OPERATOR_NOT_EQUALS = "!=";
-  const OPERATOR_GREATER_THAN = ">";
-  const OPERATOR_GREATER_THAN_EQUAKS = ">=";
-  const OPERATOR_LESSER_THAN = "<";
-  const OPERATOR_LESSER_THAN_EQUAKS = "<=";
-  const OPERATOR_LIKE = "LIKE";
-  const OPERATOR_IN = "IN";
 }

@@ -1,13 +1,15 @@
 <?php
 namespace Bga\Games\tycoonindianew\Query;
 
+use Bga\Games\tycoonindianew\Type\QueryStatus;
+
 class DBQueryResult {
 
   /**
    * Query execution status - success/error
-   * @var string
+   * @var QueryStatus
    */
-  protected $status;
+  protected QueryStatus $status;
 
   /**
    * Result of the query execution.
@@ -29,11 +31,4 @@ class DBQueryResult {
   public function getResult() {
     return $this->result;
   }
-
-  /**
-   * Constants - Status
-   */
-
-  const STATUS_SUCCESS = "success";
-  const STATUS_ERROR = "error";
 }

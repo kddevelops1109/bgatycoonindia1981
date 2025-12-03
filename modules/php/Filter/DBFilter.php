@@ -1,29 +1,30 @@
 <?php
 namespace Bga\Games\tycoonindianew\Filter;
 
-abstract class DBFilter {
+use Bga\Games\tycoonindianew\Registry\Entry;
+use Bga\Games\tycoonindianew\Type\FilterType;
 
-  /**
-   * Type of filter,i.e. simple/composite
-   * @var string
-   */
-  protected $type;
+/**
+ * Represents a database filter.
+ * It can be entered into a registry.
+ */
+abstract class DBFilter implements Entry {
 
-  public function __construct($type) {
-    $this->type = $type;
-  }
+    /**
+     * Type of filter, i.e., simple or composite.
+     *
+     * @var FilterType
+     */
+    protected FilterType $type;
 
-  /**
-   * Builds a string representing this filter that can be plugged into a DB query
-   * @return string
-   */
-  abstract public function build();
+    public function __construct(FilterType $type) {
+        $this->type = $type;
+    }
 
-  abstract public function stringify();
+    /**
+     * Builds a string representing this filter that can be plugged into a DB query.
+     */
+    abstract public function build(): string;
 
-  /**
-   * Constants - Types
-   */
-  const TYPE_SIMPLE = "simple";
-  const TYPE_COMPOSITE = "composite";
+    abstract public function stringify();
 }
