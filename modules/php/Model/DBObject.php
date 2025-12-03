@@ -13,7 +13,7 @@ use Bga\Games\tycoonindianew\Query\UpdateDBQuery;
 
 use Bga\Games\tycoonindianew\Manager\DBManager;
 
-use Bga\Games\tycoonindianew\Type\DataType;
+use Bga\Games\tycoonindianew\Type\DataType as DT;
 use Bga\Games\tycoonindianew\Type\OperatorType;
 
 use Bga\Games\tycoonindianew\Util\DataUtil;
@@ -67,13 +67,13 @@ abstract class DBObject implements \JsonSerializable {
       $fieldType = $field["type"];
 
        if (array_key_exists($fieldName, $args)) {
-        if ($fieldType == DataType::PLAYER_COUNTER) {
+        if ($fieldType == DT::PLAYER_COUNTER) {
           $value = Game::get()->counterFactory->createPlayerCounter($column);
         }
-        elseif ($fieldType == DataType::TABLE_COUNTER) {
+        elseif ($fieldType == DT::TABLE_COUNTER) {
           $value = Game::get()->counterFactory->createTableCounter($column);
         }
-        elseif ($fieldType == DataType::OBJ) {
+        elseif ($fieldType == DT::OBJ) {
           $value = $args[$fieldName];
         }
         else {
@@ -184,7 +184,7 @@ abstract class DBObject implements \JsonSerializable {
       elseif ($methodCall == self::METHOD_CALL_SET) {
         $this->setValue($field, $args);
       }
-      elseif (in_array($methodCall, [self::METHOD_CALL_INC, self:: METHOD_CALL_DEC]) && in_array($fieldType, [DataType::INT, DataType::PLAYER_COUNTER, DataType::TABLE_COUNTER])) {
+      elseif (in_array($methodCall, [self::METHOD_CALL_INC, self:: METHOD_CALL_DEC]) && in_array($fieldType, [DT::INT, DT::PLAYER_COUNTER, DT::TABLE_COUNTER])) {
         $methodCall == self::METHOD_CALL_INC ? $this->incValue($field, $args) : $this->decValue($field, $args);
       }
       elseif ($methodCall == self::METHOD_CALL_IS) {
@@ -202,7 +202,7 @@ abstract class DBObject implements \JsonSerializable {
 
     $value = null;
 
-    if ($fieldType == DataType::OBJ) {
+    if ($fieldType == DT::OBJ) {
       $jsonValue = DataUtil::getValue($this->$fieldName, $fieldType);
       if (!empty($args)) {
         $value = json_decode($jsonValue, true);
@@ -227,7 +227,7 @@ abstract class DBObject implements \JsonSerializable {
 
     $value = null;
 
-    if ($fieldType == DataType::OBJ) {
+    if ($fieldType == DT::OBJ) {
       if (sizeof($args) > 1) {
         $key = $args[0];
         $value = $args[1];
@@ -248,9 +248,9 @@ abstract class DBObject implements \JsonSerializable {
         }
       }
     }
-    elseif (in_array($fieldType, [DataType::PLAYER_COUNTER, DataType::TABLE_COUNTER])) {
+    elseif (in_array($fieldType, [DT::PLAYER_COUNTER, DT::TABLE_COUNTER])) {
       $counter = $this->$fieldName;
-      $value = DataUtil::getValue($args[0], DataType::INT);
+      $value = DataUtil::getValue($args[0], DT::INT);
 
       if ($counter instanceof PlayerCounter) {
         $player_id = intval($args[1]);
@@ -268,7 +268,7 @@ abstract class DBObject implements \JsonSerializable {
     if ($value != null) {
       // Update value in DB
       $id_field = Industrialist::FIELD_PLAYER_ID;
-      $filter = new SimpleDBFilter(Industrialist::COLUMN_PLAYER_ID, DataType::INT, OperatorType::EQUALS, $this->$id_field);
+      $filter = new SimpleDBFilter(Industrialist::COLUMN_PLAYER_ID, DT::INT, OperatorType::EQUALS, $this->$id_field);
 
       $this->update([$fieldName => $value], $filter);
     }
@@ -280,11 +280,11 @@ abstract class DBObject implements \JsonSerializable {
 
     $value = null;
 
-    if ($fieldType == DataType::INT) {
+    if ($fieldType == DT::INT) {
       $value = DataUtil::getValue($this->$fieldName, $fieldType);
 
       if (!empty($args)) {
-        $this->$fieldName = $value + DataUtil::getValue($args[0], DataType::INT);
+        $this->$fieldName = $value + DataUtil::getValue($args[0], DT::INT);
       }
       else {
         $this->$fieldName = $value + 1;
@@ -293,11 +293,11 @@ abstract class DBObject implements \JsonSerializable {
     else {
       $counter = $this->$fieldName;
       if ($counter instanceof PlayerCounter) {
-        $player_id = DataUtil::getValue($args[0], DataType::INT);
+        $player_id = DataUtil::getValue($args[0], DT::INT);
         
         $value = 1;
         if (sizeof($args) > 2) {
-          $value = DataUtil::getValue($args[1], DataType::INT);
+          $value = DataUtil::getValue($args[1], DT::INT);
         }
         
         $counter->inc($player_id, $value);
@@ -305,7 +305,7 @@ abstract class DBObject implements \JsonSerializable {
       elseif ($counter instanceof TableCounter) {
         $value = 1;
         if (!empty($args)) {
-          $value = DataUtil::getValue($args[0], DataType::INT);
+          $value = DataUtil::getValue($args[0], DT::INT);
         }
 
         $counter->inc($value);
@@ -315,7 +315,7 @@ abstract class DBObject implements \JsonSerializable {
     // Update value in DB
     if ($value != null) {
       $id_field = Industrialist::FIELD_PLAYER_ID;
-      $filter = new SimpleDBFilter(Industrialist::COLUMN_PLAYER_ID, DataType::INT, OperatorType::EQUALS, $this->$id_field);
+      $filter = new SimpleDBFilter(Industrialist::COLUMN_PLAYER_ID, DT::INT, OperatorType::EQUALS, $this->$id_field);
 
       $this->update([$fieldName => $value], $filter);
     }
@@ -327,11 +327,11 @@ abstract class DBObject implements \JsonSerializable {
 
     $value = null;
 
-    if ($fieldType == DataType::INT) {
+    if ($fieldType == DT::INT) {
       $value = DataUtil::getValue($this->$fieldName, $fieldType);
 
       if (!empty($args)) {
-        $this->$fieldName = $value - DataUtil::getValue($args[0], DataType::INT);
+        $this->$fieldName = $value - DataUtil::getValue($args[0], DT::INT);
       }
       else {
         $this->$fieldName = $value - 1;
@@ -340,11 +340,11 @@ abstract class DBObject implements \JsonSerializable {
     else {
       $counter = $this->$fieldName;
       if ($counter instanceof PlayerCounter) {
-        $player_id = DataUtil::getValue($args[0], DataType::INT);
+        $player_id = DataUtil::getValue($args[0], DT::INT);
         
         $value = 1;
         if (sizeof($args) > 2) {
-          $value = DataUtil::getValue($args[1], DataType::INT);
+          $value = DataUtil::getValue($args[1], DT::INT);
         }
         
         $counter->inc($player_id, (0 - $value));
@@ -352,7 +352,7 @@ abstract class DBObject implements \JsonSerializable {
       elseif ($counter instanceof TableCounter) {
         $value = 1;
         if (!empty($args)) {
-          $value = DataUtil::getValue($args[0], DataType::INT);
+          $value = DataUtil::getValue($args[0], DT::INT);
         }
 
         $counter->inc((0 - $value));
@@ -362,7 +362,7 @@ abstract class DBObject implements \JsonSerializable {
     // Update value in DB
     if ($value != null) {
       $id_field = Industrialist::FIELD_PLAYER_ID;
-      $filter = new SimpleDBFilter(Industrialist::COLUMN_PLAYER_ID, DataType::INT, OperatorType::EQUALS, $this->$id_field);
+      $filter = new SimpleDBFilter(Industrialist::COLUMN_PLAYER_ID, DT::INT, OperatorType::EQUALS, $this->$id_field);
 
       $this->update([$fieldName => $value], $filter);
     }
@@ -372,7 +372,7 @@ abstract class DBObject implements \JsonSerializable {
     $fieldName = strval($field["name"]);
     $fieldType = strval($field["type"]);
 
-    if ($fieldType == DataType::BOOL) {
+    if ($fieldType == DT::BOOL) {
       return DataUtil::getValue($this->$fieldName, $fieldType);
     }
     else {
@@ -384,13 +384,13 @@ abstract class DBObject implements \JsonSerializable {
     $fieldName = strval($field["name"]);
     $fieldType = strval($field["type"]);
 
-    if ($fieldType == DataType::BOOL) {
+    if ($fieldType == DT::BOOL) {
       $this->$fieldName = false;
     }
 
     // Update value in DB
     $id_field = Industrialist::FIELD_PLAYER_ID;
-    $filter = new SimpleDBFilter(Industrialist::COLUMN_PLAYER_ID, DataType::INT, OperatorType::EQUALS, $this->$id_field);
+    $filter = new SimpleDBFilter(Industrialist::COLUMN_PLAYER_ID, DT::INT, OperatorType::EQUALS, $this->$id_field);
 
     $this->update([$fieldName => 0], $filter);
   }
@@ -439,7 +439,7 @@ abstract class DBObject implements \JsonSerializable {
       $fieldType = $field["type"];
 
       if ($fieldName == $name) {
-        if (in_array($fieldType, [DataType::PLAYER_COUNTER, DataType::TABLE_COUNTER])) {
+        if (in_array($fieldType, [DT::PLAYER_COUNTER, DT::TABLE_COUNTER])) {
           $value = $this->$fieldName;
         }
         else {

@@ -8,7 +8,7 @@ use Bga\Games\tycoonindianew\Contracts\Fungible;
 
 use Bga\Games\tycoonindianew\Manager\DBManager;
 
-use Bga\Games\tycoonindianew\Model\DBObject;
+use Bga\Games\tycoonindianew\Model\DBObject as DBO;
 
 use Bga\Games\tycoonindianew\Query\SelectDBQuery;
 
@@ -17,7 +17,7 @@ use Bga\Games\tycoonindianew\Registry\FilterRegistry;
 use Bga\Games\tycoonindianew\Registry\RegistryKeyPrefix;
 
 use Bga\Games\tycoonindianew\Type\CardType;
-use Bga\Games\tycoonindianew\Type\DataType;
+use Bga\Games\tycoonindianew\Type\DataType as DT;
 use Bga\Games\tycoonindianew\Type\EffectType;
 use Bga\Games\tycoonindianew\Type\FilterType;
 use Bga\Games\tycoonindianew\Type\FungibleType as FT;
@@ -36,7 +36,7 @@ use Bga\Games\tycoonindianew\Util\StringUtil;
  * @property string $cardName
  * @property int $cardPromoters
  */
-abstract class Card extends DBObject implements Fungible {
+abstract class Card extends DBO implements Fungible {
 
   protected static int $topOfDeck = 1;
 
@@ -49,13 +49,13 @@ abstract class Card extends DBObject implements Fungible {
 
   public static function dbFieldMappings() {
     return [
-      self::COLUMN_CARD_ID => ["name" => self::FIELD_CARD_ID, "type" => DataType::INT, "column" => self::COLUMN_CARD_ID, "readOnly" => true],
-      self::COLUMN_CARD_TYPE => ["name" => self::FIELD_CARD_TYPE, "type" => DataType::STRING, "column" => self::COLUMN_CARD_TYPE, "readOnly" => false],
-      self::COLUMN_CARD_TYPE_ARG => ["name" => self::FIELD_CARD_TYPE_ARG, "type" => DataType::INT, "column" => self::COLUMN_CARD_TYPE_ARG, "readOnly" => false],
-      self::COLUMN_CARD_LOCATION => ["name" => self::FIELD_CARD_LOCATION, "type" => DataType::STRING, "column" => self::COLUMN_CARD_LOCATION, "readOnly" => false],
-      self::COLUMN_CARD_LOCATION_ARG => ["name" => self::FIELD_CARD_LOCATION_ARG, "type" => DataType::INT, "column" => self::COLUMN_CARD_LOCATION_ARG, "readOnly" => false],
-      self::COLUMN_CARD_NAME => ["name" => self::FIELD_CARD_NAME, "type" => DataType::STRING, "column" => self::COLUMN_CARD_NAME, "readOnly" => false],
-      self::COLUMN_CARD_PROMOTERS => ["name" => self::FIELD_CARD_PROMOTERS, "type" => DataType::INT, "column" => self::COLUMN_CARD_PROMOTERS, "readOnly" => false]
+      self::COLUMN_CARD_ID => ["name" => self::FIELD_CARD_ID, "type" => DT::INT, "column" => self::COLUMN_CARD_ID, "readOnly" => true],
+      self::COLUMN_CARD_TYPE => ["name" => self::FIELD_CARD_TYPE, "type" => DT::STRING, "column" => self::COLUMN_CARD_TYPE, "readOnly" => false],
+      self::COLUMN_CARD_TYPE_ARG => ["name" => self::FIELD_CARD_TYPE_ARG, "type" => DT::INT, "column" => self::COLUMN_CARD_TYPE_ARG, "readOnly" => false],
+      self::COLUMN_CARD_LOCATION => ["name" => self::FIELD_CARD_LOCATION, "type" => DT::STRING, "column" => self::COLUMN_CARD_LOCATION, "readOnly" => false],
+      self::COLUMN_CARD_LOCATION_ARG => ["name" => self::FIELD_CARD_LOCATION_ARG, "type" => DT::INT, "column" => self::COLUMN_CARD_LOCATION_ARG, "readOnly" => false],
+      self::COLUMN_CARD_NAME => ["name" => self::FIELD_CARD_NAME, "type" => DT::STRING, "column" => self::COLUMN_CARD_NAME, "readOnly" => false],
+      self::COLUMN_CARD_PROMOTERS => ["name" => self::FIELD_CARD_PROMOTERS, "type" => DT::INT, "column" => self::COLUMN_CARD_PROMOTERS, "readOnly" => false]
     ];
   }
 
@@ -79,7 +79,7 @@ abstract class Card extends DBObject implements Fungible {
       [
         "type" => FilterType::SIMPLE,
         "column" => self::COLUMN_CARD_NAME,
-        "dataType" => DataType::STRING,
+        "dataType" => DT::STRING,
         "operator" => OperatorType::EQUALS,
         "value" => $cardName
       ]
@@ -99,7 +99,7 @@ abstract class Card extends DBObject implements Fungible {
       [
         "type" => FilterType::SIMPLE,
         "column" => self::COLUMN_CARD_ID,
-        "dataType" => DataType::INT,
+        "dataType" => DT::INT,
         "operator" => OperatorType::EQUALS,
         "value" => $cardId
       ]

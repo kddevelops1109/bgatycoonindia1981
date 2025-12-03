@@ -28,9 +28,7 @@ abstract class MainActionManager extends ActionManager {
    * @param array $players
    * @return void
    */
-  public function setupNewGame(array $players) {
-    $this->setupMainActionSpace();
-  }
+  abstract public function setupNewGame(array $players);
 
   /**
    * Setup specific main action space

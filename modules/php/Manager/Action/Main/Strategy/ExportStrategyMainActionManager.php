@@ -1,14 +1,23 @@
 <?php
 namespace Bga\Games\tycoonindianew\Manager\Action\Main\Strategy;
 
-use Bga\Games\tycoonindianew\Manager\Action\Main\StrategyMainActionManager;
-
+use Bga\Games\tycoonindianew\Action\Main\Strategy\LimitedAvailability\ExportStrategyAction as ESA;
+use Bga\Games\tycoonindianew\Manager\Action\Main\StrategyMainActionManager as SAM;
 use Bga\Games\tycoonindianew\Model\TokenSpace\Action\Strategy\StrategyActionSpace as SAS;
 use Bga\Games\tycoonindianew\Model\TokenSpace\Action\Strategy\ExportStrategyActionSpace as ESAS;
 
 use Bga\Games\tycoonindianew\Type\FungibleType as FT;
 
-class ExportStrategyMainActionManager extends StrategyMainActionManager {
+class ExportStrategyMainActionManager extends SAM {
+
+  /**
+   * New game setup for this Strategy main action
+   * @param array $players
+   * @return void
+   */
+  public function setupNewGame(array $players) {
+    $this->setupStrategyActionSpaces();
+  }
 
   /**
    * Setup sales strategy action spaces
@@ -26,13 +35,15 @@ class ExportStrategyMainActionManager extends StrategyMainActionManager {
    * @return array
    */
   public function getSpaceDefinitions(): array {
+    $action = ESA::instance(\clienttranslate("Discard 4 Promoters to move up 1 step on any Industry sector track, OR discard 7 Promoters to move up 2 steps on any 1 industry sector track OR 1 step on any 2 industry sector tracks."));
+
     return [
-      ["cost" => SAS::generateCost(7), "reward" => SAS::generateReward(FT::SECTOR_PRODUCTION, 2), "index" => 1],
-      ["cost" => SAS::generateCost(7), "reward" => SAS::generateReward(FT::SECTOR_PRODUCTION, 2), "index" => 2],
-      ["cost" => SAS::generateCost(7), "reward" => SAS::generateReward(FT::SECTOR_PRODUCTION, 2), "index" => 3],
-      ["cost" => SAS::generateCost(4), "reward" => SAS::generateReward(FT::SECTOR_PRODUCTION, 1), "index" => 1],
-      ["cost" => SAS::generateCost(4), "reward" => SAS::generateReward(FT::SECTOR_PRODUCTION, 1), "index" => 2],
-      ["cost" => SAS::generateCost(4), "reward" => SAS::generateReward(FT::SECTOR_PRODUCTION, 1), "index" => 3]
+      ["cost" => SAS::generateCost(7), "reward" => SAS::generateReward(FT::SECTOR_PRODUCTION, 2), "index" => 1, "action" => $action, "occupied" => false],
+      ["cost" => SAS::generateCost(7), "reward" => SAS::generateReward(FT::SECTOR_PRODUCTION, 2), "index" => 2, "action" => $action, "occupied" => false],
+      ["cost" => SAS::generateCost(7), "reward" => SAS::generateReward(FT::SECTOR_PRODUCTION, 2), "index" => 3, "action" => $action, "occupied" => false],
+      ["cost" => SAS::generateCost(4), "reward" => SAS::generateReward(FT::SECTOR_PRODUCTION, 1), "index" => 1, "action" => $action, "occupied" => false],
+      ["cost" => SAS::generateCost(4), "reward" => SAS::generateReward(FT::SECTOR_PRODUCTION, 1), "index" => 2, "action" => $action, "occupied" => false],
+      ["cost" => SAS::generateCost(4), "reward" => SAS::generateReward(FT::SECTOR_PRODUCTION, 1), "index" => 3, "action" => $action, "occupied" => false]
     ];
   }
 }

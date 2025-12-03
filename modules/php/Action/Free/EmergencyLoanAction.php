@@ -1,15 +1,15 @@
 <?php
-namespace Bga\Games\tycoonindianew\Action\Main;
+namespace Bga\Games\tycoonindianew\Action\Free;
 
 use Bga\Games\tycoonindianew\Type\ActionType as AT;
 
-class MusterAction extends MainAction {
+class EmergencyLoanAction extends FreeAction {
 
   /**
    * Type of action
    * @return AT
    */
   public function actionType(): AT {
-    return AT::MUSTER;
+    return AT::EMERGENCY_LOAN;
   }
 }

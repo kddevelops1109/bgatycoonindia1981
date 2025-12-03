@@ -6,10 +6,10 @@ use InvalidArgumentException;
 use Bga\Games\tycoonindianew\Contracts\Occupiable;
 use Bga\Games\tycoonindianew\Contracts\Placeable;
 
-use Bga\Games\tycoonindianew\Model\DBObject;
+use Bga\Games\tycoonindianew\Model\DBObject as DBO;
 use Bga\Games\tycoonindianew\Model\Token\Token;
 
-use Bga\Games\tycoonindianew\Type\DataType;
+use Bga\Games\tycoonindianew\Type\DataType as DT;
 
 /**
  * Represents a space that different tokens can occupy, such as action tokens in action spaces and strategy action spaces for player share tokens
@@ -17,13 +17,13 @@ use Bga\Games\tycoonindianew\Type\DataType;
  * @property ?Token $token Token occupying this space. In the database, this is the id of the token
  * @property bool $occupied Is this token space occupied?
  */
-abstract class TokenSpace extends DBObject implements Occupiable {
+abstract class TokenSpace extends DBO implements Occupiable {
   
   public static function dbFieldMappings(): array {
     return [
-      self::COLUMN_SPACE_ID => ["column" => self::COLUMN_SPACE_ID, "name" => self::FIELD_SPACE_ID, "type" => DataType::STRING, "readOnly" => false],
-      self::COLUMN_TOKEN => ["column" => self::COLUMN_TOKEN, "name" => self::FIELD_TOKEN, "type" => DataType::INT, "readOnly" => false],
-      self::COLUMN_OCCUPIED => ["column" => self::COLUMN_OCCUPIED, "name" => self::FIELD_OCCUPIED, "type" => DataType::BOOL, "readOnly" => false]
+      self::COLUMN_SPACE_ID => ["column" => self::COLUMN_SPACE_ID, "name" => self::FIELD_SPACE_ID, "type" => DT::STRING, "readOnly" => false],
+      self::COLUMN_TOKEN => ["column" => self::COLUMN_TOKEN, "name" => self::FIELD_TOKEN, "type" => DT::INT, "readOnly" => false],
+      self::COLUMN_OCCUPIED => ["column" => self::COLUMN_OCCUPIED, "name" => self::FIELD_OCCUPIED, "type" => DT::BOOL, "readOnly" => false]
     ];
   }
 
@@ -33,10 +33,10 @@ abstract class TokenSpace extends DBObject implements Occupiable {
 
   /**
    * Generate space id for this token space
-   * @param array $args
+   * @param array|null $args
    * @return string
    */
-  abstract public static function generateSpaceId(array $args): string;
+  abstract public static function generateSpaceId(?array $args): string;
 
 
   /**

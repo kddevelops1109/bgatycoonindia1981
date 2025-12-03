@@ -1,8 +1,8 @@
 <?php
 namespace Bga\Games\tycoonindianew\Model\Transaction;
 
-use Bga\Games\tycoonindianew\Model\DBObject;
-use Bga\Games\tycoonindianew\Type\DataType;
+use Bga\Games\tycoonindianew\Model\DBObject as DBO;
+use Bga\Games\tycoonindianew\Type\DataType as DT;
 use Bga\Games\tycoonindianew\Util\StringUtil;
 
 /**
@@ -13,7 +13,7 @@ use Bga\Games\tycoonindianew\Util\StringUtil;
  * @property string $details
  * @property array $promises
  */
-class Transaction extends DBObject {
+class Transaction extends DBO {
 
   protected function __construct($args) {
     $this->dbFields = self::dbFieldMappings();
@@ -27,11 +27,11 @@ class Transaction extends DBObject {
 
   public static function dbFieldMappings() {
     return [
-      self::COLUMN_ID => ["column" => self::COLUMN_ID, "name" => self::FIELD_ID, "type" => DataType::STRING, "readOnly" => false],
-      self::COLUMN_STATE => ["column" => self::COLUMN_STATE, "name" => self::FIELD_STATE, "type" => DataType::STRING, "readOnly" => false],
-      self::COLUMN_ROUND => ["column" => self::COLUMN_ROUND, "name" => self::FIELD_ROUND, "type" => DataType::INT, "readOnly" => false],
-      self::COLUMN_DETAILS => ["column" => self::COLUMN_DETAILS, "name" => self::FIELD_DETAILS, "type" => DataType::STRING, "readOnly" => false],
-      self::COLUMN_PROMISES => ["column" => self::COLUMN_PROMISES, "name" => self::FIELD_PROMISES, "type" => DataType::OBJ, "readOnly" => false]
+      self::COLUMN_ID => ["column" => self::COLUMN_ID, "name" => self::FIELD_ID, "type" => DT::STRING, "readOnly" => false],
+      self::COLUMN_STATE => ["column" => self::COLUMN_STATE, "name" => self::FIELD_STATE, "type" => DT::STRING, "readOnly" => false],
+      self::COLUMN_ROUND => ["column" => self::COLUMN_ROUND, "name" => self::FIELD_ROUND, "type" => DT::INT, "readOnly" => false],
+      self::COLUMN_DETAILS => ["column" => self::COLUMN_DETAILS, "name" => self::FIELD_DETAILS, "type" => DT::STRING, "readOnly" => false],
+      self::COLUMN_PROMISES => ["column" => self::COLUMN_PROMISES, "name" => self::FIELD_PROMISES, "type" => DT::OBJ, "readOnly" => false]
     ];
   }
 

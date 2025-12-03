@@ -1,8 +1,8 @@
 <?php
-namespace Bga\Games\tycoonindianew\Action\Main\Strategy;
+namespace Bga\Games\tycoonindianew\Action\Main\Strategy\LimitedAvailability;
 
 use Bga\Games\tycoonindianew\Action\Main\StrategyAction;
-use Bga\Games\tycoonindianew\Type\StrategyActionType;
+use Bga\Games\tycoonindianew\Type\StrategyActionType as SAT;
 
 class AdvertisingStrategyAction extends StrategyAction {
 
@@ -10,7 +10,7 @@ class AdvertisingStrategyAction extends StrategyAction {
    * Get type of strategy action
    * @return StrategyActionType
    */
-  public function strategyActionType(): StrategyActionType {
-    return StrategyActionType::ADVERTISING;
+  public function strategyActionType(): SAT {
+    return SAT::ADVERTISING;
   }
 }

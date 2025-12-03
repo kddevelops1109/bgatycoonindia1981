@@ -3,7 +3,7 @@ namespace Bga\Games\tycoonindianew\Model\TokenSpace\Action;
 
 use Bga\Games\tycoonindianew\Action\Action;
 use Bga\Games\tycoonindianew\Model\TokenSpace\TokenSpace;
-use Bga\Games\tycoonindianew\Type\DataType;
+use Bga\Games\tycoonindianew\Type\DataType as DT;
 
 /**
  * Represents action spaces for action tokens
@@ -13,11 +13,11 @@ use Bga\Games\tycoonindianew\Type\DataType;
 abstract class ActionSpace extends TokenSpace {
   
   public static function dbFieldMappings(): array {
-    return [...parent::dbFieldMappings(), ...[self::COLUMN_PLAYER_ID => ["column" => self::COLUMN_PLAYER_ID, "name" => self::FIELD_PLAYER_ID, "type" => DataType::INT, "readOnly" => false]]];
+    return [...parent::dbFieldMappings(), ...[self::COLUMN_PLAYER_ID => ["column" => self::COLUMN_PLAYER_ID, "name" => self::FIELD_PLAYER_ID, "type" => DT::INT, "readOnly" => false]]];
   }
 
   public static function staticFieldsList(): array {
-    return parent::staticFieldsList();
+    return [...parent::staticFieldsList(), ...[self::FIELD_ACTION]];
   }
 
   /**

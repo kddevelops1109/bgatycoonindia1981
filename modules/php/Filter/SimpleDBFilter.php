@@ -2,7 +2,7 @@
 namespace Bga\Games\tycoonindianew\Filter;
 
 use Bga\Games\tycoonindianew\Type\CharType;
-use Bga\Games\tycoonindianew\Type\DataType;
+use Bga\Games\tycoonindianew\Type\DataType as DT;
 use Bga\Games\tycoonindianew\Type\FilterType;
 use Bga\Games\tycoonindianew\Type\OperatorType;
 
@@ -23,9 +23,9 @@ class SimpleDBFilter extends DBFilter {
   /**
    * Data type of the column (string/int/bool/etc).
    *
-   * @var DataType
+   * @var DT
    */
-  protected DataType $dataType;
+  protected DT $dataType;
 
   /**
    * Comparison operator, e.g. =, !=, >, >=, <, <=, LIKE, IN.
@@ -58,7 +58,7 @@ class SimpleDBFilter extends DBFilter {
     if ($this->operator == OperatorType::IN) {
       $values = [];
       foreach ($this->value as $val) {
-        if ($this->dataType == DataType::STRING) {
+        if ($this->dataType == DT::STRING) {
           $values[] = addslashes($val);
         }
         else {
@@ -69,7 +69,7 @@ class SimpleDBFilter extends DBFilter {
       $sqlComponents[] = CharType::BRACKET_START . implode(", ", $values) . CharType::BRACKET_END;
     }
     else {
-      if ($this->dataType == DataType::STRING) {
+      if ($this->dataType == DT::STRING) {
         $sqlComponents[] = StringUtil::encloseStringDatabaseValue(($this->value));
       }
       else {

@@ -1,7 +1,7 @@
 <?php
 namespace Bga\Games\tycoonindianew\Model;
 
-use Bga\Games\tycoonindianew\Type\DataType;
+use Bga\Games\tycoonindianew\Type\DataType as DT;
 
 /**
  * Represents an industrialist in the game, and a BGA player
@@ -27,17 +27,17 @@ class Industrialist extends DBObject {
 
   public static function dbFieldMappings() {
     return [
-      self::COLUMN_PLAYER_ID => ["column" => self::COLUMN_PLAYER_ID, "name" => self::FIELD_PLAYER_ID, "type" => DataType::INT, "readOnly" => true],
-      self::COLUMN_PLAYER_NO => ["column" => self::COLUMN_PLAYER_NO, "name" => self::FIELD_PLAYER_NO, "type" => DataType::INT, "readOnly" => true],
-      self::COLUMN_PLAYER_NAME => ["column" => self::COLUMN_PLAYER_NAME, "name" => self::FIELD_PLAYER_NAME, "type" => DataType::STRING, "readOnly" => true],
-      self::COLUMN_PLAYER_COLOR => ["column" => self::COLUMN_PLAYER_COLOR, "name" => self::FIELD_PLAYER_COLOR, "type" => DataType::STRING, "readOnly" => true],
-      self::COLUMN_PLAYER_COLOR_NAME => ["column" => self::COLUMN_PLAYER_COLOR_NAME, "name" => self::FIELD_PLAYER_COLOR_NAME, "type" => DataType::STRING, "readOnly" => false],
-      self::COLUMN_PLAYER_ELIMINATED => ["column" => self::COLUMN_PLAYER_ELIMINATED, "name" => self::FIELD_PLAYER_ELIMINATED, "type" => DataType::BOOL, "readOnly" => true],
-      self::COLUMN_PLAYER_SCORE => ["column" => self::COLUMN_PLAYER_SCORE, "name" => self::FIELD_PLAYER_SCORE, "type" => DataType::INT, "readOnly" => false],
-      self::COLUMN_PLAYER_SCORE_AUX => ["column" => self::COLUMN_PLAYER_SCORE_AUX, "name" => self::FIELD_PLAYER_SCORE_AUX, "type" => DataType::INT, "readOnly" => false],
-      self::COLUMN_PLAYER_ZOMBIE => ["column" => self::COLUMN_PLAYER_ZOMBIE, "name" => self::FIELD_PLAYER_ZOMBIE, "type" => DataType::BOOL, "readOnly" => false],
-      self::COLUMN_PLAYER_IS_TYCOON => ["column" => self::COLUMN_PLAYER_IS_TYCOON, "name" => self::FIELD_PLAYER_IS_TYCOON, "type" => DataType::BOOL, "readOnly" => false],
-      self::COLUMN_PLAYER_IS_NEXT_TYCOON => ["column" => self::COLUMN_PLAYER_IS_NEXT_TYCOON, "name" => self::FIELD_PLAYER_IS_NEXT_TYCOON, "type" => DataType::BOOL, "readOnly" => false]
+      self::COLUMN_PLAYER_ID => ["column" => self::COLUMN_PLAYER_ID, "name" => self::FIELD_PLAYER_ID, "type" => DT::INT, "readOnly" => true],
+      self::COLUMN_PLAYER_NO => ["column" => self::COLUMN_PLAYER_NO, "name" => self::FIELD_PLAYER_NO, "type" => DT::INT, "readOnly" => true],
+      self::COLUMN_PLAYER_NAME => ["column" => self::COLUMN_PLAYER_NAME, "name" => self::FIELD_PLAYER_NAME, "type" => DT::STRING, "readOnly" => true],
+      self::COLUMN_PLAYER_COLOR => ["column" => self::COLUMN_PLAYER_COLOR, "name" => self::FIELD_PLAYER_COLOR, "type" => DT::STRING, "readOnly" => true],
+      self::COLUMN_PLAYER_COLOR_NAME => ["column" => self::COLUMN_PLAYER_COLOR_NAME, "name" => self::FIELD_PLAYER_COLOR_NAME, "type" => DT::STRING, "readOnly" => false],
+      self::COLUMN_PLAYER_ELIMINATED => ["column" => self::COLUMN_PLAYER_ELIMINATED, "name" => self::FIELD_PLAYER_ELIMINATED, "type" => DT::BOOL, "readOnly" => true],
+      self::COLUMN_PLAYER_SCORE => ["column" => self::COLUMN_PLAYER_SCORE, "name" => self::FIELD_PLAYER_SCORE, "type" => DT::INT, "readOnly" => false],
+      self::COLUMN_PLAYER_SCORE_AUX => ["column" => self::COLUMN_PLAYER_SCORE_AUX, "name" => self::FIELD_PLAYER_SCORE_AUX, "type" => DT::INT, "readOnly" => false],
+      self::COLUMN_PLAYER_ZOMBIE => ["column" => self::COLUMN_PLAYER_ZOMBIE, "name" => self::FIELD_PLAYER_ZOMBIE, "type" => DT::BOOL, "readOnly" => false],
+      self::COLUMN_PLAYER_IS_TYCOON => ["column" => self::COLUMN_PLAYER_IS_TYCOON, "name" => self::FIELD_PLAYER_IS_TYCOON, "type" => DT::BOOL, "readOnly" => false],
+      self::COLUMN_PLAYER_IS_NEXT_TYCOON => ["column" => self::COLUMN_PLAYER_IS_NEXT_TYCOON, "name" => self::FIELD_PLAYER_IS_NEXT_TYCOON, "type" => DT::BOOL, "readOnly" => false]
     ];
   }
 

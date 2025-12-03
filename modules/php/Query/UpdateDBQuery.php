@@ -1,7 +1,7 @@
 <?php
 namespace Bga\Games\tycoonindianew\Query;
 
-use Bga\Games\tycoonindianew\Type\DataType;
+use Bga\Games\tycoonindianew\Type\DataType as DT;
 use Bga\Games\tycoonindianew\Type\KeywordType;
 use Bga\Games\tycoonindianew\Type\OperationType;
 
@@ -39,13 +39,13 @@ class UpdateDBQuery extends FilteredDBQuery {
       $dataType = $data["type"];
       $value = DataUtil::getValue($data["value"], $dataType);
 
-      if ($dataType == DataType::STRING) {
+      if ($dataType == DT::STRING) {
         $updates[] = StringUtil::encloseDatabaseIdentifier($column) . " = " . StringUtil::encloseStringDatabaseValue(addslashes($value));
       }
-      elseif ($dataType == DataType::OBJ) {
+      elseif ($dataType == DT::OBJ) {
         $updates[] = StringUtil::encloseDatabaseIdentifier($column) . " = " . StringUtil::encloseStringDatabaseValue(addslashes(json_encode($value)));
       }
-      elseif ($dataType == DataType::BOOL) {
+      elseif ($dataType == DT::BOOL) {
         if ($value) {
           $updates[] = StringUtil::encloseDatabaseIdentifier($column) . " = 1";
         }

@@ -3,6 +3,7 @@ namespace Bga\Games\tycoonindianew\Type;
 
 enum StrategyActionType: string {
 
+  case STRATEGY = "Strategy";
   case ADMINISTRATION = "Administration";
   case SALES = "Sales";
   case LOBBY = "Lobby";

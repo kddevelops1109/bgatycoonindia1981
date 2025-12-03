@@ -1,23 +1,24 @@
 <?php
 namespace Bga\Games\tycoonindianew\Action\Main;
 
-use Bga\Games\tycoonindianew\Type\ActionSubType;
-use Bga\Games\tycoonindianew\Type\ActionType;
-use Bga\Games\tycoonindianew\Type\StrategyActionType;
+use Bga\Games\tycoonindianew\Type\ActionType as AT;
+use Bga\Games\tycoonindianew\Type\StrategyActionType as SAT;
 
-abstract class StrategyAction extends MainAction {
+class StrategyAction extends MainAction {
 
   /**
    * Type of action
-   * @return ActionType
+   * @return AT
    */
-  public function actionType(): ActionType {
-    return ActionType::BUILD;
+  public function actionType(): AT {
+    return AT::STRATEGY;
   }
 
   /**
    * Returns the specific strategy action type for this strategy action
-   * @return void
+   * @return SAT
    */
-  abstract public function strategyActionType(): StrategyActionType;
+  public function strategyActionType(): SAT {
+    return SAT::STRATEGY;
+  }
 }

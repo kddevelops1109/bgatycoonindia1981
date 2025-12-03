@@ -13,7 +13,7 @@ use Bga\Games\tycoonindianew\Query\DBQueryResult;
 use Bga\Games\tycoonindianew\Registry\FilterRegistry;
 use Bga\Games\tycoonindianew\Registry\RegistryKeyPrefix;
 
-use Bga\Games\tycoonindianew\Type\DataType;
+use Bga\Games\tycoonindianew\Type\DataType as DT;
 use Bga\Games\tycoonindianew\Type\FilterType;
 use Bga\Games\tycoonindianew\Type\OperatorType;
 use Bga\Games\tycoonindianew\Type\OrderByDirection;
@@ -96,7 +96,7 @@ class IndustrialistManager implements Manager {
         [
          "type" => FilterType::SIMPLE,
          "column" => Industrialist::COLUMN_PLAYER_ID,
-         "dataType" => DataType::INT,
+         "dataType" => DT::INT,
          "operator" => OperatorType::EQUALS,
          "value" => $player_id 
         ]
@@ -242,7 +242,7 @@ class IndustrialistManager implements Manager {
       [
         "type" => FilterType::SIMPLE,
         "column" => Industrialist::COLUMN_PLAYER_ID,
-        "dataType" => DataType::INT,
+        "dataType" => DT::INT,
         "operator" => OperatorType::EQUALS,
         "value" => $player_id 
       ]

@@ -1,9 +1,8 @@
 <?php
 namespace Bga\Games\tycoonindianew\Action;
 
-use Bga\Games\tycoonindianew\Type\ActionCategory;
-use Bga\Games\tycoonindianew\Type\ActionSubType;
-use Bga\Games\tycoonindianew\Type\ActionType;
+use Bga\Games\tycoonindianew\Type\ActionCategory as AC;
+use Bga\Games\tycoonindianew\Type\ActionType as AT;
 
 /**
  * Represents any game action. This includes,
@@ -24,7 +23,7 @@ abstract class Action {
     public readonly string $description
   ) {}
 
-  final protected static function instance(string $description): static {
+  final public static function instance(string $description): static {
     $class = static::class;
 
     if (!isset(self::$instances[$class])) {
@@ -36,13 +35,13 @@ abstract class Action {
 
   /**
    * Returns the type of this action
-   * @return ActionType
+   * @return AT
    */
-  abstract public function actionType(): ActionType;
+  abstract public function actionType(): AT;
 
   /**
    * Returns the category of this action
-   * @return ActionCategory
+   * @return AC
    */
-  abstract public function category(): ActionCategory;
+  abstract public function category(): AC;
 }

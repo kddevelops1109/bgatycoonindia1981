@@ -22,6 +22,13 @@ use Bga\Games\tycoonindianew\States\PlayerTurn;
 
 use Bga\GameFramework\Components\Counters\PlayerCounter;
 
+use Bga\Games\tycoonindianew\Manager\Action\Main\BuildMainActionManager as BAM;
+use Bga\Games\tycoonindianew\Manager\Action\Main\PoliticsMainActionManager as PAM;
+use Bga\Games\tycoonindianew\Manager\Action\Main\MusterMainActionManager as MAM;
+use Bga\Games\tycoonindianew\Manager\Action\Main\StrategyMainActionManager as SAM;
+use Bga\Games\tycoonindianew\Manager\Action\Main\ShareMainActionManager as SHAM;
+use Bga\Games\tycoonindianew\Manager\Action\Main\LoanMainActionManager as LAM;
+
 use Bga\Games\tycoonindianew\Manager\Action\Main\Strategy\SalesStrategyMainActionManager as SSAM;
 use Bga\Games\tycoonindianew\Manager\Action\Main\Strategy\LobbyStrategyMainActionManager as LSAM;
 use Bga\Games\tycoonindianew\Manager\Action\Main\Strategy\OfficeStrategyMainActionManager as OSAM;
@@ -218,6 +225,11 @@ class Game extends \Bga\GameFramework\Table
         
         // Setup cards
         CardManager::instance(CardType::CORPORATE_AGENDA)->setupNewGame($players);
+
+        // Setup main actions
+        foreach ([BAM::instance(), PAM::instance(), MAM::instance(), SAM::instance(), SHAM::instance(), LAM::instance()] as $manager) {
+          $manager->setupNewGame($players);
+        }
 
         // Setup strategy actions
         foreach ([SSAM::instance(), LSAM::instance(), OSAM::instance(), ASAM::instance(), ESAM::instance()] as $manager) {

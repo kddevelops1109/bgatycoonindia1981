@@ -1,16 +1,15 @@
 <?php
 namespace Bga\Games\tycoonindianew\Action\Main;
 
-use Bga\Games\tycoonindianew\Type\ActionSubType;
-use Bga\Games\tycoonindianew\Type\ActionType;
+use Bga\Games\tycoonindianew\Type\ActionType as AT;
 
 class BuildAction extends MainAction {
 
   /**
    * Type of action
-   * @return ActionType
+   * @return AT
    */
-  public function actionType(): ActionType {
-    return ActionType::BUILD;
+  public function actionType(): AT {
+    return AT::BUILD;
   }
 }

@@ -1,7 +1,12 @@
 <?php
 namespace Bga\Games\tycoonindianew\Manager\Action\Main;
 
-abstract class StrategyMainActionManager extends MainActionManager {
+use Bga\Games\tycoonindianew\Action\Main\StrategyAction;
+use Bga\Games\tycoonindianew\Model\TokenSpace\Action\ActionSpace;
+use Bga\Games\tycoonindianew\Model\TokenSpace\Action\Main\StrategyMainActionSpace as SMAS;
+use Bga\Games\tycoonindianew\Model\TokenSpace\TokenSpace;
+
+class StrategyMainActionManager extends MainActionManager {
 
   /**
    * Setup of strategy main action space
@@ -9,7 +14,13 @@ abstract class StrategyMainActionManager extends MainActionManager {
    * @return void
    */
   public function setupMainActionSpace(): void {
-    // TODO: Implement
+    $args = [
+      TokenSpace::FIELD_SPACE_ID => SMAS::generateSpaceId(null),
+      TokenSpace::FIELD_OCCUPIED => false,
+      ActionSpace::FIELD_ACTION => StrategyAction::instance("Discard a number of Promoters to gain any 1 bonus printed on one of the available Strategy Actions spaces.")
+    ];
+
+    SMAS::instance($args)->insert();
   }
 
   /**
@@ -18,19 +29,23 @@ abstract class StrategyMainActionManager extends MainActionManager {
    * @return void
    */
   public function setupNewGame(array $players) {
-    $this->setupStrategyActionSpaces();
-    parent::setupNewGame($players);
+    $this->setupMainActionSpace();
   }
  
   /**
    * Setup all strategy action spaces for specific strategy action
    * @return void
    */
-  abstract protected function setupStrategyActionSpaces(): void;
+  protected function setupStrategyActionSpaces(): void {
+    // Do nothing
+  }
 
   /**
    * Obtain space definitions for this specific strategy action. Needed in order to create the specific strategy action spaces
-   * @return void
+   * @return array
    */
-  abstract protected function getSpaceDefinitions(): array;
+  protected function getSpaceDefinitions(): array {
+    // Do nothing
+    return [];
+  }
 }

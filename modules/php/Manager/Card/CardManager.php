@@ -18,7 +18,7 @@ use Bga\Games\tycoonindianew\Registry\RegistryKeyPrefix;
 use Bga\Games\tycoonindianew\Type\CardLocation;
 use Bga\Games\tycoonindianew\Type\CardType;
 use Bga\Games\tycoonindianew\Type\CardTypeArg;
-use Bga\Games\tycoonindianew\Type\DataType;
+use Bga\Games\tycoonindianew\Type\DataType as DT;
 use Bga\Games\tycoonindianew\Type\FilterType;
 use Bga\Games\tycoonindianew\Type\JoinType;
 use Bga\Games\tycoonindianew\Type\OperatorType;
@@ -198,7 +198,7 @@ abstract class CardManager implements Manager {
       [
         "type" => FilterType::SIMPLE,
         "column" => Card::COLUMN_CARD_TYPE,
-        "dataType" => DataType::STRING,
+        "dataType" => DT::STRING,
         "operator" => OperatorType::EQUALS,
         "value" => CardType::CORPORATE_AGENDA->value
       ]
@@ -209,7 +209,7 @@ abstract class CardManager implements Manager {
       [
         "type" => FilterType::SIMPLE,
         "column" => Card::COLUMN_CARD_LOCATION,
-        "dataType" => DataType::STRING,
+        "dataType" => DT::STRING,
         "operator" => OperatorType::EQUALS,
         "value" => $cardLocation
       ]
@@ -222,7 +222,7 @@ abstract class CardManager implements Manager {
         [
           "type" => FilterType::SIMPLE,
           "column" => Card::COLUMN_CARD_LOCATION_ARG,
-          "dataType" => DataType::INT,
+          "dataType" => DT::INT,
           "operator" => OperatorType::EQUALS,
           "value" => $index
         ]
@@ -243,7 +243,7 @@ abstract class CardManager implements Manager {
       $search_in_deck_filter = $registry->getOrCreate($searchKey, $filter_args);
 
       $datas = [
-        ["column" => Card::COLUMN_CARD_NAME, "type" => DataType::STRING, "value" => $card->cardName]
+        ["column" => Card::COLUMN_CARD_NAME, "type" => DT::STRING, "value" => $card->cardName]
       ];
 
       DBManager::execute(new UpdateDBQuery(Card::TABLE_NAME, $datas, $search_in_deck_filter));

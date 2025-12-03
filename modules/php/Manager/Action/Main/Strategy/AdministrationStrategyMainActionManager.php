@@ -1,9 +1,18 @@
 <?php
 namespace Bga\Games\tycoonindianew\Manager\Action\Main\Strategy;
 
-use Bga\Games\tycoonindianew\Manager\Action\Main\StrategyMainActionManager;
+use Bga\Games\tycoonindianew\Manager\Action\Main\StrategyMainActionManager as SAM;
 
-class AdministrationStrategyMainActionManager extends StrategyMainActionManager {
+class AdministrationStrategyMainActionManager extends SAM {
+
+  /**
+   * New game setup for this Strategy main action
+   * @param array $players
+   * @return void
+   */
+  public function setupNewGame(array $players) {
+    $this->setupStrategyActionSpaces();
+  }
 
   /**
    * Setup administration strategy action spaces, do nothing

@@ -8,11 +8,12 @@ use Bga\Games\tycoonindianew\Model\TokenSpace\Action\ActionSpace;
 use Bga\Games\tycoonindianew\Registry\EffectRegistry;
 use Bga\Games\tycoonindianew\Registry\RegistryKeyPrefix;
 
-use Bga\Games\tycoonindianew\Type\DataType;
+use Bga\Games\tycoonindianew\Type\DataType as DT;
 use Bga\Games\tycoonindianew\Type\EffectType;
 use Bga\Games\tycoonindianew\Type\FungibleType as FT;
 
 use Bga\Games\tycoonindianew\Util\StringUtil;
+use InvalidArgumentException;
 
 /**
  * Represents a strategy action space
@@ -26,7 +27,7 @@ abstract class StrategyActionSpace extends ActionSpace {
    * Static array of instances
    * @var array
    */
-  protected static array $instances = [];
+  public static array $instances = [];
 
   final public static function instance($args): static {
     $spaceId = self::generateSpaceId($args);
@@ -40,23 +41,27 @@ abstract class StrategyActionSpace extends ActionSpace {
   }
 
   public static function dbFieldMappings(): array {
-    return [...parent::dbFieldMappings(), ...[self::COLUMN_SHARE_VALUE => ["column" => self::COLUMN_SHARE_VALUE, "name" => self::FIELD_SHARE_VALUE, "type" => DataType::INT, "readOnly" => false]]];
+    return [...parent::dbFieldMappings(), ...[self::COLUMN_SHARE_VALUE => ["column" => self::COLUMN_SHARE_VALUE, "name" => self::FIELD_SHARE_VALUE, "type" => DT::INT, "readOnly" => false]]];
   }
 
   public static function staticFieldsList(): array {
-    return [...parent::staticFieldsList(), ...[self::FIELD_ACTION, self::FIELD_COST, self::FIELD_REWARD]];
+    return [...parent::staticFieldsList(), ...[self::FIELD_COST, self::FIELD_REWARD]];
   }
 
   /**
    * Generate space id for given args
-   * @param array $args
+   * @param array|null $args
    * @return string
    */
-  public static function generateSpaceId(array $args): string {
+  public static function generateSpaceId(?array $args): string {
     $class = static::class;
     
-    $cost = $args["cost"];
-    $reward = $args["reward"];
+    if (is_null($args) || !array_key_exists(self::FIELD_COST, $args) || !array_key_exists(self::FIELD_REWARD, $args)) {
+      throw new InvalidArgumentException("Args must have cost and reward for " . $class);
+    }
+    
+    $cost = $args[self::FIELD_COST];
+    $reward = $args[self::FIELD_REWARD];
 
     $index = -1;
     if (array_key_exists("index", $args)) {
@@ -64,7 +69,7 @@ abstract class StrategyActionSpace extends ActionSpace {
     }
 
     $components = [
-      StringUtil::classToKebab($class),
+      str_replace("strategy-action-space-", "", StringUtil::classToKebab($class)),
       $cost->amount,
       str_replace(" ", "-", strtolower(FT::PROMOTERS_IN_POOL->value)),
       $reward->amount,

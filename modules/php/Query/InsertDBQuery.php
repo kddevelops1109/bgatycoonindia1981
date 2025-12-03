@@ -2,7 +2,7 @@
 namespace Bga\Games\tycoonindianew\Query;
 
 use Bga\Games\tycoonindianew\Type\CharType;
-use Bga\Games\tycoonindianew\Type\DataType;
+use Bga\Games\tycoonindianew\Type\DataType as DT;
 use Bga\Games\tycoonindianew\Type\KeywordType;
 use Bga\Games\tycoonindianew\Type\OperationType;
 
@@ -42,11 +42,19 @@ class InsertDBQuery extends DBQuery {
 
       $columns[] = $column;
       
-      if ($dataType == DataType::STRING) {
+      if ($dataType == DT::STRING) {
         $values[] = StringUtil::encloseStringDatabaseValue($value);
       }
-      elseif ($dataType == DataType::OBJ) {
+      elseif ($dataType == DT::OBJ) {
         $values[] = StringUtil::encloseStringDatabaseValue(json_encode($value));
+      }
+      elseif ($dataType == DT::BOOL) {
+        if ($value) {
+          $values[] = 1;
+        }
+        else {
+          $values[] = 0;
+        }
       }
       else {
         $values[] = $value;

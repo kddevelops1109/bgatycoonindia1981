@@ -1,24 +1,15 @@
 <?php
 namespace Bga\Games\tycoonindianew\Action\Main;
 
-use Bga\Games\tycoonindianew\Type\ActionSubType;
-use Bga\Games\tycoonindianew\Type\ActionType;
+use Bga\Games\tycoonindianew\Type\ActionType as AT;
 
 class PoliticsAction extends MainAction {
 
   /**
    * Type of action
-   * @return ActionType
+   * @return AT
    */
-  public function actionType(): ActionType {
-    return ActionType::POLITICS;
-  }
-
-  /**
-   * Sub type of action
-   * @return ActionSubType
-   */
-  public function subType(): ActionSubType {
-    return ActionSubType::NOT_APPLICABLE;
+  public function actionType(): AT {
+    return AT::POLITICS;
   }
 }
