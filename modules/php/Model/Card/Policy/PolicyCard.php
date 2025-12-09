@@ -4,14 +4,14 @@ namespace Bga\Games\tycoonindianew\Model\Card\Policy;
 use Bga\Games\tycoonindianew\Effect\Effect;
 
 use Bga\Games\tycoonindianew\Model\Card\Card;
-
+use Bga\Games\tycoonindianew\Type\CardAge;
 use Bga\Games\tycoonindianew\Type\PolicyBenefitType;
 use Bga\Games\tycoonindianew\Type\PolicyType;
 
 /**
  * Policy Card
  * @property string $description Policy description
- * @property string $age Age I/II policy
+ * @property CardAge $age Age I/II policy
  * @property PolicyType $type Policy type (Economic/Industrial/Liberal)
  * @property PolicyBenefitType $benefitType Policy benefit type (Immediate/Passive/Endgame Bonus)
  * @property Effect $benefit Policy benefit
