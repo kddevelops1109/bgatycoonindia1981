@@ -2,8 +2,17 @@
 namespace Bga\Games\tycoonindianew\Model\Card\Industry;
 
 use Bga\Games\tycoonindianew\Effect\Effect;
+use Bga\Games\tycoonindianew\Effect\EffectKeyGenerator;
+
 use Bga\Games\tycoonindianew\Model\Card\Card;
+
+use Bga\Games\tycoonindianew\Multiplier\StaticMultiplier;
+
+use Bga\Games\tycoonindianew\Registry\EffectRegistry;
+
 use Bga\Games\tycoonindianew\Type\CardAge;
+use Bga\Games\tycoonindianew\Type\EffectType;
+use Bga\Games\tycoonindianew\Type\FungibleType as FT;
 use Bga\Games\tycoonindianew\Type\Sector;
 
 /**
@@ -12,7 +21,7 @@ use Bga\Games\tycoonindianew\Type\Sector;
  * @property Effect $revenue Revenue given by this industry during Revenue phase
  * @property Effect $assetValue End-game asset value given by this industry
  * @property Effect $influence Influence given by this industry on building a plant for it
- * @property Effect $productionSector Industrial sector production gained on building a plant for this industry
+ * @property Effect $production Industrial sector production gained on building a plant for this industry
  * @property array<Sector> $resourceSectors Sectors that represent the resource costs of building a plant for this industry
  */
 abstract class IndustryCard extends Card {
@@ -25,10 +34,32 @@ abstract class IndustryCard extends Card {
         self::FIELD_REVENUE => static::revenue(),
         self::FIELD_ASSET_VALUE => static::assetValue(),
         self::FIELD_INFLUENCE => static::influence(),
-        self::FIELD_PRODUCTION_SECTOR => static::production(),
+        self::FIELD_PRODUCTION => static::production(),
         self::FIELD_RESOURCE_SECTORS => static::RESOURCE_SECTORS
       ]
     ];
+  }
+
+  /**
+   * Creates and gets new effect of given fungible type for this industry card
+   * @param FT $fungibleType
+   * @param int $amount
+   * @return Effect
+   */
+  public static function getEffect(FT $fungibleType, int $amount): Effect {
+    $args = [
+      "type" => EffectType::GAIN,
+      "fungibleType" => $fungibleType,
+      "amount" => $amount,
+      "multiplier" => StaticMultiplier::instance(1),
+      "condition" => null,
+      "spec" => null,
+      "next" => null,
+      "trigger" => null,
+      "roundDown" => false
+    ];
+
+    return EffectRegistry::instance()->getOrCreate(EffectKeyGenerator::generate($args), $args);
   }
 
   /**
@@ -85,6 +116,6 @@ abstract class IndustryCard extends Card {
   const FIELD_REVENUE = "revenue";
   const FIELD_ASSET_VALUE = "assetValue";
   const FIELD_INFLUENCE = "influence";
-  const FIELD_PRODUCTION_SECTOR = "productionSector";
+  const FIELD_PRODUCTION = "production";
   const FIELD_RESOURCE_SECTORS = "resourceSectors";
 }

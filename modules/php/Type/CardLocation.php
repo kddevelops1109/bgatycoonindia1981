@@ -7,12 +7,15 @@ enum CardLocation: string {
   case HAND = "hand";
   case DECK = "deck";
   case CORPORATE_AGENDA_DECK = "corp-agenda-deck";
-  case POLICY_DECK = "policy-deck";
-  case INDUSTRY_DECK = "industry-deck";
+  case POLICY_DECK_AGE_I = "pol-deck-age-1";
+  case POLICY_DECK_AGE_II = "pol-deck-age-2";
+  case INDUSTRY_DECK_AGE_I = "ind-deck-age-1";
+  case INDUSTRY_DECK_AGE_II = "ind-deck-age-2";
   case MERIT_DECK = "merit-deck";
   case PLANNING_COMMISION_A_DECK = "pc-a-deck";
   case PLANNING_COMMISION_B_DECK = "pc-b-deck";
-  case HEADLINE_DECK = "headline-deck";
+  case HEADLINE_DECK_AGE_I = "head-deck-age-1";
+  case HEADLINE_DECK_AGE_II = "head-deck-age-2";
   case DISCARDS = "discards";
   
   /** Preparation locations */

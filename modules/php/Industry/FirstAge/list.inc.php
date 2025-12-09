@@ -1,0 +1,26 @@
+<?php
+$classNames = [
+  "Aluminium",
+  "Automobiles",
+  "CashCrops",
+  "Cement",
+  "Chemicals",
+  "Chromite",
+  "CoOperatives",
+  "CoalMines",
+  "CottonMills",
+  "CrudeOil",
+  "Forestry",
+  "HeavyElectricals",
+  "HeavyEngineering",
+  "HydroPower",
+  "IronAndSteel",
+  "JuteMills",
+  "Microfinance",
+  "NationalBank",
+  "Railways",
+  "Refinery",
+  "Roadways",
+  "ThermalPower",
+  "TransportEquipment"
+];

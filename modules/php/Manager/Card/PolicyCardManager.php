@@ -26,9 +26,9 @@ class PolicyCardManager extends CardManager {
    */
   protected function setupNewDeck() {
     // Setup Age I Policies
-    $this->setupDeck(CardType::POLICY, CardTypeArg::AGE_I_POLICY, CardLocation::POLICY_DECK, PolicyCard::FILEPATH_AGE_I, PolicyCard::CLASSPATH_AGE_I);
+    $this->setupDeck(CardType::POLICY, CardTypeArg::AGE_I_POLICY, CardLocation::POLICY_DECK_AGE_I, PolicyCard::FILEPATH_AGE_I, PolicyCard::CLASSPATH_AGE_I);
     
     // Setup Age II Policies
-    $this->setupDeck(CardType::POLICY, CardTypeArg::AGE_II_POLICY, CardLocation::POLICY_DECK, PolicyCard::FILEPATH_AGE_II, PolicyCard::CLASSPATH_AGE_II);
+    $this->setupDeck(CardType::POLICY, CardTypeArg::AGE_II_POLICY, CardLocation::POLICY_DECK_AGE_II, PolicyCard::FILEPATH_AGE_II, PolicyCard::CLASSPATH_AGE_II);
   }
 }

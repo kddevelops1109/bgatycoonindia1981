@@ -1,0 +1,28 @@
+<?php
+$classNames = [
+  "Airlines",
+  "Biogas",
+  "CommercialBank",
+  "Copper",
+  "DiamondMines",
+  "Fertilizers",
+  "Fisheries",
+  "FMCG",
+  "GeothermalEnergy",
+  "GoldMines",
+  "Insurance",
+  "Logistics",
+  "Manganese",
+  "Milk",
+  "NaturalGas",
+  "NuclearEnergy",
+  "OceanLiner",
+  "Paints",
+  "PaperMills",
+  "Pharmaceuticals",
+  "Shipping",
+  "SolarEnergy",
+  "TidalEnergy",
+  "Waterways",
+  "WindEnergy"
+];
