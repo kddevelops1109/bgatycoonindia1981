@@ -26,8 +26,8 @@ enum FungibleType: string {
   case ACTION_TOKEN = "Action";
   case TYCOON_ACTION = "Tycoon Action";
   case PLUS_ONE_ACTION = "+1 Action";
+  case FREE_ACTION = "Free Action";
   case PLANT = "Plant";
-  case SECTOR_PRODUCTION = "Sector Production";
 
   public function meta(): FungibleMetadata {
     return match($this) {
@@ -45,7 +45,7 @@ enum FungibleType: string {
       self::TRANSPORT => new FungibleMetadata(true, false, IndustrialistManager::COUNTER_INDUSTRIALIST_TRANSPORT),
       self::CORPORATE_AGENDA => new FungibleMetadata(true, false, null),
       self::POLICY => new FungibleMetadata(true, false, IndustrialistManager::COUNTER_INDUSTRIALIST_POLICIES_GAINED),
-      self::INDUSTRY => new FungibleMetadata(true, false, IndustrialistManager::COUNTER_INDUSTRIALIST_INDUSTRIES_PURCHASED),
+      self::INDUSTRY => new FungibleMetadata(true, false, IndustrialistManager::COUNTER_INDUSTRIALIST_INDUSTRIES_OWNED),
       self::MERIT => new FungibleMetadata(true, true, IndustrialistManager::COUNTER_INDUSTRIALIST_MERITS_IN_HAND),
       self::CONGLOMERATE_BONUS => new FungibleMetadata(true, false, null),
       self::PROMISSARY_NOTE => new FungibleMetadata(true, true, IndustrialistManager::COUNTER_INDUSTRIALIST_PROMISSARY_NOTES),
@@ -53,7 +53,7 @@ enum FungibleType: string {
       self::PLUS_ONE_ACTION => new FungibleMetadata(true, true, IndustrialistManager::COUNTER_INDUSTRIALIST_PLUS_ONE_ACTIONS_REMAINING),
       self::TYCOON_ACTION => new FungibleMetadata(true, true, IndustrialistManager::COUNTER_INDUSTRIALIST_TYCOON_ACTIONS_REMAINING),
       self::PLANT => new FungibleMetadata(false, false, null),
-      self::SECTOR_PRODUCTION => new FungibleMetadata(false, false, null)
+      self::FREE_ACTION => new FungibleMetadata(true, false, null)
     };
   }
 }

@@ -14,7 +14,7 @@ interface Fungible {
 
   /**
    * Can this fungible be lost or discarded by players
-   * @return void
+   * @return bool
    */
   public function canBeLost(): bool;
 }

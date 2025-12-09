@@ -26,7 +26,7 @@ class LoanMainActionManager extends MainActionManager {
     $args = [
       TokenSpace::FIELD_SPACE_ID => LMAS::generateSpaceId(null),
       TokenSpace::FIELD_OCCUPIED => false,
-      ActionSpace::FIELD_ACTION => LoanAction::instance("Gain money from the supply as per your Loan intake level. Collect a Promissory Note and move up 1 step on the Finance Sector Track")
+      ActionSpace::FIELD_ACTION => LoanAction::instance()
     ];
 
     LMAS::instance($args)->insert();

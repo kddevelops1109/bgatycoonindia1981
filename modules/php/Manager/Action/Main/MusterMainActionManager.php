@@ -26,7 +26,7 @@ class MusterMainActionManager extends MainActionManager {
     $args = [
       TokenSpace::FIELD_SPACE_ID => MMAS::generateSpaceId(null),
       TokenSpace::FIELD_OCCUPIED => false,
-      ActionSpace::FIELD_ACTION => MusterAction::instance("Add promoters from your hand to your own Strategy Pool, in order to take powerful Strategy actions in later turns. Then, gain a Merit card.")
+      ActionSpace::FIELD_ACTION => MusterAction::instance()
     ];
 
     MMAS::instance($args)->insert();

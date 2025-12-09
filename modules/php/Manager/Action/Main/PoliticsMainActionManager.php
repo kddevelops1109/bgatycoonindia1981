@@ -26,7 +26,7 @@ class PoliticsMainActionManager extends MainActionManager {
     $args = [
       TokenSpace::FIELD_SPACE_ID => PMAS::generateSpaceId(null),
       TokenSpace::FIELD_OCCUPIED => false,
-      ActionSpace::FIELD_ACTION => PoliticsAction::instance("Gain all the “Politics” bonuses printed on each of your Policies. Then, gain a Favor token.")
+      ActionSpace::FIELD_ACTION => PoliticsAction::instance()
     ];
 
     PMAS::instance($args)->insert();

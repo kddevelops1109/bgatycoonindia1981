@@ -4,11 +4,13 @@ namespace Bga\Games\tycoonindianew\Policy\FirstAge;
 use Bga\Games\tycoonindianew\Condition\NullCondition;
 
 use Bga\Games\tycoonindianew\Effect\Effect;
+use Bga\Games\tycoonindianew\Effect\EffectKeyGenerator;
 
 use Bga\Games\tycoonindianew\Model\Card\Policy\EconomicPolicyCard;
 
+use Bga\Games\tycoonindianew\Multiplier\StaticMultiplier;
+
 use Bga\Games\tycoonindianew\Registry\EffectRegistry;
-use Bga\Games\tycoonindianew\Registry\RegistryKeyPrefix;
 
 use Bga\Games\tycoonindianew\Spec\CardSpec;
 
@@ -16,7 +18,6 @@ use Bga\Games\tycoonindianew\Type\CardLocation;
 use Bga\Games\tycoonindianew\Type\CardTypeArg;
 use Bga\Games\tycoonindianew\Type\EffectType;
 use Bga\Games\tycoonindianew\Type\FungibleType as FT;
-use Bga\Games\tycoonindianew\Util\StringUtil;
 
 /**
  * Name: Agricultural Prices Commission
@@ -39,13 +40,14 @@ class AgriculturalPricesCommission extends EconomicPolicyCard {
       "type" => EffectType::GAIN,
       "fungibleType" => FT::MERIT,
       "amount" => 1,
-      "condition" => NullCondition::get(),
+      "condition" => null,
       "spec" => new CardSpec(CardTypeArg::MERIT, CardLocation::MERIT_DISPLAY, CardLocation::HAND, null),
-      "multiplier" => 1,
+      "multiplier" => StaticMultiplier::instance(1),
+      "next" => null,
       "roundDown" => false
     ];
 
-    return EffectRegistry::instance()->getOrCreate(RegistryKeyPrefix::GAIN_EFFECT . "_1_" . strtolower(StringUtil::strSnakeCase(FT::MERIT->value)), $args);
+    return EffectRegistry::instance()->getOrCreate(EffectKeyGenerator::generate($args), $args);
   }
 
   /**

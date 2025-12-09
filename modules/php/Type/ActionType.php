@@ -13,4 +13,6 @@ enum ActionType: string {
   case LOAN = "Loan";
   case EMERGENCY_LOAN = "Emergency Loan";
   case CONGLOMERATE_BONUS = "Claim Conglomerate Bonus";
+  case SECTOR_PRODUCTION = "Gain Sector Production";
+  case SELL_CHEAPEST_SHARE = "Sell Cheapest Share to Government";
 }

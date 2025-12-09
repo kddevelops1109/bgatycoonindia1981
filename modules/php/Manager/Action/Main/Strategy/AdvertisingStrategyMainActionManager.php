@@ -38,12 +38,12 @@ class AdvertisingStrategyMainActionManager extends SAM {
     $action = ASA::instance(\clienttranslate("Discard 4 or 6 Promoters to gain specified Influence. Move up on the Influence track."));
 
     return [
-      ["cost" => SAS::generateCost(6), "reward" => SAS::generateReward(FT::INFLUENCE, 9), "action" => $action, "occupied" => false],
-      ["cost" => SAS::generateCost(6), "reward" => SAS::generateReward(FT::INFLUENCE, 8), "action" => $action, "occupied" => false],
-      ["cost" => SAS::generateCost(6), "reward" => SAS::generateReward(FT::INFLUENCE, 7), "action" => $action, "occupied" => false],
-      ["cost" => SAS::generateCost(4), "reward" => SAS::generateReward(FT::INFLUENCE, 7), "action" => $action, "occupied" => false],
-      ["cost" => SAS::generateCost(4), "reward" => SAS::generateReward(FT::INFLUENCE, 6), "action" => $action, "occupied" => false],
-      ["cost" => SAS::generateCost(4), "reward" => SAS::generateReward(FT::INFLUENCE, 5), "action" => $action, "occupied" => false]
+      ["cost" => SAS::generateCost(6), "reward" => SAS::generateReward(FT::INFLUENCE, 9, null), "action" => $action, "occupied" => false],
+      ["cost" => SAS::generateCost(6), "reward" => SAS::generateReward(FT::INFLUENCE, 8, null), "action" => $action, "occupied" => false],
+      ["cost" => SAS::generateCost(6), "reward" => SAS::generateReward(FT::INFLUENCE, 7, null), "action" => $action, "occupied" => false],
+      ["cost" => SAS::generateCost(4), "reward" => SAS::generateReward(FT::INFLUENCE, 7, null), "action" => $action, "occupied" => false],
+      ["cost" => SAS::generateCost(4), "reward" => SAS::generateReward(FT::INFLUENCE, 6, null), "action" => $action, "occupied" => false],
+      ["cost" => SAS::generateCost(4), "reward" => SAS::generateReward(FT::INFLUENCE, 5, null), "action" => $action, "occupied" => false]
     ];
   }
 }

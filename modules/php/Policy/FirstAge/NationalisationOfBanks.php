@@ -4,11 +4,13 @@ namespace Bga\Games\tycoonindianew\Policy\FirstAge;
 use Bga\Games\tycoonindianew\Condition\NullCondition;
 
 use Bga\Games\tycoonindianew\Effect\Effect;
+use Bga\Games\tycoonindianew\Effect\EffectKeyGenerator;
 
 use Bga\Games\tycoonindianew\Model\Card\Policy\EconomicPolicyCard;
 
+use Bga\Games\tycoonindianew\Multiplier\StaticMultiplier;
+
 use Bga\Games\tycoonindianew\Registry\EffectRegistry;
-use Bga\Games\tycoonindianew\Registry\RegistryKeyPrefix;
 
 use Bga\Games\tycoonindianew\Spec\NullSpec;
 
@@ -37,13 +39,15 @@ class NationalisationOfBanks extends EconomicPolicyCard {
       "type" => EffectType::GAIN,
       "fungibleType" => FT::MONEY,
       "amount" => 5,
-      "condition" => NullCondition::get(),
-      "spec" => NullSpec::get(),
-      "multiplier" => 1,
+      "multiplier" => StaticMultiplier::instance(1),
+      "condition" => null,
+      "spec" => null,
+      "next" => null,
+      "trigger" => null,
       "roundDown" => false
     ];
 
-    return EffectRegistry::instance()->getOrCreate(RegistryKeyPrefix::GAIN_EFFECT . "_5_crores", $args);
+    return EffectRegistry::instance()->getOrCreate(EffectKeyGenerator::generate($args), $args);
   }
 
   /**

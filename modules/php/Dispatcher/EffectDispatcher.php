@@ -22,11 +22,12 @@ class EffectDispatcher extends Dispatcher {
 
   /**
    * Dispatches a request to execute the given effect for given player, if any
-   * @param int|null $player_id
-   * @param mixed $payload
-   * @return void
+   * @param int|null $playerId ID of the player for whom the relevant executor needs to be invoked
+   * @param mixed $payload Payload consisting the details for execution
+   * @param bool $bPreviewOnly Whether to execute only for preview
+   * @return int|null
    */
-  public function dispatch(?int $player_id, mixed $payload = null): void {
+  public function dispatch(?int $playerId, mixed $payload = null, bool $bPreviewOnly = true): ?int {
     if (!$payload instanceof Effect) {
       throw new InvalidArgumentException("Payload for EffectDispatcher must be an Effect");
     }
@@ -47,6 +48,14 @@ class EffectDispatcher extends Dispatcher {
         default => throw new \LogicException("Unhandled fungible type")
     };
 
-    $executor->execute($player_id, $payload);
+    $result = null;
+    if ($bPreviewOnly) {
+      $result = $executor->preview($playerId, $payload);
+    }
+    else {
+      $executor->execute($playerId, $payload);
+    }
+
+    return $result;
   }
 }

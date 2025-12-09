@@ -37,12 +37,12 @@ class SalesStrategyMainActionManager extends SAM {
     $action = SSA::instance(\clienttranslate("Discard 3 or 4 Promoters to gain specified Money from the general supply."));
 
     return [
-      ["cost" => SAS::generateCost(4), "reward" => SAS::generateReward(FT::MONEY, 40), "action" => $action, "occupied" => false],
-      ["cost" => SAS::generateCost(4), "reward" => SAS::generateReward(FT::MONEY, 35), "action" => $action, "occupied" => false],
-      ["cost" => SAS::generateCost(4), "reward" => SAS::generateReward(FT::MONEY, 30), "action" => $action, "occupied" => false],
-      ["cost" => SAS::generateCost(3), "reward" => SAS::generateReward(FT::MONEY, 30), "action" => $action, "occupied" => false],
-      ["cost" => SAS::generateCost(3), "reward" => SAS::generateReward(FT::MONEY, 25), "action" => $action, "occupied" => false],
-      ["cost" => SAS::generateCost(3), "reward" => SAS::generateReward(FT::MONEY, 20), "action" => $action, "occupied" => false]
+      ["cost" => SAS::generateCost(4), "reward" => SAS::generateReward(FT::MONEY, 40, null), "action" => $action, "occupied" => false],
+      ["cost" => SAS::generateCost(4), "reward" => SAS::generateReward(FT::MONEY, 35, null), "action" => $action, "occupied" => false],
+      ["cost" => SAS::generateCost(4), "reward" => SAS::generateReward(FT::MONEY, 30, null), "action" => $action, "occupied" => false],
+      ["cost" => SAS::generateCost(3), "reward" => SAS::generateReward(FT::MONEY, 30, null), "action" => $action, "occupied" => false],
+      ["cost" => SAS::generateCost(3), "reward" => SAS::generateReward(FT::MONEY, 25, null), "action" => $action, "occupied" => false],
+      ["cost" => SAS::generateCost(3), "reward" => SAS::generateReward(FT::MONEY, 20, null), "action" => $action, "occupied" => false]
     ];
   }
 }

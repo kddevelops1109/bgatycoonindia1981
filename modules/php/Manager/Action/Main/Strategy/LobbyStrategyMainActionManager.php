@@ -39,9 +39,9 @@ class LobbyStrategyMainActionManager extends SAM {
 "));
 
     return [
-      ["cost" => SAS::generateCost(5), "reward" => SAS::generateReward(FT::POLICY, 1), "index" => 1, "action" => $action, "occupied" => false],
-      ["cost" => SAS::generateCost(5), "reward" => SAS::generateReward(FT::POLICY, 1), "index" => 2, "action" => $action, "occupied" => false],
-      ["cost" => SAS::generateCost(5), "reward" => SAS::generateReward(FT::POLICY, 1), "index" => 3, "action" => $action, "occupied" => false]
+      ["cost" => SAS::generateCost(5), "reward" => SAS::generateReward(FT::POLICY, 1, null), "index" => 1, "action" => $action, "occupied" => false],
+      ["cost" => SAS::generateCost(5), "reward" => SAS::generateReward(FT::POLICY, 1, null), "index" => 2, "action" => $action, "occupied" => false],
+      ["cost" => SAS::generateCost(5), "reward" => SAS::generateReward(FT::POLICY, 1, null), "index" => 3, "action" => $action, "occupied" => false]
     ];
   }
 }

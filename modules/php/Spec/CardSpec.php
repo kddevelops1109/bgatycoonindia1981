@@ -6,6 +6,9 @@ use Bga\Games\tycoonindianew\Type\CardLocation;
 use Bga\Games\tycoonindianew\Type\CardTypeArg;
 use Bga\Games\tycoonindianew\Type\SpecType;
 
+/**
+ * Represents a card
+ */
 class CardSpec implements Spec {
 
   public function __construct(

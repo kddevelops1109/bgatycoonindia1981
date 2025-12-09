@@ -17,7 +17,7 @@ class StrategyMainActionManager extends MainActionManager {
     $args = [
       TokenSpace::FIELD_SPACE_ID => SMAS::generateSpaceId(null),
       TokenSpace::FIELD_OCCUPIED => false,
-      ActionSpace::FIELD_ACTION => StrategyAction::instance("Discard a number of Promoters to gain any 1 bonus printed on one of the available Strategy Actions spaces.")
+      ActionSpace::FIELD_ACTION => StrategyAction::instance()
     ];
 
     SMAS::instance($args)->insert();

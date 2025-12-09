@@ -12,22 +12,22 @@ use Bga\Games\tycoonindianew\Type\FungibleType as FT;
 
 class InfluenceEffectExecutor extends EffectExecutor {
 
-  public function applyEffect(?int $player_id, Effect $effect): void {
+  public function applyEffect(?int $playerId, Effect $effect): void {
     if ($effect->fungibleType != FT::INFLUENCE) {
       throw new InvalidArgumentException("Effect needs to be Influence one for InfluenceEffectExecutor");
     }
 
-    if (is_null($player_id)) {
+    if (is_null($playerId)) {
       throw new InvalidArgumentException("Player id must not be null for executing Influence Effect");
     }
 
     if ($effect->condition->evaluate() == ConditionStatus::PASS) {
       $delta = $effect->multiplier * $effect->amount;
       if ($effect instanceof Gain) {
-        IndustrialistManager::incPlayerCounter($player_id, IndustrialistManager::COUNTER_INDUSTRIALIST_INFLUENCE, $delta);
+        IndustrialistManager::incPlayerCounter($playerId, IndustrialistManager::COUNTER_INDUSTRIALIST_INFLUENCE, $delta);
       }
       else {
-        IndustrialistManager::decPlayerCounter($player_id, IndustrialistManager::COUNTER_INDUSTRIALIST_INFLUENCE, $delta);
+        IndustrialistManager::decPlayerCounter($playerId, IndustrialistManager::COUNTER_INDUSTRIALIST_INFLUENCE, $delta);
       }
     }
   }

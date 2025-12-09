@@ -4,6 +4,9 @@ namespace Bga\Games\tycoonindianew\Spec;
 use Bga\Games\tycoonindianew\Contracts\Fungible;
 use Bga\Games\tycoonindianew\Type\SpecType;
 
+/**
+ * Defines what a Spec represents
+ */
 interface Spec {
 
   /**

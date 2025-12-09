@@ -3,18 +3,19 @@ namespace Bga\Games\tycoonindianew\CorporateAgenda;
 
 use Bga\Games\tycoonindianew\Manager\IndustrialistManager;
 use Bga\Games\tycoonindianew\Model\Card\CorporateAgendaCard;
-use Bga\Games\tycoonindianew\Model\Industrialist;
 
 class Diversification extends CorporateAgendaCard {
 
   /**
-   * Returns the end game favor this corporate agenda card gives to eligible player(s)
-   * @return int End game favor
+   * Obtain endgame favor for given player based on their endgame money in hand
+   * @param int $playerId
+   * @return float
    */
-  public function applyEndgameFavor(int $player_id): void {
-    $favor = 0;
+  public function obtainEndgameFavorMultiplier(int $playerId): float {
+    $multiplier = 0.0;
 
-    if (!is_null($player_id)) {
+    // If the player is the owner of the corporate agenda, then evaluate and return specific multiplier
+    if (!is_null($playerId) && $playerId === $this->cardLocationArg) {
       $sectors = [
         IndustrialistManager::COUNTER_INDUSTRIALIST_FINANCE,
         IndustrialistManager::COUNTER_INDUSTRIALIST_MINERALS,
@@ -27,23 +28,30 @@ class Diversification extends CorporateAgendaCard {
       $numSectors = 0;
       
       foreach ($sectors as $sector) {
-        $sectorLevel = IndustrialistManager::getPlayerCounterValue($player_id, $sector);
+        $sectorLevel = IndustrialistManager::getPlayerCounterValue($playerId, $sector);
         if ($sectorLevel >= 2) {
           $numSectors++;
         }
       }
 
-      foreach (self::ENDGAME_FAVOR as $threshold => $_favor) {
+      foreach ($sectors as $sector) {
+        $sectorLevel = IndustrialistManager::getPlayerCounterValue($playerId, $sector);
+        if ($sectorLevel >= 2) {
+          $numSectors++;
+        }
+      }
+
+      foreach (self::FAVOR_REFERENCE as $threshold => $favor) {
         if ($numSectors >= $threshold) {
-          $favor = $_favor;
+          $multiplier = $favor;
         }
         else {
           break;
         }
       }
-
-      $this->applyEndgameFavorEffect($player_id, $favor);
     }
+
+    return $multiplier;
   }
   
   /**
@@ -51,5 +59,5 @@ class Diversification extends CorporateAgendaCard {
    */
   const NAME = "Diversification";
   const DESCRIPTION = "Reach at least level 2 production in multiple industry sectors";
-  const ENDGAME_FAVOR = [3 => 2, 4 => 5, 5 => 9, 6 => 12];
+  const FAVOR_REFERENCE = [3 => 2, 4 => 5, 5 => 9, 6 => 12];
 }

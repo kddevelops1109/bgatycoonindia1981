@@ -5,7 +5,7 @@ $classNames = [
   "ForeignInvestmentPromotionBoard",
   "NationalGridOfIndia",
   "NationalHighwaysAuthorityOfIndia",
-  "NationalStockExchang4e",
+  "NationalStockExchange",
   "TelecomRevolution",
   "TheEnvironmentProtectionAct",
   "YellowRevolution"

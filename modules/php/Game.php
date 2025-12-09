@@ -37,7 +37,7 @@ use Bga\Games\tycoonindianew\Manager\Action\Main\Strategy\ExportStrategyMainActi
 
 use Bga\Games\tycoonindianew\Manager\IndustrialistManager;
 use Bga\Games\tycoonindianew\Manager\Card\CardManager;
-
+use Bga\Games\tycoonindianew\Manager\Card\PolicyCardManager;
 use Bga\Games\tycoonindianew\Type\CardType;
 
 class Game extends \Bga\GameFramework\Table
@@ -225,6 +225,7 @@ class Game extends \Bga\GameFramework\Table
         
         // Setup cards
         CardManager::instance(CardType::CORPORATE_AGENDA)->setupNewGame($players);
+        PolicyCardManager::instance(CardType::POLICY)->setupNewGame($players);
 
         // Setup main actions
         foreach ([BAM::instance(), PAM::instance(), MAM::instance(), SAM::instance(), SHAM::instance(), LAM::instance()] as $manager) {

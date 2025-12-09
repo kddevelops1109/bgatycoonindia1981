@@ -4,7 +4,7 @@ namespace Bga\Games\tycoonindianew\Model\Card\Policy;
 use Bga\Games\tycoonindianew\Effect\Effect;
 
 use Bga\Games\tycoonindianew\Model\Card\Card;
-use Bga\Games\tycoonindianew\Type\CardAge;
+
 use Bga\Games\tycoonindianew\Type\PolicyBenefitType;
 use Bga\Games\tycoonindianew\Type\PolicyType;
 
@@ -21,33 +21,16 @@ use Bga\Games\tycoonindianew\Type\PolicyType;
 abstract class PolicyCard extends Card {
 
   /**
-   * Policy cards do not give endgame asset value
-   * @return void
+   * Politics bonus given by this policy card
+   * @return Effect
    */
-  public function applyEndgameAssetValue(int $player_id): void {
-    // Do nothing
-  }
+  abstract public static function politicsBonus(): Effect;
 
   /**
-   * Endgame favor of policy cards
-   * @return void
+   * Endgame favor given by this policy card
+   * @return Effect
    */
-  public function applyEndgameFavor(int $player_id): void {
-    if ($this->cardLocationArg == $player_id) {
-      $this->endgameFavor->apply($player_id);
-    }
-  }
-
-  /**
-   * Apply the politics bonus of this card to the given player, if they own this policy card
-   * @param int $player_id
-   * @return void
-   */
-  public function applyPoliticsBonus(int $player_id): void {
-    if ($this->cardLocationArg == $player_id) {
-      $this->politicsBonus->apply($player_id);
-    }
-  }
+  abstract public static function endgameFavor(): Effect;
 
   /**
    * Policy cards can be gained
@@ -65,15 +48,33 @@ abstract class PolicyCard extends Card {
     return false;
   }
 
-  protected static function staticFieldsList() {
+  /**
+   * List of static fields for policy card
+   * @return array<string>
+   */
+  public static function staticFieldsList(): array {
     return [
-      self::FIELD_DESCRIPTION,
-      self::FIELD_AGE,
-      self::FIELD_TYPE,
-      self::FIELD_BENEFIT_TYPE,
-      self::FIELD_BENEFIT,
-      self::FIELD_POLITICS_BONUS,
-      self::FIELD_ENDGAME_FAVOR
+      ...[self::FIELD_DESCRIPTION, self::FIELD_AGE, self::FIELD_TYPE, self::FIELD_BENEFIT_TYPE, self::FIELD_BENEFIT, self::FIELD_POLITICS_BONUS, self::FIELD_ENDGAME_FAVOR],
+      ...parent::staticFieldsList()
+    ];
+  }
+
+  /**
+   * Common static field args for policy cards, if any
+   * @param int $player_id
+   * @return array
+   */
+  public static function staticFieldArgs(): array {
+    return [
+      ...parent::staticFieldArgs(),
+      ...[
+        self::FIELD_DESCRIPTION => static::DESCRIPTION,
+        self::FIELD_AGE => static::AGE,
+        self::FIELD_TYPE => static::TYPE,
+        self::FIELD_BENEFIT_TYPE => static::BENEFIT_TYPE,
+        self::FIELD_POLITICS_BONUS => static::politicsBonus(),
+        self::FIELD_ENDGAME_FAVOR => static::endgameFavor()
+      ]
     ];
   }
 

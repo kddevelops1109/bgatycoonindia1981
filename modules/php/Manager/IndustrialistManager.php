@@ -66,15 +66,15 @@ class IndustrialistManager implements Manager {
    * @return void
    */
   public function setupNewGame($players) {
-    foreach ($players as $player_id => $player) {
+    foreach ($players as $playerId => $player) {
       $game = Game::get();
 
-      $player_no = intval($game->getPlayerNoById($player_id));
-      $player_name = strval($game->getPlayerNameById($player_id));
-      $player_color = strval($game->getPlayerColorById($player_id));
+      $player_no = intval($game->getPlayerNoById($playerId));
+      $player_name = strval($game->getPlayerNameById($playerId));
+      $player_color = strval($game->getPlayerColorById($playerId));
 
       $args = [
-        Industrialist::FIELD_PLAYER_ID => $player_id,
+        Industrialist::FIELD_PLAYER_ID => $playerId,
         Industrialist::FIELD_PLAYER_NO => $player_no,
         Industrialist::FIELD_PLAYER_NAME => $player_name,
         Industrialist::FIELD_PLAYER_COLOR => $player_color,
@@ -88,9 +88,9 @@ class IndustrialistManager implements Manager {
       ];
 
       $industrialist = new Industrialist($args);
-      self::$industrialists[$player_id] = $industrialist;
+      self::$industrialists[$playerId] = $industrialist;
 
-      $filterKey = RegistryKeyPrefix::SEARCH_PLAYER_ID->value . "[" . $player_id . "]";
+      $filterKey = RegistryKeyPrefix::SEARCH_PLAYER_ID->value . "[" . $playerId . "]";
       $filter = FilterRegistry::instance()->getOrCreate(
         $filterKey,
         [
@@ -98,7 +98,7 @@ class IndustrialistManager implements Manager {
          "column" => Industrialist::COLUMN_PLAYER_ID,
          "dataType" => DT::INT,
          "operator" => OperatorType::EQUALS,
-         "value" => $player_id 
+         "value" => $playerId 
         ]
       );
 
@@ -112,12 +112,38 @@ class IndustrialistManager implements Manager {
     self::initDb($players);
   }
 
-  public static function getPlayerCounterValue(int $player_id, string $counterName) {
+  /**
+   * Obtain the sum of power and fuel sector production of given player
+   * @param int $playerId
+   * @return int
+   */
+  public static function sumPowerAndFuelSectorProduction(int $playerId): int {
+    return self::getPlayerCounterValue($playerId, self::COUNTER_INDUSTRIALIST_POWER) + self::getPlayerCounterValue($playerId, self::COUNTER_INDUSTRIALIST_FUEL);
+  }
+  /**
+   * Obtain the sum of agro and transport sector production of given player
+   * @param int $playerId
+   * @return int
+   */
+  public static function sumAgroAndTransportSectorProduction(int $playerId): int {
+    return self::getPlayerCounterValue($playerId, self::COUNTER_INDUSTRIALIST_AGRO) + self::getPlayerCounterValue($playerId, self::COUNTER_INDUSTRIALIST_TRANSPORT);
+  }
+
+  /**
+   * Count the number of policy and industry cards owned by given player
+   * @param int $playerId
+   * @return int
+   */
+  public static function countPolicyIndustryCards(int $playerId): int {
+    return self::getPlayerCounterValue($playerId, self::COUNTER_INDUSTRIALIST_POLICIES_GAINED) + self::getPlayerCounterValue($playerId, self::COUNTER_INDUSTRIALIST_INDUSTRIES_OWNED);
+  }
+
+  public static function getPlayerCounterValue(int $playerId, string $counterName) {
     $value = null;
 
     $counter = self::$counters[$counterName];
     if (!is_null($counter) && $counter instanceof PlayerCounter) {
-      $value = $counter->get($player_id);
+      $value = $counter->get($playerId);
     }
 
     return $value;
@@ -125,43 +151,43 @@ class IndustrialistManager implements Manager {
 
   public static function getPlayerCounterValues(string $counterName) {
     $values = [];
-    foreach (array_keys(self::$industrialists) as $player_id) {
-      $values[$player_id] = self::getPlayerCounterValue($player_id, $counterName);
+    foreach (array_keys(self::$industrialists) as $playerId) {
+      $values[$playerId] = self::getPlayerCounterValue($playerId, $counterName);
     }
 
     return $values;
   }
 
-  public static function setPlayerCounterValue(int $player_id, string $counterName, int $value) {
+  public static function setPlayerCounterValue(int $playerId, string $counterName, int $value) {
     $counter = self::$counters[$counterName];
     if (!is_null($counter) && $counter instanceof PlayerCounter) {
-      $counter->set($player_id, $value);
+      $counter->set($playerId, $value);
     }
   }
 
-  public static function incPlayerCounter(int $player_id, string $counterName, int $delta = 1) {
+  public static function incPlayerCounter(int $playerId, string $counterName, int $delta = 1) {
     $counter = self::$counters[$counterName];
     if (!is_null($counter) && $counter instanceof PlayerCounter) {
-      $counter->inc($player_id, $delta);
+      $counter->inc($playerId, $delta);
     }
   }
 
   public static function incAllPlayerCounters(string $counterName, int $delta = 1) {
-    foreach (array_keys(self::$industrialists) as $player_id) {
-      self::incPlayerCounter($player_id, $counterName, $delta);
+    foreach (array_keys(self::$industrialists) as $playerId) {
+      self::incPlayerCounter($playerId, $counterName, $delta);
     }
   }
 
-  public static function decPlayerCounter(int $player_id, string $counterName, int $delta = 1) {
+  public static function decPlayerCounter(int $playerId, string $counterName, int $delta = 1) {
     $counter = self::$counters[$counterName];
     if (!is_null($counter) && $counter instanceof PlayerCounter) {
-      $counter->inc($player_id, 0 - $delta);
+      $counter->inc($playerId, 0 - $delta);
     }
   }
 
   public static function decAllPlayerCounters(string $counterName, int $delta = 1) {
-    foreach (array_keys(self::$industrialists) as $player_id) {
-      self::decPlayerCounter($player_id, $counterName, $delta);
+    foreach (array_keys(self::$industrialists) as $playerId) {
+      self::decPlayerCounter($playerId, $counterName, $delta);
     }
   }
 
@@ -196,11 +222,17 @@ class IndustrialistManager implements Manager {
       self::COUNTER_INDUSTRIALIST_UNBUILT_PLANTS,
       self::COUNTER_INDUSTRIALIST_BUILT_PLANTS,
       self::COUNTER_INDUSTRIALIST_POLICIES_GAINED,
-      self::COUNTER_INDUSTRIALIST_INDUSTRIES_PURCHASED,
+      self::COUNTER_INDUSTRIALIST_INDUSTRIES_OWNED,
+      self::COUNTER_INDUSTRIALIST_FINANCE_INDUSTRIES,
+      self::COUNTER_INDUSTRIALIST_MINERALS_INDUSTRIES,
+      self::COUNTER_INDUSTRIALIST_FUEL_INDUSTRIES,
+      self::COUNTER_INDUSTRIALIST_AGRO_INDUSTRIES,
+      self::COUNTER_INDUSTRIALIST_POWER_INDUSTRIES,
+      self::COUNTER_INDUSTRIALIST_TRANSPORT_INDUSTRIES,
       self::COUNTER_INDUSTRIALIST_MERITS_IN_HAND
     ];
 
-    $player_ids = array_keys($players);
+    $playerIds = array_keys($players);
 
     $game = Game::get();
 
@@ -217,13 +249,13 @@ class IndustrialistManager implements Manager {
 
       if (!is_null($counter) && $counter instanceof PlayerCounter) {
         // Initialize database for counter for all players
-        $counter->initDb($player_ids, 0);
+        $counter->initDb($playerIds, 0);
 
         // Set counter value depending on the counter name
-        foreach ($player_ids as $player_id) {
-          $initialValue = self::initialValue($counterName, $game->getPlayerNoById($player_id));
+        foreach ($playerIds as $playerId) {
+          $initialValue = self::initialValue($counterName, $game->getPlayerNoById($playerId));
           if ($initialValue > 0) {
-            $counter->set($player_id, $initialValue);
+            $counter->set($playerId, $initialValue);
           }
         }
       }
@@ -232,11 +264,11 @@ class IndustrialistManager implements Manager {
     }
   }
 
-  protected static function loadFromDb(int $player_id) {
+  protected static function loadFromDb(int $playerId) {
     $industrialist = null;
 
     // Retrieve or create filter
-    $filterKey = RegistryKeyPrefix::SEARCH_PLAYER_ID . "[" . $player_id . "]";
+    $filterKey = RegistryKeyPrefix::SEARCH_PLAYER_ID . "[" . $playerId . "]";
     $filter = FilterRegistry::instance()->getOrCreate(
       $filterKey,
       [
@@ -244,7 +276,7 @@ class IndustrialistManager implements Manager {
         "column" => Industrialist::COLUMN_PLAYER_ID,
         "dataType" => DT::INT,
         "operator" => OperatorType::EQUALS,
-        "value" => $player_id 
+        "value" => $playerId 
       ]
     );
 
@@ -267,12 +299,12 @@ class IndustrialistManager implements Manager {
       if (is_array($result)) {
         $game = Game::get();
 
-        $player_no = intval($game->getPlayerNoById($player_id));
-        $player_name = strval($game->getPlayerNameById($player_id));
-        $player_color = strval($game->getPlayerColorById($player_id));
+        $player_no = intval($game->getPlayerNoById($playerId));
+        $player_name = strval($game->getPlayerNameById($playerId));
+        $player_color = strval($game->getPlayerColorById($playerId));
 
         $args = [
-          Industrialist::FIELD_PLAYER_ID => $player_id,
+          Industrialist::FIELD_PLAYER_ID => $playerId,
           Industrialist::FIELD_PLAYER_NO => $player_no,
           Industrialist::FIELD_PLAYER_NAME => $player_name,
           Industrialist::FIELD_PLAYER_COLOR => $player_color,
@@ -286,7 +318,7 @@ class IndustrialistManager implements Manager {
         ];
 
         $industrialist = new Industrialist($args);
-        self::$industrialists[$player_id] = $industrialist;
+        self::$industrialists[$playerId] = $industrialist;
       }
     }
 
@@ -295,16 +327,16 @@ class IndustrialistManager implements Manager {
 
   /**
    * Return industrialist object for given player id
-   * @param int $player_id
+   * @param int $playerId
    * @return Industrialist
    */
-  public static function get(int $player_id): Industrialist {
+  public static function get(int $playerId): Industrialist {
     $industrialist = null;
-    if (array_key_exists($player_id, self::$industrialists)) {
-      $industrialist = self::$industrialists[$player_id];
+    if (array_key_exists($playerId, self::$industrialists)) {
+      $industrialist = self::$industrialists[$playerId];
     }
     else {
-      $industrialist = self::loadFromDb($player_id);
+      $industrialist = self::loadFromDb($playerId);
     }
 
     return $industrialist;
@@ -478,8 +510,10 @@ class IndustrialistManager implements Manager {
   const MAX_UNBUILT_PLANTS = 9;
   const MAX_BUILT_PLANTS = 9;
 
-  /** Constants - Counters */
-  const COLUMN_PLAYER_ID = "player_id";
+  /** Constants - DB Columns */
+  const COLUMN_PLAYER_ID = "playerId";
+
+  /** Constants - Counters - Indicators */
   const COUNTER_INDUSTRIALIST_INFLUENCE = "influence";
   const COUNTER_INDUSTRIALIST_INFLUENCE_RANK = "influence_rank";
   const COUNTER_INDUSTRIALIST_ASSET_VALUE = "asset_value";
@@ -489,6 +523,8 @@ class IndustrialistManager implements Manager {
   const COUNTER_INDUSTRIALIST_PROMOTERS_IN_POOL = "promoters_in_pool";
   const COUNTER_INDUSTRIALIST_PROMISSARY_NOTES = "promissary_notes";
   const COUNTER_INDUSTRIALIST_LOAN_INTAKE_LEVEL = "loan_intake_level";
+
+  /** Constants - Counters - Sector Production */
   const COUNTER_INDUSTRIALIST_FINANCE = "finance";
   const COUNTER_INDUSTRIALIST_FINANCE_RANK = "finance_rank";
   const COUNTER_INDUSTRIALIST_MINERALS = "minerals";
@@ -501,14 +537,24 @@ class IndustrialistManager implements Manager {
   const COUNTER_INDUSTRIALIST_POWER_RANK = "power_rank";
   const COUNTER_INDUSTRIALIST_TRANSPORT = "transport";
   const COUNTER_INDUSTRIALIST_TRANSPORT_RANK = "transport_rank";
+  
+  /** Constants - Counters - Actions */
   const COUNTER_INDUSTRIALIST_ACTIONS_REMAINING = "actions_remaining";
   const COUNTER_INDUSTRIALIST_PLUS_ONE_ACTIONS_REMAINING = "plus_one_actions_remaining";
   const COUNTER_INDUSTRIALIST_TYCOON_ACTIONS_REMAINING = "tycoon_actions_remaining";
+
+  /** Constants - Counters - Misc */
   const COUNTER_INDUSTRIALIST_SHARES_REMAINING = "shares_remaining";
   const COUNTER_INDUSTRIALIST_LEAST_SHARE_VALUE = "least_share_value";
   const COUNTER_INDUSTRIALIST_UNBUILT_PLANTS = "unbuilt_plants";
   const COUNTER_INDUSTRIALIST_BUILT_PLANTS = "built_plants";
   const COUNTER_INDUSTRIALIST_POLICIES_GAINED = "policies_gained";
-  const COUNTER_INDUSTRIALIST_INDUSTRIES_PURCHASED = "industries_purchased";
+  const COUNTER_INDUSTRIALIST_INDUSTRIES_OWNED = "industries_owned";
+  const COUNTER_INDUSTRIALIST_FINANCE_INDUSTRIES = "finance_industries";
+  const COUNTER_INDUSTRIALIST_MINERALS_INDUSTRIES = "minerals_industries";
+  const COUNTER_INDUSTRIALIST_FUEL_INDUSTRIES = "fuel_industries";
+  const COUNTER_INDUSTRIALIST_AGRO_INDUSTRIES = "agro_industries";
+  const COUNTER_INDUSTRIALIST_POWER_INDUSTRIES = "power_industries";
+  const COUNTER_INDUSTRIALIST_TRANSPORT_INDUSTRIES = "transport_industries";
   const COUNTER_INDUSTRIALIST_MERITS_IN_HAND = "merits_in_hand";
 }

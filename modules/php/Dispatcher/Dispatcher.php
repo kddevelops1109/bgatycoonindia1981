@@ -26,9 +26,10 @@ abstract class Dispatcher {
 
   /**
    * Dispatch the relevant executor for given player id, if any, given the relevant payload, if any
-   * @param int|null $player_id
-   * @param mixed $payload
-   * @return void
+   * @param int|null $playerId ID of the player for whom the relevant executor needs to be invoked
+   * @param mixed $payload Payload consisting the details for execution
+   * @param bool $bPreviewOnly Whether to execute only for preview
+   * @return int|null
    */
-  abstract public function dispatch(?int $player_id, mixed $payload = null): void;
+  abstract public function dispatch(?int $playerId, mixed $payload = null, bool $bPreviewOnly = true): ?int;
 }

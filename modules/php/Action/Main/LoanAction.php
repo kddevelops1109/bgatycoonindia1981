@@ -12,4 +12,7 @@ class LoanAction extends MainAction {
   public function actionType(): AT {
     return AT::LOAN;
   }
+
+  /** Constants - Misc */
+  const DESCRIPTION = "Gain money from the supply as per your Loan intake level. Collect a Promissory Note and move up 1 step on the Finance Sector Track";
 }

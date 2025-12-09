@@ -12,4 +12,7 @@ class ShareAction extends MainAction {
   public function actionType(): AT {
     return AT::SHARE;
   }
+
+  /** Constants - Misc */
+  const DESCRIPTION = "Buy a Share of any one opponent directly. Be eligible for Dividends and improve your endgame Asset Value.";
 }

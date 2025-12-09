@@ -2,55 +2,52 @@
 namespace Bga\Games\tycoonindianew\Model\Card;
 
 use Bga\Games\tycoonindianew\Effect\Effect;
-use Bga\Games\tycoonindianew\Registry\EffectRegistry;
-use Bga\Games\tycoonindianew\Registry\RegistryKeyPrefix;
+use Bga\Games\tycoonindianew\Multiplier\DynamicMultiplier;
 use Bga\Games\tycoonindianew\Type\EffectType;
 use Bga\Games\tycoonindianew\Type\FungibleType as FT;
 
 /**
  * Represents corporate agenda cards that return endgame favor to owners based on conditions
+ * @property Effect $endgameFavor Endgame favor configuration for this corporate agenda card
  */
 abstract class CorporateAgendaCard extends Card {
+
+  public function __construct($args) {
+    parent::__construct($args);
+
+    $effectArgs = [
+      "fieldName" => CorporateAgendaCard::FIELD_ENDGAME_FAVOR,
+      "type" => EffectType::GAIN,
+      "fungibleType" => FT::FAVOR,
+      "amount" => 1,
+      "multiplier" => new DynamicMultiplier([$this, "obtainEndgameFavorMultiplier"]),
+      "condition" => null,
+      "spec" => null,
+      "next" => null,
+      "trigger" => null,
+      "roundDown" => false
+    ];
+
+    $this->assignEffect($effectArgs);
+  }
 
   /**
    * Corporate agendas do not have any static fields
    * @return array
    */
   public static function staticFieldsList(): array {
-    return [];
+    return [...[self::FIELD_ENDGAME_FAVOR], ...parent::staticFieldsList()];
   }
 
+  /**
+   * Static field args common to all corporate agenda cards, if any
+   * @return array
+   */
   public static function staticFieldArgs(): array {
-    return [];
+    return [...parent::staticFieldArgs(), ...[]];
   }
 
-  /**
-   * Returns 0 as corporate agenda cards do not give any end game asset value
-   * @return int End game asset value
-   */
-  public function applyEndgameAssetValue(int $player_id): void {
-    // Do nothing
-  }
-
-  /**
-   * Returns 0 as corporate agenda cards do not give any end game influence
-   * @return int End game influence
-   */
-  public function applyEndgameInfluence(int $player_id): void {
-    // Do nothing
-  }
-
-  /**
-   * Apply the computed endgame favor effect to the given player
-   * @param int $player_id
-   * @param int $favor
-   * @return void
-   */
-  protected function applyEndgameFavorEffect(int $player_id, int $favor): void {
-    $this->applyEndgameEffect($player_id, FT::FAVOR, $favor);
-  }
-
-  /**
+  /** 
    * Corporate agendas can be gained
    * @return bool
    */
@@ -66,6 +63,17 @@ abstract class CorporateAgendaCard extends Card {
     return false;
   }
 
+  /**
+   * Obtain the endgame favor multiplier for given player for the specific corporate agenda card calling this function (from its effect's multiplier)
+   * @param int $playerId
+   * @return float
+   */
+  abstract public function obtainEndgameFavorMultiplier(int $playerId): float;
+
+  /** Constants - Field names */
+  const FIELD_ENDGAME_FAVOR = "endgameFavor";
+
+  /** Constants - Cards metadata */
   const FILEPATH = "/../../CorporateAgenda/list.inc.php";
   const CLASSPATH = "\Bga\Games\\tycoonindianew\CorporateAgenda";
 }

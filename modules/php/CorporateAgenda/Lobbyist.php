@@ -7,25 +7,27 @@ use Bga\Games\tycoonindianew\Model\Card\CorporateAgendaCard;
 class Lobbyist extends CorporateAgendaCard {
 
   /**
-   * Returns the end game favor this corporate agenda card gives to eligible player(s)
-   * @return int End game favor
+   * Obtain endgame favor for given player based on their endgame money in hand
+   * @param int $playerId
+   * @return float
    */
-  public function applyEndgameFavor(int $player_id): void {
-    $favor = 0;
+  public function obtainEndgameFavorMultiplier(int $playerId): float {
+    $multiplier = 0.0;
 
-    if (!is_null($player_id)) {
-      $policies_gained = (int) IndustrialistManager::getPlayerCounterValue($player_id, IndustrialistManager::COUNTER_INDUSTRIALIST_POLICIES_GAINED);
-      foreach (self::ENDGAME_FAVOR as $threshold => $_favor) {
+    // If the player is the owner of the corporate agenda, then evaluate and return specific multiplier
+    if (!is_null($playerId) && $playerId === $this->cardLocationArg) {
+      $policies_gained = (int) IndustrialistManager::getPlayerCounterValue($playerId, IndustrialistManager::COUNTER_INDUSTRIALIST_POLICIES_GAINED);
+      foreach (self::FAVOR_REFERENCE as $threshold => $favor) {
         if ($policies_gained >= $threshold) {
-          $favor = $_favor;
+          $multiplier = $favor;
         }
         else {
           break;
         }
       }
-
-      $this->applyEndgameFavorEffect($player_id, $favor);
     }
+
+    return $multiplier;
   }
   
   /**
@@ -33,5 +35,5 @@ class Lobbyist extends CorporateAgendaCard {
    */
   const NAME = "Lobbyist";
   const DESCRIPTION = "Own a lot of policies";
-  const ENDGAME_FAVOR = [4 => 2, 5 => 5, 6 => 8, 7 => 10];
+  const FAVOR_REFERENCE = [4 => 2, 5 => 5, 6 => 8, 7 => 10];
 }

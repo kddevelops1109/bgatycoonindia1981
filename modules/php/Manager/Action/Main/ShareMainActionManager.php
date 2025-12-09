@@ -26,7 +26,7 @@ class ShareMainActionManager extends MainActionManager {
     $args = [
       TokenSpace::FIELD_SPACE_ID => SMAS::generateSpaceId(null),
       TokenSpace::FIELD_OCCUPIED => false,
-      ActionSpace::FIELD_ACTION => ShareAction::instance("Buy a Share of any one opponent directly. Be eligible for Dividends and improve your endgame Asset Value.")
+      ActionSpace::FIELD_ACTION => ShareAction::instance()
     ];
 
     SMAS::instance($args)->insert();

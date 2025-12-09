@@ -1,36 +1,33 @@
 <?php
 namespace Bga\Games\tycoonindianew\CorporateAgenda;
 
-use Bga\Games\tycoonindianew\Effect\Effect;
-use Bga\Games\tycoonindianew\Effect\Gain;
 use Bga\Games\tycoonindianew\Manager\IndustrialistManager;
 use Bga\Games\tycoonindianew\Model\Card\CorporateAgendaCard;
-use Bga\Games\tycoonindianew\Registry\EffectRegistry;
-use Bga\Games\tycoonindianew\Registry\RegistryKeyPrefix;
-use Bga\Games\tycoonindianew\Type\EffectType;
-use Bga\Games\tycoonindianew\Type\FungibleType as FT;
 
 class Industrialization extends CorporateAgendaCard {
 
   /**
-   * Returns the end game favor this corporate agenda card gives to eligible player(s)
-   * @return int End game favor
+   * Obtain endgame favor for given player based on their endgame money in hand
+   * @param int $playerId
+   * @return float
    */
-  public function applyEndgameFavor(int $player_id): void {
-    $favor = 0;
+  public function obtainEndgameFavorMultiplier(int $playerId): float {
+    $multiplier = 0.0;
 
-    if (!is_null($player_id)) {
-      $built_plants = (int) IndustrialistManager::getPlayerCounterValue($player_id, IndustrialistManager::COUNTER_INDUSTRIALIST_BUILT_PLANTS);
-      foreach (self::ENDGAME_FAVOR as $threshold => $_favor) {
+    // If the player is the owner of the corporate agenda, then evaluate and return specific multiplier
+    if (!is_null($playerId) && $playerId === $this->cardLocationArg) {
+      $built_plants = (int) IndustrialistManager::getPlayerCounterValue($playerId, IndustrialistManager::COUNTER_INDUSTRIALIST_BUILT_PLANTS);
+      foreach (self::ENDGAME_FAVOR as $threshold => $favor) {
         if ($built_plants >= $threshold) {
-          $favor = $_favor;
+          $multiplier = $favor;
         }
         else {
           break;
         }
       }
-      $this->applyEndgameFavorEffect($player_id, $favor);
     }
+
+    return $multiplier;
   }
   
   /**

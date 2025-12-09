@@ -1,21 +1,24 @@
 <?php
 namespace Bga\Games\tycoonindianew\CorporateAgenda;
 
-use Bga\Games\tycoonindianew\Manager\IndustrialistManager;
 use Bga\Games\tycoonindianew\Model\Card\CorporateAgendaCard;
 
 class Monopoly extends CorporateAgendaCard {
 
   /**
-   * Returns the end game favor this corporate agenda card gives to eligible player(s)
-   * @return int End game favor
+   * Obtain endgame favor for given player based on their endgame money in hand
+   * @param int $playerId
+   * @return float
    */
-  public function applyEndgameFavor(int $player_id): void {
-    $favor = 0;
+  public function obtainEndgameFavorMultiplier(int $playerId): float {
+    $multiplier = 0.0;
 
-    if (!is_null($player_id)) {
-      $this->applyEndgameFavorEffect($player_id, $favor);
+    // If the player is the owner of the corporate agenda, then evaluate and return specific multiplier
+    if (!is_null($playerId) && $playerId === $this->cardLocationArg) {
+      // TODO: Implement
     }
+
+    return $multiplier;
   }
   
   /**
@@ -23,5 +26,5 @@ class Monopoly extends CorporateAgendaCard {
    */
   const NAME = "Monopoly";
   const DESCRIPTION = "Own a lot of industry cards of the same sector";
-  const ENDGAME_FAVOR = [30 => 1, 60 => 4, 100 => 8, 150 => 14];
+  const FAVOR_REFERENCE = [30 => 1, 60 => 4, 100 => 8, 150 => 14];
 }

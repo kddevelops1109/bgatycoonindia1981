@@ -12,4 +12,7 @@ class PoliticsAction extends MainAction {
   public function actionType(): AT {
     return AT::POLITICS;
   }
+
+  /** Constants - Misc */
+  const DESCRIPTION = "Gain all the “Politics” bonuses printed on each of your Policies. Then, gain a Favor token.";
 }

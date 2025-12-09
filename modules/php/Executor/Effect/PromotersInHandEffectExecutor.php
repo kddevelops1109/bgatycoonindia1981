@@ -13,22 +13,22 @@ use BgaUserException;
 
 class PromotersInHandEffectExecutor extends EffectExecutor {
 
-  public function applyEffect(?int $player_id, Effect $effect): void {
+  public function applyEffect(?int $playerId, Effect $effect): void {
     if ($effect->fungibleType != FT::PROMOTERS_IN_HAND) {
       throw new InvalidArgumentException("Effect needs to be Promoters in Hand one for PromotersInHandEffectExecutor");
     }
 
-    if (is_null($player_id)) {
+    if (is_null($playerId)) {
       throw new InvalidArgumentException("Player id must not be null for executing Promoters in Hand Effect");
     }
 
     if ($effect->condition->evaluate() == ConditionStatus::PASS) {
       $delta = $effect->multiplier * $effect->amount;
       if ($effect instanceof Gain) {
-        IndustrialistManager::incPlayerCounter($player_id, IndustrialistManager::COUNTER_INDUSTRIALIST_PROMOTERS_IN_HAND, $delta);
+        IndustrialistManager::incPlayerCounter($playerId, IndustrialistManager::COUNTER_INDUSTRIALIST_PROMOTERS_IN_HAND, $delta);
       }
       else {
-        IndustrialistManager::decPlayerCounter($player_id, IndustrialistManager::COUNTER_INDUSTRIALIST_PROMOTERS_IN_HAND, $delta);
+        IndustrialistManager::decPlayerCounter($playerId, IndustrialistManager::COUNTER_INDUSTRIALIST_PROMOTERS_IN_HAND, $delta);
       }
     }
   }

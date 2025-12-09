@@ -5,11 +5,10 @@ use Bga\Games\tycoonindianew\Effect\Effect;
 use Bga\Games\tycoonindianew\Filter\DBFilter;
 
 use Bga\Games\tycoonindianew\Contracts\Fungible;
-
+use Bga\Games\tycoonindianew\Effect\EffectKeyGenerator;
 use Bga\Games\tycoonindianew\Manager\DBManager;
 
 use Bga\Games\tycoonindianew\Model\DBObject as DBO;
-
 use Bga\Games\tycoonindianew\Query\SelectDBQuery;
 
 use Bga\Games\tycoonindianew\Registry\EffectRegistry;
@@ -18,9 +17,7 @@ use Bga\Games\tycoonindianew\Registry\RegistryKeyPrefix;
 
 use Bga\Games\tycoonindianew\Type\CardType;
 use Bga\Games\tycoonindianew\Type\DataType as DT;
-use Bga\Games\tycoonindianew\Type\EffectType;
 use Bga\Games\tycoonindianew\Type\FilterType;
-use Bga\Games\tycoonindianew\Type\FungibleType as FT;
 use Bga\Games\tycoonindianew\Type\OperatorType;
 use Bga\Games\tycoonindianew\Type\QueryStatus;
 
@@ -42,8 +39,10 @@ abstract class Card extends DBO implements Fungible {
 
   public function __construct($args) {
     $this->primaryKey = self::dbFieldMappings()[self::COLUMN_CARD_ID];
-    $this->cardName = static::NAME;
-    
+    if (!array_key_exists(self::FIELD_CARD_NAME, $args)) {
+      $args[self::FIELD_CARD_NAME] = static::NAME;
+    }
+
     parent::__construct($args);
   }
 
@@ -57,6 +56,22 @@ abstract class Card extends DBO implements Fungible {
       self::COLUMN_CARD_NAME => ["name" => self::FIELD_CARD_NAME, "type" => DT::STRING, "column" => self::COLUMN_CARD_NAME, "readOnly" => false],
       self::COLUMN_CARD_PROMOTERS => ["name" => self::FIELD_CARD_PROMOTERS, "type" => DT::INT, "column" => self::COLUMN_CARD_PROMOTERS, "readOnly" => false]
     ];
+  }
+
+  /**
+   * Static fields list for all cards
+   * @return array
+   */
+  public static function staticFieldsList(): array {
+    return [];
+  }
+
+  /**
+   * Static field args common to all cards, if any
+   * @return array
+   */
+  public static function staticFieldArgs(): array {
+    return [];
   }
 
   /**
@@ -151,43 +166,56 @@ abstract class Card extends DBO implements Fungible {
   // abstract public function play();
 
   /**
-   * End Game Scoring methods
+   * Effect Handling methods
    */
 
   /**
-   * Applies the end game asset value this card gives to given player
+   * Assign given effect to the specific card, based on provided args.
+   * Args are expected to have the following:
+   * - Name of effect field
+   * - Type (Effect type)
+   * - Gain/Loss
+   * - Fungible type
+   * - Amount
+   * - Multiplier
+   * - Condition, if any
+   * - Spec, if any
+   * - Trigger, if any
+   * - Round down
+   * @param array $args
    * @return void
    */
-  abstract public function applyEndgameAssetValue(int $player_id): void;
+  protected function assignEffect(array $args): void {
+    $fieldName = $args["fieldName"];
+    $this->$fieldName = EffectRegistry::instance()->getOrCreate(EffectKeyGenerator::generate($args), $args);
+  }
 
   /**
-   * Applies the end game influence this card gives to given player
+   * Evaluate and apply the given effect for this card
+   * @param string $playerId ID of the player to apply effect to
+   * @param string $fieldName Name of the effect field
    * @return void
    */
-  abstract public function applyEndgameInfluence(int $player_id): void;
-
-  /**
-   * Applies the end game favor this card gives to given player
-   * @return void
-   */
-  abstract public function applyEndgameFavor(int $player_id): void;
-
-  /**
-   * Apply the computed endgame gain effect to the given player
-   * @param int $player_id
-   * @param FT $fungibleType
-   * @param int $amount
-   * @return void
-   */
-  protected function applyEndgameEffect(int $player_id, FT $fungibleType, int $amount): void {
-    $effect = EffectRegistry::instance()->getOrCreate(
-      implode("_", [RegistryKeyPrefix::GAIN_EFFECT, strval($amount), strtolower($fungibleType->value)]),
-      ["type" => EffectType::GAIN, "fungibleType" => FT::FAVOR, "amount" => $amount, "multiplier" => 1]
-    );
-
+  protected function applyEffect(int $playerId, string $fieldName): void {
+    $effect = $this->$fieldName;
     if ($effect instanceof Effect) {
-      $effect->apply($player_id);
+      $effect->apply($playerId);
     }
+  }
+
+  /**
+   * Evaluate the given effect for this card, but do not apply it, just return it to serve the purpose of a review
+   * @param int $playerId
+   * @param string $fieldName
+   * @return int
+   */
+  protected function previewEffect(int $playerId, string $fieldName): int {
+    $effect = $this->$fieldName;
+    if ($effect instanceof Effect) {
+      return $effect->preview($playerId);
+    }
+
+    return 0;
   }
 
   /**

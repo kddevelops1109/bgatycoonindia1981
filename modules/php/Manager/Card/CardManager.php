@@ -9,7 +9,6 @@ use Bga\Games\tycoonindianew\Manager\DBManager;
 use Bga\Games\tycoonindianew\Manager\Manager;
 
 use Bga\Games\tycoonindianew\Model\Card\Card;
-
 use Bga\Games\tycoonindianew\Query\UpdateDBQuery;
 
 use Bga\Games\tycoonindianew\Registry\FilterRegistry;
@@ -24,6 +23,7 @@ use Bga\Games\tycoonindianew\Type\JoinType;
 use Bga\Games\tycoonindianew\Type\OperatorType;
 
 use Bga\Games\tycoonindianew\Util\StringUtil;
+use BgaVisibleSystemException;
 
 #[\AllowDynamicProperties]
 abstract class CardManager implements Manager {
@@ -36,9 +36,9 @@ abstract class CardManager implements Manager {
 
   /**
    * Card deck being managed by this manager
-   * @var mixed
+   * @var array<string, Deck>
    */
-  protected Deck $deck;
+  protected array $decks;
 
   /**
    * Card instances
@@ -114,8 +114,8 @@ abstract class CardManager implements Manager {
                                string $filepath,
                                string $classpath) {
 
-    $this->deck = Game::get()->deckFactory->createDeck(Card::TABLE_NAME);
-    $this->deck->init(Card::TABLE_NAME);
+    $deck = Game::get()->deckFactory->createDeck(Card::TABLE_NAME);
+    $deck->init(Card::TABLE_NAME);
 
     $cards = [];
     for ($i = 0; $i < $cardTypeArg->numCards(); $i++) {
@@ -126,7 +126,7 @@ abstract class CardManager implements Manager {
       ];
     }
 
-    $this->deck->createCards($cards, $cardLocation->value);
+    $deck->createCards($cards, $cardLocation->value);
 
     // Create new card instances, setup card names and shuffle the deck
     $this->createNewCardInstances($cardType, $cardTypeArg, $cardLocation, $filepath, $classpath);
@@ -136,13 +136,15 @@ abstract class CardManager implements Manager {
       [RegistryKeyPrefix::SEARCH_CARD_IN_DECK->value, StringUtil::strSnakeCase($cardType->value), StringUtil::strSnakeCase($cardLocation->value)]
     );
     
-    $this->setupCardNames(
-      StringUtil::strSnakeCase($cardType->value),
-      StringUtil::strSnakeCase($cardLocation->value),
+    $this->setupCardNames($cardType, $cardLocation,
       $searchKey
     );
 
-    $this->deck->shuffle($cardLocation->value);
+    $deck->shuffle($cardLocation->value);
+
+    $deckIdentity = StringUtil::strToKebab($cardType->value) . "-" . StringUtil::strToKebab($cardLocation->value);
+
+    $this->decks[$deckIdentity] = $deck;
   }
 
   /**
@@ -154,11 +156,7 @@ abstract class CardManager implements Manager {
    * @param string $classpath Classpath of specific card to instantiate
    * @return void
    */
-  protected function createNewCardInstances(CardType $cardType,
-                                            CardTypeArg $cardTypeArg,
-                                            CardLocation $cardLocation,
-                                            string $filepath,
-                                            string $classpath) {
+  protected function createNewCardInstances(CardType $cardType, CardTypeArg $cardTypeArg, CardLocation $cardLocation, string $filepath, string $classpath) {
     // Load list of cards
     include_once dirname(__FILE__) . $filepath;
 
@@ -177,45 +175,49 @@ abstract class CardManager implements Manager {
       $className = $classpath . "\\$className";
 
       $args = [
-        Card::FIELD_CARD_TYPE => $cardType->value,
-        Card::FIELD_CARD_TYPE_ARG => $cardTypeArg->value,
-        Card::FIELD_CARD_LOCATION => $cardLocation->value,
-        Card::FIELD_CARD_LOCATION_ARG => $index++,
-        Card::FIELD_CARD_PROMOTERS => 0
+        ...[
+          Card::FIELD_CARD_TYPE => $cardType->value,
+          Card::FIELD_CARD_TYPE_ARG => $cardTypeArg->value,
+          Card::FIELD_CARD_LOCATION => $cardLocation->value,
+          Card::FIELD_CARD_LOCATION_ARG => $index++,
+          Card::FIELD_CARD_NAME => $className::NAME,
+          Card::FIELD_CARD_PROMOTERS => 0
+        ],
+        ...$className::staticFieldArgs()
       ];
 
-      $card = new $className([...$args, ...$className::staticFieldArgs()]);
+      $card = new $className($args);
 
       $this->cards[] = $card;
     }
   }
 
-  protected function setupCardNames(string $cardType, string $cardLocation, string $searchKey) {
+  protected function setupCardNames(CardType $cardType, CardLocation $cardLocation, string $searchKey) {
     $registry = FilterRegistry::instance();
 
     $search_card_type_filter = $registry->getOrCreate(
-      RegistryKeyPrefix::SEARCH_CARD_TYPE->value . "_" . $cardType,
+      RegistryKeyPrefix::SEARCH_CARD_TYPE->value . "_" . StringUtil::strSnakeCase($cardType->value),
       [
         "type" => FilterType::SIMPLE,
         "column" => Card::COLUMN_CARD_TYPE,
         "dataType" => DT::STRING,
         "operator" => OperatorType::EQUALS,
-        "value" => CardType::CORPORATE_AGENDA->value
+        "value" => $cardType->value
       ]
     );
 
     $search_card_location_filter = $registry->getOrCreate(
-      RegistryKeyPrefix::SEARCH_CARD_LOCATION->value . "_" . $cardLocation,
+      RegistryKeyPrefix::SEARCH_CARD_LOCATION->value . "_" . StringUtil::strSnakeCase($cardLocation->value),
       [
         "type" => FilterType::SIMPLE,
         "column" => Card::COLUMN_CARD_LOCATION,
         "dataType" => DT::STRING,
         "operator" => OperatorType::EQUALS,
-        "value" => $cardLocation
+        "value" => $cardLocation->value
       ]
     );
 
-    $index = 0;
+    $index = 1;
     foreach ($this->cards as $card) {
       $search_card_location_arg_filter = $registry->getOrCreate(
         RegistryKeyPrefix::SEARCH_CARD_LOCATION_ARG->value . "_" . $index,
@@ -246,7 +248,19 @@ abstract class CardManager implements Manager {
         ["column" => Card::COLUMN_CARD_NAME, "type" => DT::STRING, "value" => $card->cardName]
       ];
 
-      DBManager::execute(new UpdateDBQuery(Card::TABLE_NAME, $datas, $search_in_deck_filter));
+      $query = new UpdateDBQuery(Card::TABLE_NAME, $datas, $search_in_deck_filter);
+
+      $debug = [
+        "datas" => $datas,
+        "search_in_deck_filter" => $search_in_deck_filter->stringify(),
+        "query" => $query->build()
+      ];
+
+      // throw new BgaVisibleSystemException(print_r($debug, true));
+      // if ($cardType == CardType::POLICY) {
+      // }
+
+      DBManager::execute($query);
     }
   }
 

@@ -1,16 +1,14 @@
 <?php
 namespace Bga\Games\tycoonindianew\Policy\SecondAge;
 
-use Bga\Games\tycoonindianew\Condition\NullCondition;
-
 use Bga\Games\tycoonindianew\Effect\Effect;
+use Bga\Games\tycoonindianew\Effect\EffectKeyGenerator;
 
 use Bga\Games\tycoonindianew\Model\Card\Policy\LiberalPolicyCard;
 
-use Bga\Games\tycoonindianew\Registry\EffectRegistry;
-use Bga\Games\tycoonindianew\Registry\RegistryKeyPrefix;
+use Bga\Games\tycoonindianew\Multiplier\StaticMultiplier;
 
-use Bga\Games\tycoonindianew\Spec\NullSpec;
+use Bga\Games\tycoonindianew\Registry\EffectRegistry;
 
 use Bga\Games\tycoonindianew\Type\EffectType;
 use Bga\Games\tycoonindianew\Type\FungibleType as FT;
@@ -25,7 +23,7 @@ use Bga\Games\tycoonindianew\Type\FungibleType as FT;
  * Immediate Benefit: 20 crores
  * Endgame Favor: 2
  */
-class DebtRecoveryTribunal extends LiberalPolicyCard {
+class DebtRecoveryTribunals extends LiberalPolicyCard {
 
   /**
    * Returns the politics bonus given by this liberal policy card
@@ -36,31 +34,35 @@ class DebtRecoveryTribunal extends LiberalPolicyCard {
       "type" => EffectType::GAIN,
       "fungibleType" => FT::MONEY,
       "amount" => 10,
-      "condition" => NullCondition::get(),
-      "spec" => NullSpec::get(),
-      "multiplier" => 1,
+      "multiplier" => StaticMultiplier::instance(1),
+      "condition" => null,
+      "spec" => null,
+      "next" => null,
+      "trigger" => null,
       "roundDown" => false
     ];
 
-    return EffectRegistry::instance()->getOrCreate(RegistryKeyPrefix::GAIN_EFFECT . "_10_" . strtolower(FT::MONEY->value), $args);
+    return EffectRegistry::instance()->getOrCreate(EffectKeyGenerator::generate($args), $args);
   }
 
   /**
    * Returns the immediate benefit given by this liberal policy card
-   * @return Effect
+   * @return Effect|null
    */
-  public static function immediateBenefit(): Effect {
+  public static function immediateBenefit(): ?Effect {
     $args = [
       "type" => EffectType::GAIN,
       "fungibleType" => FT::MONEY,
       "amount" => 20,
-      "condition" => NullCondition::get(),
-      "spec" => NullSpec::get(),
-      "multiplier" => 1,
+      "multiplier" => StaticMultiplier::instance(1),
+      "condition" => null,
+      "spec" => null,
+      "next" => null,
+      "trigger" => null,
       "roundDown" => false
     ];
 
-    return EffectRegistry::instance()->getOrCreate(RegistryKeyPrefix::GAIN_EFFECT . "_20_" . strtolower(FT::MONEY->value), $args);
+    return EffectRegistry::instance()->getOrCreate(EffectKeyGenerator::generate($args), $args);
   }
 
   /**

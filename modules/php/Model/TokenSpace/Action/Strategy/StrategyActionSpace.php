@@ -1,19 +1,21 @@
 <?php
 namespace Bga\Games\tycoonindianew\Model\TokenSpace\Action\Strategy;
 
+use InvalidArgumentException;
+
 use Bga\Games\tycoonindianew\Effect\Effect;
 
 use Bga\Games\tycoonindianew\Model\TokenSpace\Action\ActionSpace;
-
+use Bga\Games\tycoonindianew\Multiplier\StaticMultiplier;
 use Bga\Games\tycoonindianew\Registry\EffectRegistry;
 use Bga\Games\tycoonindianew\Registry\RegistryKeyPrefix;
-
+use Bga\Games\tycoonindianew\Spec\NullSpec;
+use Bga\Games\tycoonindianew\Spec\Spec;
 use Bga\Games\tycoonindianew\Type\DataType as DT;
 use Bga\Games\tycoonindianew\Type\EffectType;
 use Bga\Games\tycoonindianew\Type\FungibleType as FT;
 
 use Bga\Games\tycoonindianew\Util\StringUtil;
-use InvalidArgumentException;
 
 /**
  * Represents a strategy action space
@@ -91,7 +93,7 @@ abstract class StrategyActionSpace extends ActionSpace {
   public static function generateCost(int $cost): Effect {
     return EffectRegistry::instance()->getOrCreate(
       RegistryKeyPrefix::LOSE_EFFECT->value . "_" . $cost . str_replace("_", "-", strtolower(FT::PROMOTERS_IN_POOL->value)),
-      ["type" => EffectType::LOSS, "fungibleType" => FT::PROMOTERS_IN_POOL, "amount" => $cost, "condition" => null, "spec" => null, "multiplier" => 1, "roundDown" => false]
+      ["type" => EffectType::LOSS, "fungibleType" => FT::PROMOTERS_IN_POOL, "amount" => $cost, "multiplier" => StaticMultiplier::instance(1), "condition" => null, "spec" => null, "next" => null, "trigger" => null, "roundDown" => false]
     );
   }
 
@@ -99,12 +101,15 @@ abstract class StrategyActionSpace extends ActionSpace {
    * Generate and register effect for given reward. This ensures that the Effect is registered, and we just retrieve the registered effect if already entered into the effect registry.
    * @param FT $fungibleType
    * @param int $amount
+   * @param Spec|null $spec
    * @return Effect
    */
-  public static function generateReward(FT $fungibleType, int $amount): Effect {
+  public static function generateReward(FT $fungibleType, int $amount, ?Spec $spec): Effect {
+    $spec = $spec ?? NullSpec::get();
+
     return EffectRegistry::instance()->getOrCreate(
       RegistryKeyPrefix::GAIN_EFFECT->value . "_" . $amount . str_replace("_", "-", strtolower($fungibleType->value)),
-      ["type" => EffectType::GAIN, "fungibleType" => $fungibleType, "amount" => $amount, "condition" => null, "spec" => null, "multiplier" => 1, "roundDown" => false]
+      ["type" => EffectType::GAIN, "fungibleType" => $fungibleType, "amount" => $amount, "multiplier" => StaticMultiplier::instance(1), "condition" => null, "spec" => $spec, "next" => null, "trigger" => null, "roundDown" => false]
     );
   }
 

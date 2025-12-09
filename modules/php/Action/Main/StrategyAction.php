@@ -21,4 +21,7 @@ class StrategyAction extends MainAction {
   public function strategyActionType(): SAT {
     return SAT::STRATEGY;
   }
+
+  /** Constants - Misc */
+  const DESCRIPTION = "Discard a number of Promoters to gain any 1 bonus printed on one of the available Strategy Actions spaces.";
 }

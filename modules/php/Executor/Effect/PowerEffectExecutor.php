@@ -13,19 +13,19 @@ use BgaUserException;
 
 class PowerEffectExecutor extends EffectExecutor {
 
-  public function applyEffect(?int $player_id, Effect $effect): void {
+  public function applyEffect(?int $playerId, Effect $effect): void {
     if ($effect->fungibleType != FT::POWER) {
       throw new InvalidArgumentException("Effect needs to be Power one for PowerEffectExecutor");
     }
 
-    if (is_null($player_id)) {
+    if (is_null($playerId)) {
       throw new InvalidArgumentException("Player id must not be null for executing Power Effect");
     }
 
     if ($effect->condition->evaluate() == ConditionStatus::PASS) {
       $delta = $effect->multiplier * $effect->amount;
       if ($effect instanceof Gain) {
-        IndustrialistManager::incPlayerCounter($player_id, IndustrialistManager::COUNTER_INDUSTRIALIST_POWER, $delta);
+        IndustrialistManager::incPlayerCounter($playerId, IndustrialistManager::COUNTER_INDUSTRIALIST_POWER, $delta);
       }
       else {
         throw new BgaUserException("Players cannot lose sector production");

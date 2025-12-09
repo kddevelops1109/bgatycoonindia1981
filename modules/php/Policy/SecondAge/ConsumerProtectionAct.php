@@ -4,11 +4,13 @@ namespace Bga\Games\tycoonindianew\Policy\SecondAge;
 use Bga\Games\tycoonindianew\Condition\NullCondition;
 
 use Bga\Games\tycoonindianew\Effect\Effect;
+use Bga\Games\tycoonindianew\Effect\EffectKeyGenerator;
 
 use Bga\Games\tycoonindianew\Model\Card\Policy\LiberalPolicyCard;
 
+use Bga\Games\tycoonindianew\Multiplier\StaticMultiplier;
+
 use Bga\Games\tycoonindianew\Registry\EffectRegistry;
-use Bga\Games\tycoonindianew\Registry\RegistryKeyPrefix;
 
 use Bga\Games\tycoonindianew\Spec\NullSpec;
 
@@ -36,31 +38,35 @@ class ConsumerProtectionAct extends LiberalPolicyCard {
       "type" => EffectType::GAIN,
       "fungibleType" => FT::INFLUENCE,
       "amount" => 2,
-      "condition" => NullCondition::get(),
-      "spec" => NullSpec::get(),
-      "multiplier" => 1,
+      "multiplier" => StaticMultiplier::instance(1),
+      "condition" => null,
+      "spec" => null,
+      "next" => null,
+      "trigger" => null,
       "roundDown" => false
     ];
 
-    return EffectRegistry::instance()->getOrCreate(RegistryKeyPrefix::GAIN_EFFECT . "_2_" . strtolower(FT::INFLUENCE->value), $args);
+    return EffectRegistry::instance()->getOrCreate(EffectKeyGenerator::generate($args), $args);
   }
 
   /**
    * Returns the immediate benefit given by this liberal policy card
-   * @return Effect
+   * @return Effect|null
    */
-  public static function immediateBenefit(): Effect {
+  public static function immediateBenefit(): ?Effect {
     $args = [
       "type" => EffectType::GAIN,
       "fungibleType" => FT::INFLUENCE,
       "amount" => 5,
-      "condition" => NullCondition::get(),
-      "spec" => NullSpec::get(),
-      "multiplier" => 1,
+      "multiplier" => StaticMultiplier::instance(1),
+      "condition" => null,
+      "spec" => null,
+      "next" => null,
+      "trigger" => null,
       "roundDown" => false
     ];
 
-    return EffectRegistry::instance()->getOrCreate(RegistryKeyPrefix::GAIN_EFFECT . "_5_" . strtolower(FT::INFLUENCE->value), $args);
+    return EffectRegistry::instance()->getOrCreate(EffectKeyGenerator::generate($args), $args);
   }
 
   /**

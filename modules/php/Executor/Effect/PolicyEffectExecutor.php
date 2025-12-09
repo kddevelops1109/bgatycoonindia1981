@@ -10,12 +10,12 @@ use Bga\Games\tycoonindianew\Type\FungibleType as FT;
 
 class PolicyEffectExecutor extends EffectExecutor {
 
-  public function applyEffect(?int $player_id, Effect $effect): void {
+  public function applyEffect(?int $playerId, Effect $effect): void {
     if ($effect->fungibleType != FT::POLICY) {
       throw new InvalidArgumentException("Effect needs to be Policy one for PolicyEffectExecutor");
     }
 
-    if (is_null($player_id)) {
+    if (is_null($playerId)) {
       throw new InvalidArgumentException("Player id must not be null for executing Policy Effect");
     }
 

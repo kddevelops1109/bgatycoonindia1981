@@ -26,7 +26,7 @@ class BuildMainActionManager extends MainActionManager {
     $args = [
       TokenSpace::FIELD_SPACE_ID => BMAS::generateSpaceId(null),
       TokenSpace::FIELD_OCCUPIED => false,
-      ActionSpace::FIELD_ACTION => BuildAction::instance("Build an Industrial plant on any city on the Map. Pay the building costs to the leaders, and gain 4 bonuses.")
+      ActionSpace::FIELD_ACTION => BuildAction::instance()
     ];
 
     BMAS::instance($args)->insert();

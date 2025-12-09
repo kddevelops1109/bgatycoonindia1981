@@ -38,9 +38,9 @@ class OfficeStrategyMainActionManager extends SAM {
     $action = OSA::instance(\clienttranslate("Discard 5 Promoters to add an unused available plant of your player color, to any empty city of your choice. Gain the Region and City bonus immediately. This plant acts as a regular plant on the map for all other purposes henceforth."));
 
     return [
-      ["cost" => SAS::generateCost(5), "reward" => SAS::generateReward(FT::PLANT, 1), "index" => 1, "action" => $action, "occupied" => false],
-      ["cost" => SAS::generateCost(5), "reward" => SAS::generateReward(FT::PLANT, 1), "index" => 2, "action" => $action, "occupied" => false],
-      ["cost" => SAS::generateCost(5), "reward" => SAS::generateReward(FT::PLANT, 1), "index" => 3, "action" => $action, "occupied" => false]
+      ["cost" => SAS::generateCost(5), "reward" => SAS::generateReward(FT::PLANT, 1, null), "index" => 1, "action" => $action, "occupied" => false],
+      ["cost" => SAS::generateCost(5), "reward" => SAS::generateReward(FT::PLANT, 1, null), "index" => 2, "action" => $action, "occupied" => false],
+      ["cost" => SAS::generateCost(5), "reward" => SAS::generateReward(FT::PLANT, 1, null), "index" => 3, "action" => $action, "occupied" => false]
     ];
   }
 }
