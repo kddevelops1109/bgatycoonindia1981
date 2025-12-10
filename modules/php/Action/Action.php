@@ -2,6 +2,8 @@
 namespace Bga\Games\tycoonindianew\Action;
 
 use Bga\Games\tycoonindianew\Contracts\Fungible;
+use Bga\Games\tycoonindianew\Contracts\Operation;
+
 use Bga\Games\tycoonindianew\Type\ActionCategory as AC;
 use Bga\Games\tycoonindianew\Type\ActionExecution as AE;
 use Bga\Games\tycoonindianew\Type\ActionType as AT;
@@ -12,9 +14,14 @@ use Bga\Games\tycoonindianew\Type\ActionType as AT;
  * - Free actions taken anytime during the game
  * - Merit actions taken anytime during the game
  * Gane actions are fungibles as they can be gained
- * @property string $description Description of the action
  */
-abstract class Action implements Fungible {
+abstract class Action implements Fungible, Operation {
+
+  /**
+   * Description of the action
+   * @var string
+   */
+  protected string $description;
 
   /**
    * Static array of instances

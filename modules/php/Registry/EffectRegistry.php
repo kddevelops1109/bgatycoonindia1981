@@ -49,15 +49,19 @@ class EffectRegistry extends Registry {
       $args["spec"] = NullSpec::get();
     }
 
-    if (!array_key_exists("nexts", $args)) {
+    if (!array_key_exists("next", $args)) {
       $args["next"] = null;
     }
 
+    if (!array_key_exists("trigger", $args)) {
+      $args["trigger"] = null;
+    }
+
     if (array_key_exists("type", $args) && $args["type"] == EffectType::GAIN) {
-      return new Gain($args["fungibleType"], (int) $args["amount"], $args["multiplier"], $args["condition"], $args["spec"], $args["next"], $args["roundDown"]);
+      return new Gain($args["fungibleType"], (int) $args["amount"], $args["multiplier"], $args["condition"], $args["spec"], $args["next"], $args["trigger"], $args["roundDown"]);
     }
     else {
-      return new Loss($args["fungibleType"], (int) $args["amount"], $args["multiplier"], $args["condition"], $args["spec"], $args["next"], $args["roundDown"]);
+      return new Loss($args["fungibleType"], (int) $args["amount"], $args["multiplier"], $args["condition"], $args["spec"], $args["next"], $args["trigger"], $args["roundDown"]);
     }
   }
 }

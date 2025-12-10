@@ -92,3 +92,12 @@ CREATE TABLE IF NOT EXISTS `tycoon_main_action_space` (
   FOREIGN KEY(`token`) REFERENCES `tycoon_token`(`card_id`),
   FOREIGN KEY(`player_id`) REFERENCES `player`(`player_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `tycoon_trigger` (
+  `id` varchar(100) NOT NULL,
+  `key` varchar(100) NOT NULL,
+  `player_id` int(10) unsigned NOT NULL,
+  `state` varchar(100) NOT NULL,
+  PRIMARY KEY(`id`),
+  FOREIGN KEY(`player_id`) REFERENCES `player`(`player_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -1,7 +1,7 @@
 <?php
 namespace Bga\Games\tycoonindianew\Policy\FirstAge;
 
-use Bga\Games\tycoonindianew\Condition\NullCondition;
+use Bga\Games\tycoonindianew\Action\Main\ShareAction;
 
 use Bga\Games\tycoonindianew\Effect\Effect;
 use Bga\Games\tycoonindianew\Effect\EffectKeyGenerator;
@@ -12,10 +12,10 @@ use Bga\Games\tycoonindianew\Multiplier\StaticMultiplier;
 
 use Bga\Games\tycoonindianew\Registry\EffectRegistry;
 
-use Bga\Games\tycoonindianew\Spec\NullSpec;
-
+use Bga\Games\tycoonindianew\Trigger\TriggerDefinition;
 use Bga\Games\tycoonindianew\Type\EffectType;
 use Bga\Games\tycoonindianew\Type\FungibleType as FT;
+use Bga\Games\tycoonindianew\Util\StringUtil;
 
 /**
  * Name: Monopolies and Restrictive Trade Practices Act
@@ -34,7 +34,6 @@ class MonopoliesAndRestrictiveTradePracticesAct extends EconomicPolicyCard {
    * @return Effect
    */
   public static function passiveBenefit(): Effect {
-    // TODO: Update trigger to Share action
     $args = [
       "type" => EffectType::GAIN,
       "fungibleType" => FT::INFLUENCE,
@@ -43,7 +42,7 @@ class MonopoliesAndRestrictiveTradePracticesAct extends EconomicPolicyCard {
       "condition" => null,
       "spec" => null,
       "next" => null,
-      "trigger" => null,
+      "trigger" => TriggerDefinition::instance(StringUtil::classToKebab(self::class), ShareAction::instance()),
       "roundDown" => false
     ];
 

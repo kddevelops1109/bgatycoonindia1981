@@ -1,8 +1,6 @@
 <?php
 namespace Bga\Games\tycoonindianew\Policy\FirstAge;
 
-use Bga\Games\tycoonindianew\Condition\NullCondition;
-
 use Bga\Games\tycoonindianew\Effect\Effect;
 use Bga\Games\tycoonindianew\Effect\EffectKeyGenerator;
 
