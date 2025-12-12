@@ -7,8 +7,8 @@ enum CardTypeArg: int {
   case AGE_I_POLICY = 3;
   case AGE_II_POLICY = 4;
   case MERIT = 5;
-  case PLANNING_COMMISION_A = 6;
-  case PLANNING_COMMISION_B = 7;
+  case PLANNING_COMMISSION_A = 6;
+  case PLANNING_COMMISSION_B = 7;
   case CORPORATE_AGENDA = 8;
   case AGE_I_HEADLINE = 9;
   case AGE_II_HEADLINE = 10;
@@ -25,8 +25,8 @@ enum CardTypeArg: int {
       self::AGE_I_POLICY => 10,
       self::AGE_II_POLICY => 12,
       self::MERIT => 30,
-      self::PLANNING_COMMISION_A => 5,
-      self::PLANNING_COMMISION_B => 7,
+      self::PLANNING_COMMISSION_A => 5,
+      self::PLANNING_COMMISSION_B => 7,
       self::CORPORATE_AGENDA => 8,
       self::AGE_I_HEADLINE => 7,
       self::AGE_II_HEADLINE => 5,

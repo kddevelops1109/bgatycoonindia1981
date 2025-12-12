@@ -1,12 +1,13 @@
 <?php
 namespace Bga\Games\tycoonindianew\Model\Card\Policy;
 
-use Bga\Games\tycoonindianew\Condition\NullCondition;
 use Bga\Games\tycoonindianew\Effect\Effect;
 use Bga\Games\tycoonindianew\Effect\EffectKeyGenerator;
+
 use Bga\Games\tycoonindianew\Multiplier\StaticMultiplier;
+
 use Bga\Games\tycoonindianew\Registry\EffectRegistry;
-use Bga\Games\tycoonindianew\Spec\NullSpec;
+
 use Bga\Games\tycoonindianew\Type\CardAge;
 use Bga\Games\tycoonindianew\Type\EffectType;
 use Bga\Games\tycoonindianew\Type\FungibleType as FT;

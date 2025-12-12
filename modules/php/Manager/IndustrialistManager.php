@@ -221,6 +221,12 @@ class IndustrialistManager implements Manager {
       self::COUNTER_INDUSTRIALIST_LEAST_SHARE_VALUE,
       self::COUNTER_INDUSTRIALIST_UNBUILT_PLANTS,
       self::COUNTER_INDUSTRIALIST_BUILT_PLANTS,
+      self::COUNTER_INDUSTRIALIST_PLANTS_IN_NORTH_INDIA,
+      self::COUNTER_INDUSTRIALIST_PLANTS_IN_EAST_INDIA,
+      self::COUNTER_INDUSTRIALIST_PLANTS_IN_WEST_INDIA,
+      self::COUNTER_INDUSTRIALIST_PLANTS_IN_SOUTH_INDIA,
+      self::COUNTER_INDUSTRIALIST_CONNECTED_PLANTS_IN_SERIES,
+      self::COUNTER_INDUSTRIALIST_STRATEGY_SPACES_COVERED,
       self::COUNTER_INDUSTRIALIST_POLICIES_GAINED,
       self::COUNTER_INDUSTRIALIST_INDUSTRIES_OWNED,
       self::COUNTER_INDUSTRIALIST_FINANCE_INDUSTRIES,
@@ -371,6 +377,12 @@ class IndustrialistManager implements Manager {
     return self::$industrialists;
   }
 
+  /**
+   * Initial value of given counter for given player
+   * @param mixed $counterName
+   * @param mixed $player_no
+   * @return int
+   */
   public static function initialValue($counterName, $player_no) {
     $value = 0;
 
@@ -403,6 +415,20 @@ class IndustrialistManager implements Manager {
     }
 
     return $value;
+  }
+
+  /**
+   * Get the opponent player ids for a player
+   * @param int $playerId
+   * @return array<int>
+   */
+  public static function getOpponentPlayerIds(int $playerId): array {
+    $opponentPlayerIds = [];
+    foreach (self::$industrialists as $industrialist) {
+      $opponentPlayerIds[] = $industrialist->getPrimaryKeyFieldValue();
+    }
+
+    return $opponentPlayerIds;
   }
 
   /**
@@ -444,14 +470,20 @@ class IndustrialistManager implements Manager {
     elseif ($counterName == self::COUNTER_INDUSTRIALIST_TYCOON_ACTIONS_REMAINING) {
       $max = self::MAX_TYCOON_ACTIONS;
     }
-    elseif ($counterName == self::COUNTER_INDUSTRIALIST_SHARES_REMAINING) {
+    elseif ($counterName == self::COUNTER_INDUSTRIALIST_SHARES_REMAINING || $counterName == self::COUNTER_INDUSTRIALIST_STRATEGY_SPACES_COVERED) {
       $max = self::MAX_SHARES_REMAINING;
     }
     elseif ($counterName == self::COUNTER_INDUSTRIALIST_UNBUILT_PLANTS) {
       $max = self::MAX_UNBUILT_PLANTS;
     }
-    elseif ($counterName == self::COUNTER_INDUSTRIALIST_BUILT_PLANTS) {
+    elseif ($counterName == self::COUNTER_INDUSTRIALIST_BUILT_PLANTS || $counterName == self::COUNTER_INDUSTRIALIST_CONNECTED_PLANTS_IN_SERIES) {
       $max = self::MAX_BUILT_PLANTS;
+    }
+    elseif (in_array(
+      $counterName,
+      [self::COUNTER_INDUSTRIALIST_PLANTS_IN_NORTH_INDIA, self::COUNTER_INDUSTRIALIST_PLANTS_IN_EAST_INDIA, self::COUNTER_INDUSTRIALIST_PLANTS_IN_WEST_INDIA, self::COUNTER_INDUSTRIALIST_PLANTS_IN_SOUTH_INDIA]
+      )) {
+      $max = self::MAX_BUILT_PLANTS_IN_SINGLE_REGION;
     }
 
     return $max;
@@ -509,6 +541,7 @@ class IndustrialistManager implements Manager {
   const MAX_SHARES_REMAINING = 9;
   const MAX_UNBUILT_PLANTS = 9;
   const MAX_BUILT_PLANTS = 9;
+  const MAX_BUILT_PLANTS_IN_SINGLE_REGION = 8;
 
   /** Constants - DB Columns */
   const COLUMN_PLAYER_ID = "playerId";
@@ -543,11 +576,23 @@ class IndustrialistManager implements Manager {
   const COUNTER_INDUSTRIALIST_PLUS_ONE_ACTIONS_REMAINING = "plus_one_actions_remaining";
   const COUNTER_INDUSTRIALIST_TYCOON_ACTIONS_REMAINING = "tycoon_actions_remaining";
 
-  /** Constants - Counters - Misc */
-  const COUNTER_INDUSTRIALIST_SHARES_REMAINING = "shares_remaining";
-  const COUNTER_INDUSTRIALIST_LEAST_SHARE_VALUE = "least_share_value";
+  /** Constants - Counters - Plants */
   const COUNTER_INDUSTRIALIST_UNBUILT_PLANTS = "unbuilt_plants";
   const COUNTER_INDUSTRIALIST_BUILT_PLANTS = "built_plants";
+  const COUNTER_INDUSTRIALIST_PLANTS_IN_NORTH_INDIA = "plants_in_north_india";
+  const COUNTER_INDUSTRIALIST_PLANTS_IN_EAST_INDIA = "plants_in_east_india";
+  const COUNTER_INDUSTRIALIST_PLANTS_IN_WEST_INDIA = "plants_in_west_india";
+  const COUNTER_INDUSTRIALIST_PLANTS_IN_SOUTH_INDIA = "plants_in_south_india";
+  const COUNTER_INDUSTRIALIST_CONNECTED_PLANTS_IN_SERIES = "connected_plants_in_series";
+
+  /** Constants - Counters - Shares */
+
+  const COUNTER_INDUSTRIALIST_SHARES_REMAINING = "shares_remaining";
+  const COUNTER_INDUSTRIALIST_LEAST_SHARE_VALUE = "least_share_value";
+  const COUNTER_INDUSTRIALIST_SHARES_INVESTED = "shares_invested";
+
+  /** Constants - Counters - Cards */
+  const COUNTER_INDUSTRIALIST_STRATEGY_SPACES_COVERED = "strategy_spaces_covered";
   const COUNTER_INDUSTRIALIST_POLICIES_GAINED = "policies_gained";
   const COUNTER_INDUSTRIALIST_INDUSTRIES_OWNED = "industries_owned";
   const COUNTER_INDUSTRIALIST_FINANCE_INDUSTRIES = "finance_industries";
