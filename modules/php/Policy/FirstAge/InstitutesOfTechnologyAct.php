@@ -56,5 +56,6 @@ class InstitutesOfTechnologyAct extends EconomicPolicyCard {
    * Constants - Misc
    */
   const NAME = "Institutes of Technology Act";
+  const NBR = 1;
   const DESCRIPTION = "This was passed in 1961 to establish the Indian Institutes of Technology. The IITs are autonomous public engineering and technology-oriented institutes of higher education in India that are recognized as centers of excellence for engineering and technology education.";
 }

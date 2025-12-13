@@ -29,5 +29,6 @@ class ForeignExchangeRegulationAct extends IndustrialPolicyCard {
    * Constants - Misc
    */
   const NAME = "Foreign Exchange Regulation Act";
+  const NBR = 1;
   const DESCRIPTION = "The Foreign Exchange Regulation Act (FERA) 1973 is an Indian law that was enacted to regulate foreign exchange transactions and foreign payments in the country. Under FERA, all foreign exchange transactions required the prior approval of the RBI.";
 }

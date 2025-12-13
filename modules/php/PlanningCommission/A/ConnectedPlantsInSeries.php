@@ -24,6 +24,7 @@ class ConnectedPlantsInSeries extends PlanningCommissionCard {
 
   /** Constants - Misc */
   const TYPE = "A";
+  const NBR = 1;
   const NAME = "Connected Plants in Series";
   const DESCRIPTION = "Total Number of Plants Connected in Series";
 

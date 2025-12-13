@@ -95,6 +95,7 @@ abstract class CardManager implements Manager {
     include dirname(__FILE__) . $filepath;
 
     foreach ($classNames as $className) {
+      $className = $classpath . "\\$className";
       $cards[] = [
         'type' => $cardType->value,
         'type_arg' => $cardTypeArg->value,
@@ -195,8 +196,19 @@ abstract class CardManager implements Manager {
     // Load list of cards
     include dirname(__FILE__) . $filepath;
 
+    $finalClassNames = [];
+
     foreach ($classNames as $className) {
       $className = $classpath . "\\$className";
+
+      for ($i = 0; $i < $className::NBR; $i++) {
+        $finalClassNames[] = $className;
+      }
+    }
+
+    shuffle($finalClassNames);
+
+    foreach ($finalClassNames as $className) {
       $cardName = $className::NAME;
 
       $search_card_location_arg_filter = $registry->getOrCreate(

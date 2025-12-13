@@ -54,5 +54,6 @@ class NationalisationOfBanks extends EconomicPolicyCard {
    * Constants - Misc
    */
   const NAME = "Nationalisation of Banks";
+  const NBR = 1;
   const DESCRIPTION = "A significant economic policy taken by the Government of India in 1969. When it nationalized 14 major commercial banks in the country for the promotion of financial inclusion, the mobilization of resources for development, and the promotion of economic growth.";
 }

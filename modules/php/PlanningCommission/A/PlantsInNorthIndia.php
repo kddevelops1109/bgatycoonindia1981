@@ -24,6 +24,7 @@ class PlantsInNorthIndia extends PlanningCommissionCard {
 
   /** Constants - Misc */
   const TYPE = "A";
+  const NBR = 1;
   const NAME = "Plants in North India";
   const DESCRIPTION = "Total Number of Plants in North Region";
 

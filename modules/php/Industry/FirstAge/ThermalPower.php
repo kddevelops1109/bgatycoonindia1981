@@ -52,6 +52,7 @@ class ThermalPower extends IndustryCard {
 
   /** Constants - Misc */
   const NAME = "Thermal Power";
+  const NBR = 1;
   const AGE = CardAge::AGE_I;
   const RESOURCE_SECTORS = [Sector::FUEL, Sector::TRANSPORT];
 }

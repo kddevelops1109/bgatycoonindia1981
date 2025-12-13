@@ -53,6 +53,7 @@ class Fisheries extends IndustryCard {
 
   /** Constants - Misc */
   const NAME = "Fisheries";
+  const NBR = 1;
   const AGE = CardAge::AGE_II;
   const RESOURCE_SECTORS = [Sector::POWER, Sector::TRANSPORT];
 }

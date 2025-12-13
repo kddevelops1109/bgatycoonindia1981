@@ -88,5 +88,6 @@ class TelecomRevolution extends LiberalPolicyCard {
    */
 
   const NAME = "Telecom Revolution";
+  const NBR = 1;
   const DESCRIPTION = "This revolution refers to the rapid growth and expansion of the telecommunications sector in the country, which began in the late 1990s. Prior to this period, the telecommunications industry in India was largely controlled by the state-owned Bharat Sanchar Nigam Limited (BSNL).";
 }

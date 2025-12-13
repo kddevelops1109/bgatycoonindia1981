@@ -52,6 +52,7 @@ class Roadways extends IndustryCard {
 
   /** Constants - Misc */
   const NAME = "Roadways";
+  const NBR = 1;
   const AGE = CardAge::AGE_I;
   const RESOURCE_SECTORS = [Sector::AGRO, Sector::MINERALS];
 }

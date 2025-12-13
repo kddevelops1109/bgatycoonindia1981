@@ -19,8 +19,7 @@ abstract class SingleEffectMeritCard extends MeritCard {
    * Static field list for this single effect merit card
    * @return array<string>
    */
-  public static function staticFieldsList(): array
-  {
+  public static function staticFieldsList(): array {
     return [
       ...parent::staticFieldsList(),
       ...[self::FIELD_BENEFIT]
@@ -31,8 +30,7 @@ abstract class SingleEffectMeritCard extends MeritCard {
    * Static field args for this single effect merit card
    * @return array
    */
-  public static function staticFieldArgs(): array
-  {
+  public static function staticFieldArgs(): array {
     return [
       ...parent::staticFieldArgs(),
       ...[self::FIELD_BENEFIT => static::benefit()]

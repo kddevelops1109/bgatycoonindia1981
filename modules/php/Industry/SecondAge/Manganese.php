@@ -54,6 +54,7 @@ class Manganese extends IndustryCard {
 
   /** Constants - Misc */
   const NAME = "Manganese";
+  const NBR = 1;
   const AGE = CardAge::AGE_II;
   const RESOURCE_SECTORS = [Sector::FUEL, Sector::TRANSPORT];
 }

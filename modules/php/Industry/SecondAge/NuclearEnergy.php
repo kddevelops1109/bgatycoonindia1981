@@ -54,6 +54,7 @@ class NuclearEnergy extends IndustryCard {
 
   /** Constants - Misc */
   const NAME = "Nuclear Energy";
+  const NBR = 1;
   const AGE = CardAge::AGE_II;
   const RESOURCE_SECTORS = [Sector::FUEL, Sector::AGRO];
 }

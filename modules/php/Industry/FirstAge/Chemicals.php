@@ -53,6 +53,8 @@ class Chemicals extends IndustryCard {
 
   /** Constants - Misc */
   const NAME = "Chemicals";
+
+  const NBR = 1;
   const AGE = CardAge::AGE_I;
   const RESOURCE_SECTORS = [Sector::POWER];
 }

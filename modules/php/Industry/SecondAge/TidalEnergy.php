@@ -54,6 +54,7 @@ class TidalEnergy extends IndustryCard {
 
   /** Constants - Misc */
   const NAME = "Tidal Energy";
+  const NBR = 1;
   const AGE = CardAge::AGE_II;
   const RESOURCE_SECTORS = [Sector::MINERALS];
 }

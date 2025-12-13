@@ -41,8 +41,12 @@ class Industrialist extends DBObject {
     ];
   }
 
-  public static function staticFieldsList() {
-    return [];
+  /**
+   * Static fields for industrialists, if any
+   * @return array
+   */
+  public static function staticFieldsList(): array {
+    return [...parent::staticFieldsList(), ...[]];
   }
 
   /** Constants - Misc */

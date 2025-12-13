@@ -53,6 +53,7 @@ class FMCG extends IndustryCard {
 
   /** Constants - Misc */
   const NAME = "F.M.C.G";
+  const NBR = 1;
   const AGE = CardAge::AGE_II;
   const RESOURCE_SECTORS = [Sector::POWER];
 }

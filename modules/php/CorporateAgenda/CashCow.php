@@ -34,6 +34,7 @@ class CashCow extends CorporateAgendaCard {
    * Constants - Misc
    */
   const NAME = "Cash Cow";
+  const NBR = 1;
   const DESCRIPTION = "Have a lot of leftover money";
   const FAVOR_REFERENCE = [30 => 1, 60 => 4, 100 => 8, 150 => 14];
 }

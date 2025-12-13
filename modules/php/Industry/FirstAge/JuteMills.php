@@ -54,6 +54,7 @@ class JuteMills extends IndustryCard {
 
   /** Constants - Misc */
   const NAME = "Jute Mills";
+  const NBR = 1;
   const AGE = CardAge::AGE_I;
   const RESOURCE_SECTORS = [Sector::POWER];
 }

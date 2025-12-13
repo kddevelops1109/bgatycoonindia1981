@@ -21,6 +21,7 @@ class PromotersInHand extends PlanningCommissionCard {
 
   /** Constants - Misc */
   const TYPE = "B";
+  const NBR = 1;
   const NAME = "Promoters in Hand";
   const DESCRIPTION = "Total Unused Promoters Remaining in Player's Hand";
 }

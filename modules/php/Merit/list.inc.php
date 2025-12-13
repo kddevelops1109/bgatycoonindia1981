@@ -2,10 +2,10 @@
 $classNames = [
   "ActionTokenMerit",
   "AssetValueOrMoneyMerit",
-  "BuildingPlantMerit",
+  "BuildActionDiscountMerit",
   "IndustryCardRebateMerit",
-  "LoanRebateMerit",
+  "LoanRepaymentRebateMerit",
   "PromotersMerit",
-  "ShareDiscountMerit",
+  "ShareActionDiscountMerit",
   "StrategyActionDiscountMerit"
 ];

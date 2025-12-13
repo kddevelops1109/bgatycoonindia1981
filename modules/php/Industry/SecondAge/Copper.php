@@ -53,6 +53,7 @@ class Copper extends IndustryCard {
 
   /** Constants - Misc */
   const NAME = "Copper";
+  const NBR = 1;
   const AGE = CardAge::AGE_II;
   const RESOURCE_SECTORS = [Sector::FUEL, Sector::TRANSPORT];
 }

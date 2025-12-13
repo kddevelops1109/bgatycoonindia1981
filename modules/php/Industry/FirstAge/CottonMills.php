@@ -54,6 +54,7 @@ class CottonMills extends IndustryCard {
 
   /** Constants - Misc */
   const NAME = "Cotton Mills";
+  const NBR = 1;
   const AGE = CardAge::AGE_I;
   const RESOURCE_SECTORS = [Sector::MINERALS, Sector::POWER];
 }

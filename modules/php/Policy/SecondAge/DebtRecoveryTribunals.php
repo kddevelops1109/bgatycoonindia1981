@@ -70,5 +70,6 @@ class DebtRecoveryTribunals extends LiberalPolicyCard {
    */
 
   const NAME = "Debt Recovery Tribunals";
+  const NBR = 1;
   const DESCRIPTION = "Debt Recovery Tribunals (DRTs) are specialized courts established under the Recovery of Debts Due to Banks and Financial Institutions Act (RDDBFI) of 1993 to facilitate the recovery of unpaid debts by banks and financial institutions from their borrowers.";
 }

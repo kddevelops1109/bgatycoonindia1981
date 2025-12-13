@@ -25,6 +25,7 @@ class Monopoly extends CorporateAgendaCard {
    * Constants - Misc
    */
   const NAME = "Monopoly";
+  const NBR = 1;
   const DESCRIPTION = "Own a lot of industry cards of the same sector";
   const FAVOR_REFERENCE = [30 => 1, 60 => 4, 100 => 8, 150 => 14];
 }

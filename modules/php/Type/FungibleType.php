@@ -28,8 +28,13 @@ enum FungibleType: string {
   case PLUS_ONE_ACTION = "+1 Action";
   case FREE_ACTION = "Free Action";
   case PLANT = "Plant";
+  
+  /** Discounts and Rebates */
   case BUILD_ACTION_DISCOUNT = "Build Action Discount";
+  case SHARE_ACTION_DISCOUNT = "Share Action Discount";
+  case STRATEGY_ACTION_DISCOUNT = "Strategy Action Discount";
   case INDUSTRY_PURCHASE_DISCOUNT = "Industry Purchase Discount";
+  case LOAN_REBATE = "Loan Rebate";
 
   public function meta(): FungibleMetadata {
     return match($this) {

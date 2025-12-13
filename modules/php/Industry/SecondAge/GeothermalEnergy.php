@@ -54,6 +54,7 @@ class GeothermalEnergy extends IndustryCard {
 
   /** Constants - Misc */
   const NAME = "Geothermal Energy";
+  const NBR = 1;
   const AGE = CardAge::AGE_II;
   const RESOURCE_SECTORS = [Sector::MINERALS];
 }

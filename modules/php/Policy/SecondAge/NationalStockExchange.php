@@ -72,5 +72,6 @@ class NationalStockExchange extends LiberalPolicyCard {
    */
 
   const NAME = "National Stock Exchange";
+  const NBR = 1;
   const DESCRIPTION = "NSE is one of the two major stock exchanges in India, the other being the Bombay Stock Exchange (BSE). Established in 1992 as India\'s first electronic exchange, with the aim of providing a modern, transparent and efficient platform for trading in stocks and other securities.";
 }

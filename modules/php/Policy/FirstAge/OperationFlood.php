@@ -28,5 +28,6 @@ class OperationFlood extends IndustrialPolicyCard {
    * Constants - Misc
    */
   const NAME = "Operation Flood";
+  const NBR = 1;
   const DESCRIPTION = "Operation Flood was a dairy development program launched in India in 1970 by the National Dairy Development Board (NDDB) with the aim of increasing milk production and providing a regular source of income to dairy farmers. It was led by Dr. Verghese Kurien.";
 }

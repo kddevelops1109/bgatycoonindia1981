@@ -29,5 +29,6 @@ class NationalisationOfCoalMines extends IndustrialPolicyCard {
    * Constants - Misc
    */
   const NAME = "Nationalisation of Coal Mines";
+  const NBR = 1;
   const DESCRIPTION = "The nationalization of coal mines in India refers to the transfer of ownership and control of coal mines from private entities to the Indian Government. This was carried out through the Coal Mines (Nationalisation) Act. 1973";
 }

@@ -54,6 +54,7 @@ class NaturalGas extends IndustryCard {
 
   /** Constants - Misc */
   const NAME = "Natural Gas";
+  const NBR = 1;
   const AGE = CardAge::AGE_II;
   const RESOURCE_SECTORS = [Sector::MINERALS, Sector::TRANSPORT];
 }

@@ -30,6 +30,7 @@ class HighestProduction extends PlanningCommissionCard {
 
   /** Constants - Misc */
   const TYPE = "B";
+  const NBR = 1;
   const NAME = "Highest Production";
   const DESCRIPTION = "Industrial Sector where Player has the Highest Production Level";
 }

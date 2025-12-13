@@ -52,6 +52,7 @@ class TransportEquipment extends IndustryCard {
 
   /** Constants - Misc */
   const NAME = "Transport Equipment";
+  const NBR = 1;
   const AGE = CardAge::AGE_I;
   const RESOURCE_SECTORS = [Sector::POWER];
 }

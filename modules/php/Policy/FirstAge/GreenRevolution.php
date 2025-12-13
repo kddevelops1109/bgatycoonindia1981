@@ -56,5 +56,6 @@ class GreenRevolution extends EconomicPolicyCard {
    * Constants - Misc
    */
   const NAME = "Green Revolution";
+  const NBR = 1;
   const DESCRIPTION = "Led by Dr M.S. Swaminathan in 1967, this revolution helped significantly increase agricultural production and reduce dependence on food imports, making India self-sufficient in food grains. This also led to improved incomes and living standards for farmers and rural communities";
 }

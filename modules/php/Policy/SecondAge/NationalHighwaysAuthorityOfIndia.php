@@ -69,5 +69,6 @@ class NationalHighwaysAuthorityOfIndia extends LiberalPolicyCard {
    */
 
   const NAME = "National Highways Authority of India";
+  const NBR = 1;
   const DESCRIPTION = "NHAI Act was enacted in 1988 to establish the NHAI. It is empowered to plan, develop, and maintain national highways in India, as well as to take up contracts for building and improving such highways. The NHAI is also responsible for the toll collection on national highways.";
 }

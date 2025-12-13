@@ -21,6 +21,7 @@ class StrategySpacesCovered extends PlanningCommissionCard {
 
   /** Constants - Misc */
   const TYPE = "B";
+  const NBR = 1;
   const NAME = "Strategy Spaces Covered";
   const DESCRIPTION = "Total Number of Strategy Spaces Occupied by Player";
 }

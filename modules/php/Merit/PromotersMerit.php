@@ -13,7 +13,7 @@ use Bga\Games\tycoonindianew\Registry\EffectRegistry;
 use Bga\Games\tycoonindianew\Type\EffectType;
 use Bga\Games\tycoonindianew\Type\FungibleType;
 
-class ActionTokenMerit extends SingleEffectMeritCard {
+class PromotersMerit extends SingleEffectMeritCard {
 
   /**
    * Benefit given by this merit card
@@ -22,8 +22,8 @@ class ActionTokenMerit extends SingleEffectMeritCard {
   public static function benefit(): Effect {
     $args = [
       "type" => EffectType::GAIN,
-      "fungibleType" => FungibleType::ACTION_TOKEN,
-      "amount" => 1,
+      "fungibleType" => FungibleType::PROMOTERS_IN_POOL,
+      "amount" => 2,
       "multiplier" => StaticMultiplier::instance(1),
       "condition" => null,
       "spec"=> null,
@@ -36,6 +36,6 @@ class ActionTokenMerit extends SingleEffectMeritCard {
   }
 
   /** Constants - Misc */
-  const NAME = "+1 Action";
+  const NAME = "Gain Promoters";
   const NBR = 3;
 }

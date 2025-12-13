@@ -28,5 +28,6 @@ class ExportProcessingZones extends IndustrialPolicyCard {
    * Constants - Misc
    */
   const NAME = "Export Processing Zones";
+  const NBR = 1;
   const DESCRIPTION = "Export Processing Zones (EPZs) were established in India in the 1960s as special economic zones with the aim of promoting exports, attracting foreign investment, and creating employment. The first EPZ was set up in Kandla, Gujarat in 1965.";
 }

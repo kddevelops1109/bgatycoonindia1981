@@ -54,6 +54,7 @@ class Shipping extends IndustryCard {
 
   /** Constants - Misc */
   const NAME = "Shipping";
+  const NBR = 1;
   const AGE = CardAge::AGE_II;
   const RESOURCE_SECTORS = [Sector::FUEL, Sector::MINERALS];
 }

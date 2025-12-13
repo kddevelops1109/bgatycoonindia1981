@@ -1,8 +1,6 @@
 <?php
 namespace Bga\Games\tycoonindianew\Policy\SecondAge;
 
-use Bga\Games\tycoonindianew\Condition\NullCondition;
-
 use Bga\Games\tycoonindianew\Effect\Effect;
 use Bga\Games\tycoonindianew\Effect\EffectKeyGenerator;
 
@@ -11,8 +9,6 @@ use Bga\Games\tycoonindianew\Model\Card\Policy\LiberalPolicyCard;
 use Bga\Games\tycoonindianew\Multiplier\StaticMultiplier;
 
 use Bga\Games\tycoonindianew\Registry\EffectRegistry;
-
-use Bga\Games\tycoonindianew\Spec\NullSpec;
 
 use Bga\Games\tycoonindianew\Type\EffectType;
 use Bga\Games\tycoonindianew\Type\FungibleType as FT;
@@ -74,5 +70,6 @@ class ConsumerProtectionAct extends LiberalPolicyCard {
    */
 
   const NAME = "Consumer Protection Act";
+  const NBR = 1;
   const DESCRIPTION = "The CPA is an Indian law enacted in 1986 to protect the interests of consumers and to provide a mechanism for the redressal of consumer grievances. The act also provides for the establishment of consumer courts to resolve disputes between consumers and sellers.";
 }

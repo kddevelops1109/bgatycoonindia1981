@@ -34,6 +34,7 @@ class Industrialization extends CorporateAgendaCard {
    * Constants - Misc
    */
   const NAME = "Industrialization";
+  const NBR = 1;
   const DESCRIPTION = "Build a lot of plants on the map";
   const ENDGAME_FAVOR = [6 => 1, 7 => 4, 9 => 7, 9 => 11];
 }

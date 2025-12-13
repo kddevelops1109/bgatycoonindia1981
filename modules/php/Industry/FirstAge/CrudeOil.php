@@ -54,6 +54,7 @@ class CrudeOil extends IndustryCard {
 
   /** Constants - Misc */
   const NAME = "Crude Oil";
+  const NBR = 1;
   const AGE = CardAge::AGE_I;
   const RESOURCE_SECTORS = [Sector::MINERALS, Sector::TRANSPORT];
 }

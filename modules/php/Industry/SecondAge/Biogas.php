@@ -54,6 +54,7 @@ class Biogas extends IndustryCard {
 
   /** Constants - Misc */
   const NAME = "Biogas";
+  const NBR = 1;
   const AGE = CardAge::AGE_II;
   const RESOURCE_SECTORS = [Sector::FUEL, Sector::AGRO];
 }

@@ -2,6 +2,7 @@
 namespace Bga\Games\tycoonindianew\Merit;
 
 use Bga\Games\tycoonindianew\Action\Main\BuildAction;
+
 use Bga\Games\tycoonindianew\Effect\Effect;
 use Bga\Games\tycoonindianew\Effect\EffectKeyGenerator;
 
@@ -12,8 +13,12 @@ use Bga\Games\tycoonindianew\Multiplier\StaticMultiplier;
 use Bga\Games\tycoonindianew\Registry\EffectRegistry;
 
 use Bga\Games\tycoonindianew\Trigger\TriggerDefinition;
+
 use Bga\Games\tycoonindianew\Type\EffectType;
 use Bga\Games\tycoonindianew\Type\FungibleType;
+use Bga\Games\tycoonindianew\Type\TriggerTiming;
+
+use Bga\Games\tycoonindianew\Util\StringUtil;
 
 class IndustryCardRebateMerit extends EitherOrEffectMeritCard {
 
@@ -31,7 +36,7 @@ class IndustryCardRebateMerit extends EitherOrEffectMeritCard {
       "multiplier" => StaticMultiplier::instance(1),
       "condition" => null,
       "spec"=> null,
-      "trigger" => new TriggerDefinition(BuildAction::class, BuildAction::instance()),
+      "trigger" => TriggerDefinition::instance(StringUtil::classToKebab(BuildAction::class), TriggerTiming::PRE, BuildAction::instance()),
       "next" => null,
       "roundDown" => false
     ];
@@ -57,5 +62,6 @@ class IndustryCardRebateMerit extends EitherOrEffectMeritCard {
   }
 
   /** Constants - Misc */
-  const NBR = 6;
+  const NAME = "Industry Card Rebate";
+  const NBR = 4;
 }

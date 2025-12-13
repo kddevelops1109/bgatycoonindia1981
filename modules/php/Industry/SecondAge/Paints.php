@@ -54,6 +54,7 @@ class Paints extends IndustryCard {
 
   /** Constants - Misc */
   const NAME = "Paints";
+  const NBR = 1;
   const AGE = CardAge::AGE_II;
   const RESOURCE_SECTORS = [Sector::TRANSPORT];
 }

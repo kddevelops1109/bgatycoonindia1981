@@ -76,7 +76,4 @@ abstract class CorporateAgendaCard extends Card {
   /** Constants - Cards metadata */
   const FILEPATH = "/../../CorporateAgenda/list.inc.php";
   const CLASSPATH = "\Bga\Games\\tycoonindianew\CorporateAgenda";
-
-  /** Constants - Misc */
-  const NBR = 1;
 }

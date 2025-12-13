@@ -53,6 +53,7 @@ class CashCrops extends IndustryCard {
 
   /** Constants - Misc */
   const NAME = "Cash Crops";
+  const NBR = 1;
   const AGE = CardAge::AGE_I;
   const RESOURCE_SECTORS = [Sector::POWER];
 }

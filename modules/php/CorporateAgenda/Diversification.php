@@ -58,6 +58,7 @@ class Diversification extends CorporateAgendaCard {
    * Constants - Misc
    */
   const NAME = "Diversification";
+  const NBR = 1;
   const DESCRIPTION = "Reach at least level 2 production in multiple industry sectors";
   const FAVOR_REFERENCE = [3 => 2, 4 => 5, 5 => 9, 6 => 12];
 }

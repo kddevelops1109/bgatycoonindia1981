@@ -51,6 +51,7 @@ class Magnate extends CorporateAgendaCard {
    * Constants - Misc
    */
   const NAME = "Magnate";
+  const NBR = 1;
   const DESCRIPTION = "Reach a certain production level in any 2 industry sectors";
   const FAVOR_REFERENCE = [4 => 1, 5 => 4, 6 => 6, 7 => 9];
 }

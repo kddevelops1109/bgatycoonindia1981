@@ -1,8 +1,6 @@
 <?php
 namespace Bga\Games\tycoonindianew\Policy\SecondAge;
 
-use Bga\Games\tycoonindianew\Condition\NullCondition;
-
 use Bga\Games\tycoonindianew\Effect\Effect;
 use Bga\Games\tycoonindianew\Effect\EffectKeyGenerator;
 
@@ -13,7 +11,6 @@ use Bga\Games\tycoonindianew\Multiplier\StaticMultiplier;
 use Bga\Games\tycoonindianew\Registry\EffectRegistry;
 
 use Bga\Games\tycoonindianew\Spec\CardSpec;
-use Bga\Games\tycoonindianew\Spec\NullSpec;
 
 use Bga\Games\tycoonindianew\Type\CardLocation;
 use Bga\Games\tycoonindianew\Type\CardTypeArg;
@@ -75,5 +72,6 @@ class YellowRevolution extends LiberalPolicyCard {
    */
 
   const NAME = "Yellow Revolution";
+  const NBR = 1;
   const DESCRIPTION = "The Yellow Revolution in India refers to the significant increase in oilseed production that occurred in the country in 1980-1990s. It was a response to India\'s growing dependence on imports for edible oils, which was seen as a major threat to the country\'s food security.";
 }

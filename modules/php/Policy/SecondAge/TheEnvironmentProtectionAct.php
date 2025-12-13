@@ -76,5 +76,6 @@ class TheEnvironmentProtectionAct extends LiberalPolicyCard {
    */
 
   const NAME = "The Environment Protection Act";
+  const NBR = 1;
   const DESCRIPTION = "The EPA was passed in 1986 with the objective of protecting and improving the quality of the environment and preventing environmental pollution. The EPA empowers the the Central Government to establish standards for emissions and discharge of pollutants.";
 }

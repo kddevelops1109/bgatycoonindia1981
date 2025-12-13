@@ -54,6 +54,7 @@ class Logistics extends IndustryCard {
 
   /** Constants - Misc */
   const NAME = "Logistics";
+  const NBR = 1;
   const AGE = CardAge::AGE_II;
   const RESOURCE_SECTORS = [Sector::AGRO];
 }

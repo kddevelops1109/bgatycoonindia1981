@@ -21,6 +21,7 @@ class MoneyInHand extends PlanningCommissionCard {
 
   /** Constants - Misc */
   const TYPE = "B";
+  const NBR = 1;
   const NAME = "Money in Hand";
   const DESCRIPTION = "Total Unused Money Remaining in Player's Hand";
 }

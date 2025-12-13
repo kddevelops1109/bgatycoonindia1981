@@ -56,5 +56,6 @@ class MonopoliesAndRestrictiveTradePracticesAct extends EconomicPolicyCard {
    * Constants - Misc
    */
   const NAME = "Monopolies and Restrictive Trade Practices Act";
+  const NBR = 1;
   const DESCRIPTION = "Under the MRTP Act of 1969, the Government had the power to investigate and regulate companies that were suspected of engaging in anti-competitive practices such as price-fixing, market sharing, and restricting entry of new competitors.";
 }

@@ -29,5 +29,6 @@ class FoodCorporationOfIndia extends IndustrialPolicyCard {
    * Constants - Misc
    */
   const NAME = "Food Corporation of India";
+  const NBR = 1;
   const DESCRIPTION = "Established in 1965. The primary objective of the FCI is to ensure the availability of food grains at reasonable prices for the public distribution system and to maintain a sufficient buffer stock of food grains for the national food security.";
 }

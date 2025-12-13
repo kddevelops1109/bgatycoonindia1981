@@ -22,26 +22,23 @@ use Bga\Games\tycoonindianew\States\PlayerTurn;
 
 use Bga\GameFramework\Components\Counters\PlayerCounter;
 
+use Bga\Games\tycoonindianew\Manager\IndustrialistManager;
 use Bga\Games\tycoonindianew\Manager\Action\Main\BuildMainActionManager as BAM;
 use Bga\Games\tycoonindianew\Manager\Action\Main\PoliticsMainActionManager as PAM;
 use Bga\Games\tycoonindianew\Manager\Action\Main\MusterMainActionManager as MAM;
 use Bga\Games\tycoonindianew\Manager\Action\Main\StrategyMainActionManager as SAM;
 use Bga\Games\tycoonindianew\Manager\Action\Main\ShareMainActionManager as SHAM;
 use Bga\Games\tycoonindianew\Manager\Action\Main\LoanMainActionManager as LAM;
-
 use Bga\Games\tycoonindianew\Manager\Action\Main\Strategy\SalesStrategyMainActionManager as SSAM;
 use Bga\Games\tycoonindianew\Manager\Action\Main\Strategy\LobbyStrategyMainActionManager as LSAM;
 use Bga\Games\tycoonindianew\Manager\Action\Main\Strategy\OfficeStrategyMainActionManager as OSAM;
 use Bga\Games\tycoonindianew\Manager\Action\Main\Strategy\AdvertisingStrategyMainActionManager as ASAM;
 use Bga\Games\tycoonindianew\Manager\Action\Main\Strategy\ExportStrategyMainActionManager as ESAM;
-
-use Bga\Games\tycoonindianew\Manager\IndustrialistManager;
-use Bga\Games\tycoonindianew\Manager\Card\CardManager;
 use Bga\Games\tycoonindianew\Manager\Card\CorporateAgendaCardManager;
 use Bga\Games\tycoonindianew\Manager\Card\IndustryCardManager;
+use Bga\Games\tycoonindianew\Manager\Card\MeritCardManager;
 use Bga\Games\tycoonindianew\Manager\Card\PlanningCommissionCardManager;
 use Bga\Games\tycoonindianew\Manager\Card\PolicyCardManager;
-use Bga\Games\tycoonindianew\Type\CardType;
 
 class Game extends \Bga\GameFramework\Table
 {
@@ -241,8 +238,12 @@ class Game extends \Bga\GameFramework\Table
         PlanningCommissionCardManager::instance()->setupNewGame($players);
 
         // Merits
+        MeritCardManager::instance()->setupNewGame($players);
 
         // Headlines
+        if ($this->tableOptions->get(100) == "1") {
+          // Setup headline cards only if the Headline Variant has been chosen
+        }
 
         // Setup tokens
 

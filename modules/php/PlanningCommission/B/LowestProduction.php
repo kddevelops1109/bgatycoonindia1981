@@ -30,6 +30,7 @@ class LowestProduction extends PlanningCommissionCard {
 
   /** Constants - Misc */
   const TYPE = "B";
+  const NBR = 1;
   const NAME = "Lowest Production";
   const DESCRIPTION = "Industrial Sector where Player has the Lowest Production Level";
 }

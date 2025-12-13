@@ -76,5 +76,6 @@ class NationalGridOfIndia extends LiberalPolicyCard {
    */
 
   const NAME = "National Grid of India";
+  const NBR = 1;
   const DESCRIPTION = "The National Grid of India is one of the largest transmission networks in the world, with a total transmission capacity of over 3,67,000 circuit kilometers. It connects all major regional grids in the country, enabling the seamless transfer of electricity across the country.";
 }

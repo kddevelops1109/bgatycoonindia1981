@@ -76,5 +76,6 @@ class ForeignInvestmentPromotionBoard extends LiberalPolicyCard {
    */
 
   const NAME = "Foreign Investment Promotion Board";
+  const NBR = 1;
   const DESCRIPTION = "The FIPB was an inter-ministerial body in India that was responsible for approving and facilitating foreign direct investment (FDI) in the country. It was established in 1991 as a part of India\'s liberalization policy to promote foreign investment in the country.";
 }

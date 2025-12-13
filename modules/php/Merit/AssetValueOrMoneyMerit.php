@@ -54,5 +54,6 @@ class AssetValueOrMoneyMerit extends EitherOrEffectMeritCard {
   }
 
   /** Constants - Misc */
+  const NAME = "Asset Value or Money";
   const NBR = 6;
 }

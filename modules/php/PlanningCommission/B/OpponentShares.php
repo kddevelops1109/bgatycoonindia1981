@@ -24,6 +24,7 @@ class OpponentShares extends PlanningCommissionCard {
 
   /** Constants - Misc */
   const TYPE = "B";
+  const NBR = 1;
   const NAME = "Opponent Shares";
   const DESCRIPTION = "Total Opponent Shares Bought by Player";
 }

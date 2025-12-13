@@ -32,6 +32,7 @@ class Disinvestment extends CorporateAgendaCard {
    * Constants - Misc
    */
   const NAME = "Disinvestment";
+  const NBR = 1;
   const DESCRIPTION = "Have less shares remaining of your own color";
   const FAVOR_REFERENCE = [3 => 3, 2 => 6, 1 => 9, 0 => 13];
 }

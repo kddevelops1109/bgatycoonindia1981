@@ -34,6 +34,7 @@ class Lobbyist extends CorporateAgendaCard {
    * Constants - Misc
    */
   const NAME = "Lobbyist";
+  const NBR = 1;
   const DESCRIPTION = "Own a lot of policies";
   const FAVOR_REFERENCE = [4 => 2, 5 => 5, 6 => 8, 7 => 10];
 }

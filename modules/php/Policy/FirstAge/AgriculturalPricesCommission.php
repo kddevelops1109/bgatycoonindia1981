@@ -52,5 +52,6 @@ class AgriculturalPricesCommission extends EconomicPolicyCard {
    * Constants - Misc
    */
   const NAME = "Agricultural Prices Commission";
+  const NBR = 1;
   const DESCRIPTION = "A statutory body established by the Government of India in 1965 to provide recommendations on agricultural prices and related policies, taking into account production costs, market demand, and supply.";
 }

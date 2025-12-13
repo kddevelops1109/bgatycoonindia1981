@@ -53,6 +53,7 @@ class Forestry extends IndustryCard {
 
   /** Constants - Misc */
   const NAME = "Forestry";
+  const NBR = 1;
   const AGE = CardAge::AGE_I;
   const RESOURCE_SECTORS = [Sector::TRANSPORT];
 }

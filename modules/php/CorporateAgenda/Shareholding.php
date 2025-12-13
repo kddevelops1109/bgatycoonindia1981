@@ -25,6 +25,7 @@ class Shareholding extends CorporateAgendaCard {
    * Constants - Misc
    */
   const NAME = "Shareholding";
+  const NBR = 1;
   const DESCRIPTION = "Have a lot of opponent shares";
   const ENDGAME_FAVOR = [30 => 1, 60 => 4, 100 => 8, 150 => 14];
 }
