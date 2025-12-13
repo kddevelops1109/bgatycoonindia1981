@@ -13,8 +13,11 @@ use Bga\Games\tycoonindianew\Multiplier\StaticMultiplier;
 use Bga\Games\tycoonindianew\Registry\EffectRegistry;
 
 use Bga\Games\tycoonindianew\Trigger\TriggerDefinition;
+
 use Bga\Games\tycoonindianew\Type\EffectType;
 use Bga\Games\tycoonindianew\Type\FungibleType as FT;
+use Bga\Games\tycoonindianew\Type\TriggerTiming;
+
 use Bga\Games\tycoonindianew\Util\StringUtil;
 
 /**
@@ -42,7 +45,7 @@ class GreenRevolution extends EconomicPolicyCard {
       "condition" => null,
       "spec" => null,
       "next" => null,
-      "trigger" => TriggerDefinition::instance(StringUtil::classToKebab(self::class), MusterAction::instance()),
+      "trigger" => TriggerDefinition::instance(StringUtil::classToKebab(self::class), TriggerTiming::POST, MusterAction::instance()),
       "roundDown" => false
     ];
 
