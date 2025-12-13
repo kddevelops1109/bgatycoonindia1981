@@ -4,6 +4,8 @@ namespace Bga\Games\tycoonindianew\Trigger;
 use Bga\Games\tycoonindianew\Contracts\Operation;
 use Bga\Games\tycoonindianew\Contracts\Triggerable;
 
+use Bga\Games\tycoonindianew\Type\TriggerTiming;
+
 /**
  * Definition of a trigger associated with a triggerable targe such as an effect, triggered by an operation
  */
@@ -25,16 +27,18 @@ class TriggerDefinition {
   /**
    * Instantiates trigger definition
    * @param string $key Unique key for this trigger definition
+   * @param TriggerTiming $timing Timing of the trigger, i.e. pre-operation or post-operation?
    * @param Operation $operation The operation that can cause a trigger from this trigger definition
    */
   private function __construct(
     public readonly string $key,
+    public readonly TriggerTiming $timing,
     public readonly Operation $operation
   ) {}
 
-  public static function instance(string $key, Operation $operation): TriggerDefinition {
+  public static function instance(string $key, TriggerTiming $timing, Operation $operation): TriggerDefinition {
     if (!array_key_exists($key, self::$instances)) {
-      self::$instances[$key] = new TriggerDefinition($key, $operation);
+      self::$instances[$key] = new TriggerDefinition($key, $timing, $operation);
     }
 
     return self::$instances[$key];
