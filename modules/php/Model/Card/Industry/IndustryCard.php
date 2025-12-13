@@ -118,4 +118,7 @@ abstract class IndustryCard extends Card {
   const FIELD_INFLUENCE = "influence";
   const FIELD_PRODUCTION = "production";
   const FIELD_RESOURCE_SECTORS = "resourceSectors";
+
+  /** Constants - Misc */
+  const NBR = 1;
 }

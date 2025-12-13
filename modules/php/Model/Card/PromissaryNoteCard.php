@@ -43,10 +43,6 @@ class PromissaryNoteCard extends Card {
     return true;
   }
 
-  /**
-   * Constants - Misc
-   */
-  const NUM_CARDS = 25;
-  const CARD_TYPE = "Promissary Note";
-  const CARD_TYPE_ARG = 11;
+  /** Constants - Misc */
+  const NBR = 25;
 }

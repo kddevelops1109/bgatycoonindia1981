@@ -1,5 +1,7 @@
 <?php
-namespace Bga\Games\tycoonindianew\Model\Card;
+namespace Bga\Games\tycoonindianew\Model\Card\Merit;
+
+use Bga\Games\tycoonindianew\Model\Card\Card;
 
 abstract class MeritCard extends Card {
 
@@ -18,13 +20,6 @@ abstract class MeritCard extends Card {
   public function canBeLost(): bool {
     return true;
   }
-
-  /**
-   * Constants - Misc
-   */
-  const NUM_CARDS = 30;
-  const CARD_TYPE = "Merit";
-  const CARD_TYPE_ARG = 5;
 
   /**
    * Constants - Filepath and Classpath

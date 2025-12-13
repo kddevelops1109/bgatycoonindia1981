@@ -28,6 +28,8 @@ enum FungibleType: string {
   case PLUS_ONE_ACTION = "+1 Action";
   case FREE_ACTION = "Free Action";
   case PLANT = "Plant";
+  case BUILD_ACTION_DISCOUNT = "Build Action Discount";
+  case INDUSTRY_PURCHASE_DISCOUNT = "Industry Purchase Discount";
 
   public function meta(): FungibleMetadata {
     return match($this) {
@@ -53,7 +55,9 @@ enum FungibleType: string {
       self::PLUS_ONE_ACTION => new FungibleMetadata(true, true, IndustrialistManager::COUNTER_INDUSTRIALIST_PLUS_ONE_ACTIONS_REMAINING),
       self::TYCOON_ACTION => new FungibleMetadata(true, true, IndustrialistManager::COUNTER_INDUSTRIALIST_TYCOON_ACTIONS_REMAINING),
       self::PLANT => new FungibleMetadata(false, false, null),
-      self::FREE_ACTION => new FungibleMetadata(true, false, null)
+      self::FREE_ACTION => new FungibleMetadata(true, false, null),
+      self::BUILD_ACTION_DISCOUNT => new FungibleMetadata(true, false, null),
+      self::INDUSTRY_PURCHASE_DISCOUNT => new FungibleMetadata(true, false, null)
     };
   }
 }

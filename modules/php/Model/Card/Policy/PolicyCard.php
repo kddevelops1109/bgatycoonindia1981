@@ -97,4 +97,7 @@ abstract class PolicyCard extends Card {
   
   const CLASSPATH_AGE_I = "\Bga\Games\\tycoonindianew\Policy\FirstAge";
   const CLASSPATH_AGE_II = "\Bga\Games\\tycoonindianew\Policy\SecondAge";
+
+  /** Constants - Misc */
+  const NBR = 1;
 }

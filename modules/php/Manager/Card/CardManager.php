@@ -85,21 +85,20 @@ abstract class CardManager implements Manager {
    * @param string $classpath Classpath of specific card to instantiate
    * @return void
    */
-  protected function setupDeck(CardType $cardType,
-                               CardTypeArg $cardTypeArg,
-                               CardLocation $cardLocation,
-                               string $filepath,
-                               string $classpath) {
-
+  protected function setupDeck(CardType $cardType, CardTypeArg $cardTypeArg, CardLocation $cardLocation, string $filepath, string $classpath) {
     $deck = Game::get()->deckFactory->createDeck(Card::TABLE_NAME);
     $deck->init(Card::TABLE_NAME);
 
     $cards = [];
-    for ($i = 0; $i < $cardTypeArg->numCards(); $i++) {
+
+    // Load list of cards
+    include dirname(__FILE__) . $filepath;
+
+    foreach ($classNames as $className) {
       $cards[] = [
         'type' => $cardType->value,
         'type_arg' => $cardTypeArg->value,
-        'nbr' => 1
+        'nbr' => $className::NBR
       ];
     }
 

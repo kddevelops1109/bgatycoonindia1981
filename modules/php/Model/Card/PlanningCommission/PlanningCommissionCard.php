@@ -56,4 +56,7 @@ abstract class PlanningCommissionCard extends Card {
   /** Constants - Field names */
   const FIELD_TYPE = "type";
   const FIELD_DESCRIPTION = "description";
+
+  /** Constants - Misc */
+  const NBR = 1;
 }

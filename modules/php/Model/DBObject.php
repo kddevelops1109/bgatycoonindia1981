@@ -46,6 +46,22 @@ abstract class DBObject implements \JsonSerializable {
   protected $staticFields = [];
 
   /**
+   * Static fields list common to all DB objects, if any
+   * @return array
+   */
+  public static function staticFieldsList(): array {
+    return [];
+  }
+
+  /**
+   * Static field args common to all DB objects, if any
+   * @return array
+   */
+  public static function staticFieldArgs(): array {
+    return [];
+  }
+
+  /**
    * Construct this DB object from the associative array provided
    * @param array $args
    */
