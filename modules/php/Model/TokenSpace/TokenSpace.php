@@ -18,6 +18,14 @@ use Bga\Games\tycoonindianew\Type\DataType as DT;
  * @property bool $occupied Is this token space occupied?
  */
 abstract class TokenSpace extends DBO implements Occupiable {
+
+  public function __construct($args) {
+    if (array_key_exists(self::FIELD_OCCUPIED, $args)) {
+      $this->occupied = $args[self::FIELD_OCCUPIED];
+    }
+
+    parent::__construct($args);
+  }
   
   public static function dbFieldMappings(): array {
     return [

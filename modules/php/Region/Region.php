@@ -13,7 +13,7 @@ abstract class Region {
    * Name of the region (one of North, East, West or South)
    * @var RegionName
    */
-  protected RegionName $regionName;
+  protected RegionName $name;
 
   /**
    * Bonus players get on building a plant in this region
@@ -28,25 +28,25 @@ abstract class Region {
   protected Effect $tycoonActivationBonus;
 
   /**
-   * Array of instances, one per region name
+   * Array of instances, one per region
    * @var array<class-string, static>
    */
   private static array $instances = [];
 
-  protected function __construct(RegionName $regionName) {
-    $this->regionName = $regionName;
-    $this->buildPlantBonus = $this->initBuildPlantBonus();
-    $this->tycoonActivationBonus = $this->initTycoonActivationBonus();
+  protected function __construct(RegionName $name) {
+    $this->name = $name;
+    $this->initBuildPlantBonus();
+    $this->initTycoonActivationBonus();
   }
 
   /**
    * Returns instance of calling sub class
    * @return static
    */
-  protected static function instance(RegionName $regionName): static {
+  protected static function instance(RegionName $name): static {
     $className = static::class;
     if (!array_key_exists($className, self::$instances)) {
-      self::$instances[$className] = new static($regionName);
+      self::$instances[$className] = new static($name);
     }
 
     return self::$instances[$className];
@@ -54,15 +54,13 @@ abstract class Region {
 
   /**
    * Bonus players get on building a plant in this region
-   * @return Effect
    */
-  abstract protected function initBuildPlantBonus(): Effect;
+  abstract protected function initBuildPlantBonus(): void;
 
   /**
    * Summary of tycoonActivationBonus
-   * @return Effect
    */
-  abstract protected function initTycoonActivationBonus(): Effect;
+  abstract protected function initTycoonActivationBonus(): void;
 
   /**
    * Apply the build plant bonus for this region

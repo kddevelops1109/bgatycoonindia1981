@@ -101,3 +101,13 @@ CREATE TABLE IF NOT EXISTS `tycoon_trigger` (
   PRIMARY KEY(`id`),
   FOREIGN KEY(`player_id`) REFERENCES `player`(`player_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `tycoon_city` (
+  `space_id` varchar(200) NOT NULL,
+  `token` int(10) unsigned,
+  `occupied` BIT(1) NOT NULL DEFAULT b'0',
+  `player_id` int(10) unsigned,
+  PRIMARY KEY(`space_id`),
+  FOREIGN KEY(`token`) REFERENCES `tycoon_token`(`card_id`),
+  FOREIGN KEY(`player_id`) REFERENCES `player`(`player_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -27,9 +27,9 @@ class North extends Region {
 
   /**
    * Build plant bonus for this region
-   * @return Effect
+   * @return void
    */
-  protected function initBuildPlantBonus(): Effect {
+  protected function initBuildPlantBonus(): void {
     $args = [
       "type" => EffectType::GAIN,
       "fungibleType" => FungibleType::INFLUENCE,
@@ -42,14 +42,14 @@ class North extends Region {
       "roundDown" => false
     ];
 
-    return EffectRegistry::instance()->getOrCreate(EffectKeyGenerator::generate($args), $args);
+    $this->buildPlantBonus = EffectRegistry::instance()->getOrCreate(EffectKeyGenerator::generate($args), $args);
   }
 
   /**
    * Tycoon activation bonus for this region for given player
-   * @return Effect
+   * @return void
    */
-  protected function initTycoonActivationBonus(): Effect {
+  protected function initTycoonActivationBonus(): void {
     $args = [
       "type" => EffectType::GAIN,
       "fungibleType" => FungibleType::INFLUENCE,
@@ -62,6 +62,6 @@ class North extends Region {
       "roundDown" => false
     ];
 
-    return EffectRegistry::instance()->getOrCreate(EffectKeyGenerator::generate($args), $args);
+    $this->tycoonActivationBonus = EffectRegistry::instance()->getOrCreate(EffectKeyGenerator::generate($args), $args);
   }
 }

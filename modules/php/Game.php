@@ -39,6 +39,7 @@ use Bga\Games\tycoonindianew\Manager\Card\IndustryCardManager;
 use Bga\Games\tycoonindianew\Manager\Card\MeritCardManager;
 use Bga\Games\tycoonindianew\Manager\Card\PlanningCommissionCardManager;
 use Bga\Games\tycoonindianew\Manager\Card\PolicyCardManager;
+use Bga\Games\tycoonindianew\Manager\CityManager;
 
 class Game extends \Bga\GameFramework\Table
 {
@@ -245,6 +246,9 @@ class Game extends \Bga\GameFramework\Table
           // Setup headline cards only if the Headline Variant has been chosen
         }
 
+        // Setup cities
+        CityManager::instance()->setupNewGame($players);
+        
         // Setup tokens
 
         // Setup main actions
