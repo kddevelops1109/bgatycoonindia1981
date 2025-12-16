@@ -2,7 +2,7 @@
 namespace Bga\Games\tycoonindianew\PlanningCommission\B;
 
 use Bga\Games\tycoonindianew\Manager\IndustrialistManager;
-use Bga\Games\tycoonindianew\Model\Card\PlanningCommission\PlanningCommissionCard;
+use Bga\Games\tycoonindianew\Model\DeckItem\Card\PlanningCommission\PlanningCommissionCard;
 use Bga\Games\tycoonindianew\Strategy\Scoring\Endgame\LowestRankedEndgameScoringStrategy;
 use Bga\Games\tycoonindianew\Type\Ranking;
 

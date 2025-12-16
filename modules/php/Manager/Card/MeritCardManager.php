@@ -1,7 +1,7 @@
 <?php
 namespace Bga\Games\tycoonindianew\Manager\Card;
 
-use Bga\Games\tycoonindianew\Model\Card\Merit\MeritCard;
+use Bga\Games\tycoonindianew\Model\DeckItem\Card\Merit\MeritCard;
 
 use Bga\Games\tycoonindianew\Type\CardLocation;
 use Bga\Games\tycoonindianew\Type\CardType;

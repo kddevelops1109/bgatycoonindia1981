@@ -4,7 +4,7 @@ namespace Bga\Games\tycoonindianew\Merit;
 use Bga\Games\tycoonindianew\Effect\Effect;
 use Bga\Games\tycoonindianew\Effect\EffectKeyGenerator;
 
-use Bga\Games\tycoonindianew\Model\Card\Merit\SingleEffectMeritCard;
+use Bga\Games\tycoonindianew\Model\DeckItem\Card\Merit\SingleEffectMeritCard;
 
 use Bga\Games\tycoonindianew\Multiplier\StaticMultiplier;
 

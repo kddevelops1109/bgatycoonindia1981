@@ -1,5 +1,5 @@
 <?php
-namespace Bga\Games\tycoonindianew\Model\Card\Policy;
+namespace Bga\Games\tycoonindianew\Model\DeckItem\Card\Policy;
 
 use Bga\Games\tycoonindianew\Effect\Effect;
 use Bga\Games\tycoonindianew\Effect\EffectKeyGenerator;

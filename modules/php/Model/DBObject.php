@@ -3,6 +3,8 @@ namespace Bga\Games\tycoonindianew\Model;
 
 use Bga\GameFramework\Components\Counters\PlayerCounter;
 use Bga\GameFramework\Components\Counters\TableCounter;
+use Bga\Games\tycoonindianew\Effect\Effect;
+use Bga\Games\tycoonindianew\Effect\EffectKeyGenerator;
 use Bga\Games\tycoonindianew\Game;
 
 use Bga\Games\tycoonindianew\Filter\DBFilter;
@@ -12,7 +14,8 @@ use Bga\Games\tycoonindianew\Query\InsertDBQuery;
 use Bga\Games\tycoonindianew\Query\UpdateDBQuery;
 
 use Bga\Games\tycoonindianew\Manager\DBManager;
-
+use Bga\Games\tycoonindianew\Query\SelectDBQuery;
+use Bga\Games\tycoonindianew\Registry\EffectRegistry;
 use Bga\Games\tycoonindianew\Type\DataType as DT;
 use Bga\Games\tycoonindianew\Type\OperatorType;
 
@@ -46,6 +49,14 @@ abstract class DBObject implements \JsonSerializable {
   protected $staticFields = [];
 
   /**
+   * DB field mappings common to all db objects
+   * @return array
+   */
+  public static function dbFieldMappings(): array {
+    return [];
+  }
+
+  /**
    * Static fields list common to all DB objects, if any
    * @return array
    */
@@ -59,6 +70,23 @@ abstract class DBObject implements \JsonSerializable {
    */
   public static function staticFieldArgs(): array {
     return [];
+  }
+
+  /**
+   * Returns db object corresponding to this filter
+   * @param DBFilter $filter
+   * @return static|null
+   */
+  public static function fromDb(DBFilter $filter): static|null {
+    $query = new SelectDBQuery(static::TABLE_NAME, array_keys(static::dbFieldMappings()), $filter, null, null, 1, true, true);
+    $queryResult = DBManager::execute($query);
+
+    if (!is_null($queryResult) && $queryResult->isSuccessful()) {
+      $args = $queryResult->getResult();
+      return new static($args);
+    }
+
+    return null;
   }
 
   /**
@@ -509,6 +537,55 @@ abstract class DBObject implements \JsonSerializable {
    */
   public function getData() {
     return array_merge($this->getDbData(), $this->getStaticData());
+  }
+
+  /**
+   * Assign given effect to the db object, based on provided args.
+   * Args are expected to have the following:
+   * - Name of effect field
+   * - Type (Effect type)
+   * - Gain/Loss
+   * - Fungible type
+   * - Amount
+   * - Multiplier
+   * - Condition, if any
+   * - Spec, if any
+   * - Trigger, if any
+   * - Round down
+   * @param array $args
+   * @return void
+   */
+  protected function assignEffect(array $args): void {
+    $fieldName = $args["fieldName"];
+    $this->$fieldName = EffectRegistry::instance()->getOrCreate(EffectKeyGenerator::generate($args), $args);
+  }
+
+  /**
+   * Evaluate and apply the given effect for this db object
+   * @param string $playerId ID of the player to apply effect to
+   * @param string $fieldName Name of the effect field
+   * @return void
+   */
+  protected function applyEffect(int $playerId, string $fieldName): void {
+    $effect = $this->$fieldName;
+    if ($effect instanceof Effect) {
+      $effect->apply($playerId);
+    }
+  }
+
+  /**
+   * Evaluate the given effect for this db object, but do not apply it, just return it to serve the purpose of a review
+   * @param int $playerId
+   * @param string $fieldName
+   * @return int
+   */
+  protected function previewEffect(int $playerId, string $fieldName): int {
+    $effect = $this->$fieldName;
+    if ($effect instanceof Effect) {
+      return $effect->preview($playerId);
+    }
+
+    return 0;
   }
 
   /**

@@ -5,7 +5,7 @@ use Bga\Games\tycoonindianew\Action\Main\StrategyAction;
 
 use Bga\Games\tycoonindianew\Effect\Effect;
 use Bga\Games\tycoonindianew\Effect\EffectKeyGenerator;
-use Bga\Games\tycoonindianew\Model\Card\Policy\LiberalPolicyCard;
+use Bga\Games\tycoonindianew\Model\DeckItem\Card\Policy\LiberalPolicyCard;
 
 use Bga\Games\tycoonindianew\Multiplier\StaticMultiplier;
 

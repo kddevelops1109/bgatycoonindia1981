@@ -2,7 +2,7 @@
 namespace Bga\Games\tycoonindianew\CorporateAgenda;
 
 use Bga\Games\tycoonindianew\Manager\IndustrialistManager;
-use Bga\Games\tycoonindianew\Model\Card\CorporateAgendaCard;
+use Bga\Games\tycoonindianew\Model\DeckItem\Card\CorporateAgendaCard;
 
 class Industrialization extends CorporateAgendaCard {
 

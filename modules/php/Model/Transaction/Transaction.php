@@ -25,18 +25,37 @@ class Transaction extends DBO {
     parent::__construct($args);
   }
 
-  public static function dbFieldMappings() {
+  /**
+   * DB field mappings for transactions
+   * @return array<array|mixed>
+   */
+  public static function dbFieldMappings(): array {
     return [
-      self::COLUMN_ID => ["column" => self::COLUMN_ID, "name" => self::FIELD_ID, "type" => DT::STRING, "readOnly" => false],
-      self::COLUMN_STATE => ["column" => self::COLUMN_STATE, "name" => self::FIELD_STATE, "type" => DT::STRING, "readOnly" => false],
-      self::COLUMN_ROUND => ["column" => self::COLUMN_ROUND, "name" => self::FIELD_ROUND, "type" => DT::INT, "readOnly" => false],
-      self::COLUMN_DETAILS => ["column" => self::COLUMN_DETAILS, "name" => self::FIELD_DETAILS, "type" => DT::STRING, "readOnly" => false],
-      self::COLUMN_PROMISES => ["column" => self::COLUMN_PROMISES, "name" => self::FIELD_PROMISES, "type" => DT::OBJ, "readOnly" => false]
+      ...parent::dbFieldMappings(),
+      ...[
+        self::COLUMN_ID => ["column" => self::COLUMN_ID, "name" => self::FIELD_ID, "type" => DT::STRING, "readOnly" => false],
+        self::COLUMN_STATE => ["column" => self::COLUMN_STATE, "name" => self::FIELD_STATE, "type" => DT::STRING, "readOnly" => false],
+        self::COLUMN_ROUND => ["column" => self::COLUMN_ROUND, "name" => self::FIELD_ROUND, "type" => DT::INT, "readOnly" => false],
+        self::COLUMN_DETAILS => ["column" => self::COLUMN_DETAILS, "name" => self::FIELD_DETAILS, "type" => DT::STRING, "readOnly" => false],
+        self::COLUMN_PROMISES => ["column" => self::COLUMN_PROMISES, "name" => self::FIELD_PROMISES, "type" => DT::OBJ, "readOnly" => false]
+      ]
     ];
   }
 
-  public static function staticFieldsList() {
-    return [];
+  /**
+   * Static fields list for transactions
+   * @return array
+   */
+  public static function staticFieldsList(): array {
+    return [...parent::staticFieldsList(), ...[]];
+  }
+
+  /**
+   * Static field args for transactions
+   * @return array
+   */
+  public static function staticFieldArgs(): array {
+    return [...parent::staticFieldArgs(), ...[]];
   }
 
   /**

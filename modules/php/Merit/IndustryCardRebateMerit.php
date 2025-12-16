@@ -6,7 +6,7 @@ use Bga\Games\tycoonindianew\Action\Main\BuildAction;
 use Bga\Games\tycoonindianew\Effect\Effect;
 use Bga\Games\tycoonindianew\Effect\EffectKeyGenerator;
 
-use Bga\Games\tycoonindianew\Model\Card\Merit\EitherOrEffectMeritCard;
+use Bga\Games\tycoonindianew\Model\DeckItem\Card\Merit\EitherOrEffectMeritCard;
 
 use Bga\Games\tycoonindianew\Multiplier\StaticMultiplier;
 

@@ -6,7 +6,7 @@ use Bga\Games\tycoonindianew\Action\Main\MusterAction;
 use Bga\Games\tycoonindianew\Effect\Effect;
 use Bga\Games\tycoonindianew\Effect\EffectKeyGenerator;
 
-use Bga\Games\tycoonindianew\Model\Card\Policy\EconomicPolicyCard;
+use Bga\Games\tycoonindianew\Model\DeckItem\Card\Policy\EconomicPolicyCard;
 
 use Bga\Games\tycoonindianew\Multiplier\StaticMultiplier;
 

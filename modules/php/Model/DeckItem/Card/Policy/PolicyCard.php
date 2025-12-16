@@ -1,9 +1,9 @@
 <?php
-namespace Bga\Games\tycoonindianew\Model\Card\Policy;
+namespace Bga\Games\tycoonindianew\Model\DeckItem\Card\Policy;
 
 use Bga\Games\tycoonindianew\Effect\Effect;
 
-use Bga\Games\tycoonindianew\Model\Card\Card;
+use Bga\Games\tycoonindianew\Model\DeckItem\Card\Card;
 use Bga\Games\tycoonindianew\Type\CardAge;
 use Bga\Games\tycoonindianew\Type\PolicyBenefitType;
 use Bga\Games\tycoonindianew\Type\PolicyType;

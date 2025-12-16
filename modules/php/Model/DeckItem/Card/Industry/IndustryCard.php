@@ -1,10 +1,10 @@
 <?php
-namespace Bga\Games\tycoonindianew\Model\Card\Industry;
+namespace Bga\Games\tycoonindianew\Model\DeckItem\Card\Industry;
 
 use Bga\Games\tycoonindianew\Effect\Effect;
 use Bga\Games\tycoonindianew\Effect\EffectKeyGenerator;
 
-use Bga\Games\tycoonindianew\Model\Card\Card;
+use Bga\Games\tycoonindianew\Model\DeckItem\Card\Card;
 
 use Bga\Games\tycoonindianew\Multiplier\StaticMultiplier;
 

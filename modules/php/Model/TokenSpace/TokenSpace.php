@@ -19,6 +19,10 @@ use Bga\Games\tycoonindianew\Type\DataType as DT;
  */
 abstract class TokenSpace extends DBO implements Occupiable {
   
+  /**
+   * DB field mappings for all token spaces
+   * @return array{column: string, name: string, readOnly: bool, type: DT[]}
+   */
   public static function dbFieldMappings(): array {
     return [
       self::COLUMN_SPACE_ID => ["column" => self::COLUMN_SPACE_ID, "name" => self::FIELD_SPACE_ID, "type" => DT::STRING, "readOnly" => false],

@@ -8,7 +8,7 @@ use Bga\Games\tycoonindianew\Game;
 use Bga\Games\tycoonindianew\Manager\DBManager;
 use Bga\Games\tycoonindianew\Manager\Manager;
 
-use Bga\Games\tycoonindianew\Model\Card\Card;
+use Bga\Games\tycoonindianew\Model\DeckItem\Card\Card;
 use Bga\Games\tycoonindianew\Query\UpdateDBQuery;
 
 use Bga\Games\tycoonindianew\Registry\FilterRegistry;
@@ -135,27 +135,17 @@ abstract class CardManager implements Manager {
     // Load list of cards
     include dirname(__FILE__) . $filepath;
 
-    $cardTypeName = $cardType->value;
-    $cardClassName = $cardType == CardType::PLANNING_COMMISSION ? "PlanningCommission" : str_replace(" ", "", $cardTypeName);
-
-    if (in_array($cardType, [CardType::INDUSTRY, CardType::POLICY, CardType::PLANNING_COMMISSION])) {
-      $cardClassName = Card::CLASSPATH . $cardClassName . "\\" . $cardClassName . "\\Card";
-    }
-    else {
-      $cardClassName = Card::CLASSPATH . $cardClassName . "\\Card";
-    }
-
     $index = 1;
     foreach ($classNames as $className) {
       $className = $classpath . "\\$className";
 
       $args = [
         ...[
-          Card::FIELD_CARD_TYPE => $cardType->value,
-          Card::FIELD_CARD_TYPE_ARG => $cardTypeArg->value,
-          Card::FIELD_CARD_LOCATION => $cardLocation->value,
-          Card::FIELD_CARD_LOCATION_ARG => $index++,
-          Card::FIELD_CARD_NAME => $className::NAME,
+          Card::FIELD_ITEM_TYPE => $cardType->value,
+          Card::FIELD_ITEM_TYPE_ARG => $cardTypeArg->value,
+          Card::FIELD_ITEM_LOCATION => $cardLocation->value,
+          Card::FIELD_ITEM_LOCATION_ARG => $index++,
+          Card::FIELD_ITEM_NAME => $className::NAME,
           Card::FIELD_CARD_PROMOTERS => 0
         ],
         ...$className::staticFieldArgs()
@@ -174,7 +164,7 @@ abstract class CardManager implements Manager {
       RegistryKeyPrefix::SEARCH_CARD_TYPE->value . "_" . StringUtil::strSnakeCase($cardType->value),
       [
         "type" => FilterType::SIMPLE,
-        "column" => Card::COLUMN_CARD_TYPE,
+        "column" => Card::COLUMN_ITEM_TYPE,
         "dataType" => DT::STRING,
         "operator" => OperatorType::EQUALS,
         "value" => $cardType->value
@@ -185,7 +175,7 @@ abstract class CardManager implements Manager {
       RegistryKeyPrefix::SEARCH_CARD_LOCATION->value . "_" . StringUtil::strSnakeCase($cardLocation->value),
       [
         "type" => FilterType::SIMPLE,
-        "column" => Card::COLUMN_CARD_LOCATION,
+        "column" => Card::COLUMN_ITEM_LOCATION,
         "dataType" => DT::STRING,
         "operator" => OperatorType::EQUALS,
         "value" => $cardLocation->value
@@ -215,7 +205,7 @@ abstract class CardManager implements Manager {
         RegistryKeyPrefix::SEARCH_CARD_LOCATION_ARG->value . "_" . $index,
         [
           "type" => FilterType::SIMPLE,
-          "column" => Card::COLUMN_CARD_LOCATION_ARG,
+          "column" => Card::COLUMN_ITEM_LOCATION_ARG,
           "dataType" => DT::INT,
           "operator" => OperatorType::EQUALS,
           "value" => $index
@@ -237,7 +227,7 @@ abstract class CardManager implements Manager {
       $search_in_deck_filter = $registry->getOrCreate($searchKey, $filter_args);
 
       $datas = [
-        ["column" => Card::COLUMN_CARD_NAME, "type" => DT::STRING, "value" => $cardName]
+        ["column" => Card::COLUMN_ITEM_NAME, "type" => DT::STRING, "value" => $cardName]
       ];
 
       DBManager::execute(new UpdateDBQuery(Card::TABLE_NAME, $datas, $search_in_deck_filter));
