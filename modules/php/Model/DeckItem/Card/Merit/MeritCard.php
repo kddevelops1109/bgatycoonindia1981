@@ -1,7 +1,7 @@
 <?php
-namespace Bga\Games\tycoonindianew\Model\Card\Merit;
+namespace Bga\Games\tycoonindianew\Model\DeckItem\Card\Merit;
 
-use Bga\Games\tycoonindianew\Model\Card\Card;
+use Bga\Games\tycoonindianew\Model\DeckItem\Card\Card;
 
 abstract class MeritCard extends Card {
 

@@ -1,8 +1,8 @@
 <?php
-namespace Bga\Games\tycoonindianew\Model\Card\PlanningCommission;
+namespace Bga\Games\tycoonindianew\Model\DeckItem\Card\PlanningCommission;
 
 use Bga\Games\tycoonindianew\Effect\Effect;
-use Bga\Games\tycoonindianew\Model\Card\Card;
+use Bga\Games\tycoonindianew\Model\DeckItem\Card\Card;
 
 /**
  * Represents a planning commission card (A/B)

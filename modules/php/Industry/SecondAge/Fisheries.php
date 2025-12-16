@@ -2,7 +2,7 @@
 namespace Bga\Games\tycoonindianew\Industry\SecondAge;
 
 use Bga\Games\tycoonindianew\Effect\Effect;
-use Bga\Games\tycoonindianew\Model\Card\Industry\IndustryCard;
+use Bga\Games\tycoonindianew\Model\DeckItem\Card\Industry\IndustryCard;
 
 use Bga\Games\tycoonindianew\Type\CardAge;
 use Bga\Games\tycoonindianew\Type\FungibleType as FT;

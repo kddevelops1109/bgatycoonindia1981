@@ -1,5 +1,5 @@
 <?php
-namespace Bga\Games\tycoonindianew\Model\Card\Merit;
+namespace Bga\Games\tycoonindianew\Model\DeckItem\Card\Merit;
 
 use Bga\Games\tycoonindianew\Effect\Effect;
 

@@ -1,7 +1,7 @@
 <?php
 namespace Bga\Games\tycoonindianew\Type;
 
-use Bga\Games\tycoonindianew\Model\Card\Industry\IndustryCard;
+use Bga\Games\tycoonindianew\Model\DeckItem\Card\Industry\IndustryCard;
 
 enum CardType: string {
   case INDUSTRY = "Industry";

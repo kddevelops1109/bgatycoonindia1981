@@ -1,5 +1,7 @@
 <?php
-namespace Bga\Games\tycoonindianew\Model\Card;
+namespace Bga\Games\tycoonindianew\Model\DeckItem\Card;
+
+use Bga\Games\tycoonindianew\Contracts\Occupiable;
 
 class PromissaryNoteCard extends Card {
 

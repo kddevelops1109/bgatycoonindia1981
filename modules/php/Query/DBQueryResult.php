@@ -24,11 +24,26 @@ class DBQueryResult {
     $this->result = $result;
   }
 
+  /**
+   * Get status of query execution
+   * @return QueryStatus
+   */
   public function getStatus() {
     return $this->status;
   }
 
+  /**
+   * Get result of query execution
+   */
   public function getResult() {
     return $this->result;
+  }
+
+  /**
+   * Was the query execution successful?
+   * @return bool
+   */
+  public function isSuccessful(): bool {
+    return $this->status == QueryStatus::SUCCESS;
   }
 }

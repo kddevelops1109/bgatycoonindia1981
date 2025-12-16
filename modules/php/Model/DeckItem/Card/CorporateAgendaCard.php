@@ -1,5 +1,5 @@
 <?php
-namespace Bga\Games\tycoonindianew\Model\Card;
+namespace Bga\Games\tycoonindianew\Model\DeckItem\Card;
 
 use Bga\Games\tycoonindianew\Effect\Effect;
 use Bga\Games\tycoonindianew\Multiplier\DynamicMultiplier;

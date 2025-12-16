@@ -1,7 +1,7 @@
 <?php
 namespace Bga\Games\tycoonindianew\Manager\Card;
 
-use Bga\Games\tycoonindianew\Model\Card\Industry\IndustryCard;
+use Bga\Games\tycoonindianew\Model\DeckItem\Card\Industry\IndustryCard;
 use Bga\Games\tycoonindianew\Type\CardLocation;
 use Bga\Games\tycoonindianew\Type\CardType;
 use Bga\Games\tycoonindianew\Type\CardTypeArg;

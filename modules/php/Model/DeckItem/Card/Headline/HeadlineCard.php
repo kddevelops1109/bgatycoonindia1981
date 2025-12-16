@@ -1,7 +1,7 @@
 <?php
-namespace Bga\Games\tycoonindianew\Model\Card\Headline;
+namespace Bga\Games\tycoonindianew\Model\DeckItem\Card\Headline;
 
-use Bga\Games\tycoonindianew\Model\Card\Card;
+use Bga\Games\tycoonindianew\Model\DeckItem\Card\Card;
 
 abstract class HeadlineCard extends Card {
 

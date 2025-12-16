@@ -2,7 +2,7 @@
 namespace Bga\Games\tycoonindianew\Policy\FirstAge;
 
 use Bga\Games\tycoonindianew\Manager\IndustrialistManager;
-use Bga\Games\tycoonindianew\Model\Card\Policy\IndustrialPolicyCard;
+use Bga\Games\tycoonindianew\Model\DeckItem\Card\Policy\IndustrialPolicyCard;
 
 /**
  * Name: Nationalisation of Coal Mines
