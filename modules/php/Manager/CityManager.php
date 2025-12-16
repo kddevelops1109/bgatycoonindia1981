@@ -36,7 +36,7 @@ class CityManager implements Manager {
 
     // Iterate through class names and instantiate cities
     foreach ($classNames as $className) {
-      $className = self::FILEPATH . "\\" . $className;
+      $className = self::CLASSPATH . "\\" . $className;
       
       $args = [$className::FIELD_OCCUPIED => false];
 
@@ -45,5 +45,6 @@ class CityManager implements Manager {
   }
 
   /** Constants - Misc */
-  const FILEPATH = "\Bga\Games\\tycoonindianew\City";
+  const FILEPATH = "/../City/list.inc.php";
+  const CLASSPATH = "\Bga\Games\\tycoonindianew\City";
 }

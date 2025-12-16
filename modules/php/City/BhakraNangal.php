@@ -41,7 +41,7 @@ class BhakraNangal extends City {
   }
 
   public static function generateSpaceId(?array $args): string {
-    return strtolower(StringUtil::strToKebab(CityName::BHAKRA_NANGAL->value));
+    return str_replace(" ", "", StringUtil::strToKebab(CityName::BHAKRA_NANGAL->value));
   }
 
   /**

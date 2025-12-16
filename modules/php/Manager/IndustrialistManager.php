@@ -18,6 +18,8 @@ use Bga\Games\tycoonindianew\Type\FilterType;
 use Bga\Games\tycoonindianew\Type\OperatorType;
 use Bga\Games\tycoonindianew\Type\OrderByDirection;
 use Bga\Games\tycoonindianew\Type\QueryStatus;
+use Bga\Games\tycoonindianew\Type\RegionName;
+
 use Bga\Games\tycoonindianew\Util\DataUtil;
 
 class IndustrialistManager implements Manager {
@@ -136,6 +138,30 @@ class IndustrialistManager implements Manager {
    */
   public static function countPolicyIndustryCards(int $playerId): int {
     return self::getPlayerCounterValue($playerId, self::COUNTER_INDUSTRIALIST_POLICIES_GAINED) + self::getPlayerCounterValue($playerId, self::COUNTER_INDUSTRIALIST_INDUSTRIES_OWNED);
+  }
+
+  public static function countBuiltPlantsInRegion(int $playerId, RegionName $region): int {
+    $count = 0;
+
+    $counter = null;
+    if ($region == RegionName::NORTH) {
+      $counter = self::COUNTER_INDUSTRIALIST_PLANTS_IN_NORTH_INDIA;
+    }
+    elseif ($region == RegionName::EAST) {
+      $counter = self::COUNTER_INDUSTRIALIST_PLANTS_IN_EAST_INDIA;
+    }
+    elseif ($region == RegionName::WEST) {
+      $counter = self::COUNTER_INDUSTRIALIST_PLANTS_IN_WEST_INDIA;
+    }
+    elseif ($region == RegionName::SOUTH) {
+      $counter = self::COUNTER_INDUSTRIALIST_PLANTS_IN_SOUTH_INDIA;
+    }
+
+    if ($counter != null) {
+      $count = self::getPlayerCounterValue($playerId, $counter);
+    }
+
+    return $count;
   }
 
   public static function getPlayerCounterValue(int $playerId, string $counterName) {
