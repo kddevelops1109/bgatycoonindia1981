@@ -114,13 +114,69 @@ class IndustrialistManager implements Manager {
     self::initDb($players);
   }
 
+  /** Sector productions */
+
+  /**
+   * Get player's minerals sector production
+   * @param int $playerId
+   * @return int
+   */
+  public static function getPlayerFinanceSectorProduction(int $playerId): int {
+    return self::getPlayerCounterValue($playerId, self::COUNTER_INDUSTRIALIST_FINANCE);
+  }
+
+  /**
+   * Get player's minerals sector production
+   * @param int $playerId
+   * @return int
+   */
+  public static function getPlayerMineralsSectorProduction(int $playerId): int {
+    return self::getPlayerCounterValue($playerId, self::COUNTER_INDUSTRIALIST_MINERALS);
+  }
+
+  /**
+   * Get player's fuel sector production
+   * @param int $playerId
+   * @return int
+   */
+  public static function getPlayerFuelSectorProduction(int $playerId): int {
+    return self::getPlayerCounterValue($playerId, self::COUNTER_INDUSTRIALIST_FUEL);
+  }
+
+  /**
+   * Get player's agro sector production
+   * @param int $playerId
+   * @return int
+   */
+  public static function getPlayerAgroSectorProduction(int $playerId): int {
+    return self::getPlayerCounterValue($playerId, self::COUNTER_INDUSTRIALIST_AGRO);
+  }
+
+  /**
+   * Get player's power sector production
+   * @param int $playerId
+   * @return int
+   */
+  public static function getPlayerPowerSectorProduction(int $playerId): int {
+    return self::getPlayerCounterValue($playerId, self::COUNTER_INDUSTRIALIST_POWER);
+  }
+
+  /**
+   * Get player's transport sector production
+   * @param int $playerId
+   * @return int
+   */
+  public static function getPlayerTransportSectorProduction(int $playerId): int {
+    return self::getPlayerCounterValue($playerId, self::COUNTER_INDUSTRIALIST_TRANSPORT);
+  }
+
   /**
    * Obtain the sum of power and fuel sector production of given player
    * @param int $playerId
    * @return int
    */
   public static function sumPowerAndFuelSectorProduction(int $playerId): int {
-    return self::getPlayerCounterValue($playerId, self::COUNTER_INDUSTRIALIST_POWER) + self::getPlayerCounterValue($playerId, self::COUNTER_INDUSTRIALIST_FUEL);
+    return self::getPlayerPowerSectorProduction($playerId) + self::getPlayerFuelSectorProduction($playerId);
   }
   /**
    * Obtain the sum of agro and transport sector production of given player
@@ -128,7 +184,7 @@ class IndustrialistManager implements Manager {
    * @return int
    */
   public static function sumAgroAndTransportSectorProduction(int $playerId): int {
-    return self::getPlayerCounterValue($playerId, self::COUNTER_INDUSTRIALIST_AGRO) + self::getPlayerCounterValue($playerId, self::COUNTER_INDUSTRIALIST_TRANSPORT);
+    return self::getPlayerAgroSectorProduction($playerId) + self::getPlayerTransportSectorProduction($playerId);
   }
 
   /**
