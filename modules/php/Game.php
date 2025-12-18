@@ -40,7 +40,10 @@ use Bga\Games\tycoonindianew\Manager\DeckItem\Card\MeritCardManager;
 use Bga\Games\tycoonindianew\Manager\DeckItem\Card\PlanningCommissionCardManager;
 use Bga\Games\tycoonindianew\Manager\DeckItem\Card\PolicyCardManager;
 use Bga\Games\tycoonindianew\Manager\CityManager;
-use Bga\Games\tycoonindianew\Manager\DeckItem\Token\EndgameSectorFavorTokenManager;
+use Bga\Games\tycoonindianew\Manager\DeckItem\Token\Global\ConglomerateBonusTokenManager;
+use Bga\Games\tycoonindianew\Manager\DeckItem\Token\Global\EndgameSectorFavorTokenManager;
+
+define('PROJECT_ROOT', dirname(__DIR__, levels: 1));
 
 class Game extends \Bga\GameFramework\Table
 {
@@ -226,7 +229,6 @@ class Game extends \Bga\GameFramework\Table
         IndustrialistManager::instance()->setupNewGame($players);
         
         // Setup cards
-
         // Corporate agendas
         CorporateAgendaCardManager::instance()->setupNewGame($players);
 
@@ -251,9 +253,11 @@ class Game extends \Bga\GameFramework\Table
         CityManager::instance()->setupNewGame($players);
         
         // Setup tokens
-
         // Endgame sector favors
         EndgameSectorFavorTokenManager::instance()->setupNewGame($players);
+
+        // Conglomerate bonuses
+        ConglomerateBonusTokenManager::instance()->setupNewGame($players);
 
         // Setup main actions
         foreach ([BAM::instance(), PAM::instance(), MAM::instance(), SAM::instance(), SHAM::instance(), LAM::instance()] as $manager) {

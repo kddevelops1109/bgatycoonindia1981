@@ -42,7 +42,7 @@ abstract class EndgameSectorFavorToken extends GlobalToken {
    */
   abstract protected static function endgameSectorFavor(): Effect;
 
- /**
+  /**
    * Evaluate the specific endgame sector favor token for the given player
    * @param int $playerId
    * @return void

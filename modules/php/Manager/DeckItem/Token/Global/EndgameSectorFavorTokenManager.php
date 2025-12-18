@@ -1,7 +1,10 @@
 <?php
-namespace Bga\Games\tycoonindianew\Manager\DeckItem\Token;
+namespace Bga\Games\tycoonindianew\Manager\DeckItem\Token\Global;
+
+use Bga\Games\tycoonindianew\Manager\DeckItem\Token\TokenManager;
 
 use Bga\Games\tycoonindianew\Model\DeckItem\Token\Global\EndgameSectorFavorToken;
+
 use Bga\Games\tycoonindianew\Type\TokenLocation;
 use Bga\Games\tycoonindianew\Type\TokenType;
 use Bga\Games\tycoonindianew\Type\TokenTypeArg;
@@ -25,6 +28,6 @@ class EndgameSectorFavorTokenManager extends TokenManager {
    */
   protected function setupNewDeck() {
     // Setup endgame sector favor tokens
-    $this->setupDeck(TokenType::ENDGAME_SECTOR_FAVOR, TokenTypeArg::ENDGAME_SECTOR_FAVOR, TokenLocation::DECK, EndgameSectorFavorToken::FILEPATH, EndgameSectorFavorToken::CLASSPATH);
+    $this->setupDeck(TokenType::ENDGAME_SECTOR_FAVOR, TokenTypeArg::ENDGAME_SECTOR_FAVOR, TokenLocation::ENDGAME_SECTOR_FAVOR_DECK, EndgameSectorFavorToken::FILEPATH, EndgameSectorFavorToken::CLASSPATH);
   }
 }

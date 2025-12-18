@@ -9,7 +9,7 @@ enum TokenType: string {
   case SHARE = "Share";
 
   /** Global tokens (Tokens that are available globally) */
-  case CONGLOMERATE_BONUS = "Conglomerate Bonus";
+  case CONGLOMERATE_BONUS = "Cong Bonus";
   case ENDGAME_SECTOR_FAVOR = "EG Sector Favor";
   case PROMOTER = "Promoter";
   case FAVOR = "Favor";

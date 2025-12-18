@@ -8,6 +8,8 @@ enum TokenLocation: string {
   case DISCARDS = "discards";
 
   /** Deck locations */
+  case ENDGAME_SECTOR_FAVOR_DECK = "egsf-deck";
+  case CONGLOMERATE_BONUS_DECK = "cong-bonus-deck";
   case ACTIONS_DECK = "actions-deck";
   case PLUS_ONE_ACTIONS_DECK = "plus-one-deck";
   case PLANT_DECK = "plant-deck";
