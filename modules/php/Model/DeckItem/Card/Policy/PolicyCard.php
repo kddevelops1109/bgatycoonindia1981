@@ -92,8 +92,8 @@ abstract class PolicyCard extends Card {
   /**
    * Constants - Filepath and Classpath
    */
-  const FILEPATH_AGE_I = "/../../Policy/FirstAge/list.inc.php";
-  const FILEPATH_AGE_II = "/../../Policy/SecondAge/list.inc.php";
+  const FILEPATH_AGE_I = "/../../../Policy/FirstAge/list.inc.php";
+  const FILEPATH_AGE_II = "/../../../Policy/SecondAge/list.inc.php";
   
   const CLASSPATH_AGE_I = "\Bga\Games\\tycoonindianew\Policy\FirstAge";
   const CLASSPATH_AGE_II = "\Bga\Games\\tycoonindianew\Policy\SecondAge";

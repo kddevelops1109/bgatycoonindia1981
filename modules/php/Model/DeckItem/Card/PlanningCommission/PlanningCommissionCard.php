@@ -48,8 +48,8 @@ abstract class PlanningCommissionCard extends Card {
   /**
    * Constants - Filepath and Classpath
    */
-  const FILEPATH_A = "/../../PlanningCommission/A/list.inc.php";
-  const FILEPATH_B = "/../../PlanningCommission/B/list.inc.php";
+  const FILEPATH_A = "/../../../PlanningCommission/A/list.inc.php";
+  const FILEPATH_B = "/../../../PlanningCommission/B/list.inc.php";
   const CLASSPATH_A = "\Bga\Games\\tycoonindianew\PlanningCommission\A";
   const CLASSPATH_B = "\Bga\Games\\tycoonindianew\PlanningCommission\B";
 

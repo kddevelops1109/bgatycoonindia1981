@@ -74,6 +74,6 @@ abstract class CorporateAgendaCard extends Card {
   const FIELD_ENDGAME_FAVOR = "endgameFavor";
 
   /** Constants - Cards metadata */
-  const FILEPATH = "/../../CorporateAgenda/list.inc.php";
+  const FILEPATH = "/../../../CorporateAgenda/list.inc.php";
   const CLASSPATH = "\Bga\Games\\tycoonindianew\CorporateAgenda";
 }

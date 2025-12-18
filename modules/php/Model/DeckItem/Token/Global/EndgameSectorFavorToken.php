@@ -54,4 +54,8 @@ abstract class EndgameSectorFavorToken extends GlobalToken {
   /** Constants - Field names */
   const FIELD_SECTOR = "sector";
   const FIELD_ENDGAME_SECTOR_FAVOR = "endgameSectorFavor";
+
+  /** Constants - Metadata */
+  const FILEPATH = "/../../../Token/Global/EndgameSectorFavor/list.inc.php";
+  const CLASSPATH = "\Bga\Games\\tycoonindianew\Token\Global\EndgameSectorFavor";
 }

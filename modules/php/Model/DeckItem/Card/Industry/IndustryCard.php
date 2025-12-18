@@ -105,8 +105,8 @@ abstract class IndustryCard extends Card {
   /**
    * Constants - Filepaths and Classpaths
    */
-  const FILEPATH_AGE_I = "/../../Industry/FirstAge/list.inc.php";
-  const FILEPATH_AGE_II = "/../../Industry/SecondAge/list.inc.php";
+  const FILEPATH_AGE_I = "/../../../Industry/FirstAge/list.inc.php";
+  const FILEPATH_AGE_II = "/../../../Industry/SecondAge/list.inc.php";
 
   const CLASSPATH_AGE_I = "\Bga\Games\\tycoonindianew\Industry\FirstAge";
   const CLASSPATH_AGE_II = "\Bga\Games\\tycoonindianew\Industry\SecondAge";

@@ -1,5 +1,5 @@
 <?php
-namespace Bga\Games\tycoonindianew\Manager\Card;
+namespace Bga\Games\tycoonindianew\Manager\DeckItem\Card;
 
 use Bga\Games\tycoonindianew\Model\DeckItem\Card\CorporateAgendaCard;
 

@@ -1,14 +1,13 @@
 <?php
-namespace Bga\Games\tycoonindianew\Manager\Card;
+namespace Bga\Games\tycoonindianew\Manager\DeckItem\Card;
 
-use Bga\Games\tycoonindianew\Model\DeckItem\Card\Policy\PolicyCard;
-
+use Bga\Games\tycoonindianew\Model\DeckItem\Card\Industry\IndustryCard;
 use Bga\Games\tycoonindianew\Type\CardLocation;
 use Bga\Games\tycoonindianew\Type\CardType;
 use Bga\Games\tycoonindianew\Type\CardTypeArg;
 
-class PolicyCardManager extends CardManager {
-  
+class IndustryCardManager extends CardManager {
+
   /**
    * Handle setting up policies as part of new game setup, for given players
    * This MUST only be called once during a game, i.e. during new game setup
@@ -25,10 +24,10 @@ class PolicyCardManager extends CardManager {
    * @return void
    */
   protected function setupNewDeck() {
-    // Setup Age I Policies
-    $this->setupDeck(CardType::POLICY, CardTypeArg::AGE_I_POLICY, CardLocation::POLICY_DECK_AGE_I, PolicyCard::FILEPATH_AGE_I, PolicyCard::CLASSPATH_AGE_I);
+    // Setup Age I Industries
+    $this->setupDeck(CardType::INDUSTRY, CardTypeArg::AGE_I_INDUSTRY, CardLocation::INDUSTRY_DECK_AGE_I, IndustryCard::FILEPATH_AGE_I, IndustryCard::CLASSPATH_AGE_I);
     
-    // Setup Age II Policies
-    $this->setupDeck(CardType::POLICY, CardTypeArg::AGE_II_POLICY, CardLocation::POLICY_DECK_AGE_II, PolicyCard::FILEPATH_AGE_II, PolicyCard::CLASSPATH_AGE_II);
+    // Setup Age II Industries
+    $this->setupDeck(CardType::INDUSTRY, CardTypeArg::AGE_II_INDUSTRY, CardLocation::INDUSTRY_DECK_AGE_II, IndustryCard::FILEPATH_AGE_II, IndustryCard::CLASSPATH_AGE_II);
   }
 }

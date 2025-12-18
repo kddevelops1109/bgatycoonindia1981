@@ -24,6 +24,6 @@ abstract class MeritCard extends Card {
   /**
    * Constants - Filepath and Classpath
    */
-  const FILEPATH = "/../../Merit/list.inc.php";
+  const FILEPATH = "/../../../Merit/list.inc.php";
   const CLASSPATH = "\Bga\Games\\tycoonindianew\Merit";
 }

@@ -19,7 +19,7 @@ abstract class Card extends DeckItem {
     return [
       ...parent::dbFieldMappings(),
       ...[
-        self::COLUMN_CARD_PROMOTERS => ["name" => self::FIELD_CARD_PROMOTERS, "type" => DT::INT, "column" => self::COLUMN_CARD_PROMOTERS, "readOnly" => false]
+        self::COLUMN_PROMOTERS => ["name" => self::FIELD_PROMOTERS, "type" => DT::INT, "column" => self::COLUMN_PROMOTERS, "readOnly" => false]
       ]
     ];
   }
@@ -29,10 +29,10 @@ abstract class Card extends DeckItem {
   // abstract public function play();
 
   /** Constants - DB field names */
-  const FIELD_CARD_PROMOTERS = "cardPromoters";
+  const FIELD_PROMOTERS = "cardPromoters";
 
   /** Constants - DB column names */
-  const COLUMN_CARD_PROMOTERS = "promoters";
+  const COLUMN_PROMOTERS = "promoters";
 
   /** Constants - Misc */
   const TABLE_NAME = "tycoon_card";

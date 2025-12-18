@@ -34,12 +34,13 @@ use Bga\Games\tycoonindianew\Manager\Action\Main\Strategy\LobbyStrategyMainActio
 use Bga\Games\tycoonindianew\Manager\Action\Main\Strategy\OfficeStrategyMainActionManager as OSAM;
 use Bga\Games\tycoonindianew\Manager\Action\Main\Strategy\AdvertisingStrategyMainActionManager as ASAM;
 use Bga\Games\tycoonindianew\Manager\Action\Main\Strategy\ExportStrategyMainActionManager as ESAM;
-use Bga\Games\tycoonindianew\Manager\Card\CorporateAgendaCardManager;
-use Bga\Games\tycoonindianew\Manager\Card\IndustryCardManager;
-use Bga\Games\tycoonindianew\Manager\Card\MeritCardManager;
-use Bga\Games\tycoonindianew\Manager\Card\PlanningCommissionCardManager;
-use Bga\Games\tycoonindianew\Manager\Card\PolicyCardManager;
+use Bga\Games\tycoonindianew\Manager\DeckItem\Card\CorporateAgendaCardManager;
+use Bga\Games\tycoonindianew\Manager\DeckItem\Card\IndustryCardManager;
+use Bga\Games\tycoonindianew\Manager\DeckItem\Card\MeritCardManager;
+use Bga\Games\tycoonindianew\Manager\DeckItem\Card\PlanningCommissionCardManager;
+use Bga\Games\tycoonindianew\Manager\DeckItem\Card\PolicyCardManager;
 use Bga\Games\tycoonindianew\Manager\CityManager;
+use Bga\Games\tycoonindianew\Manager\DeckItem\Token\EndgameSectorFavorTokenManager;
 
 class Game extends \Bga\GameFramework\Table
 {
@@ -250,6 +251,9 @@ class Game extends \Bga\GameFramework\Table
         CityManager::instance()->setupNewGame($players);
         
         // Setup tokens
+
+        // Endgame sector favors
+        EndgameSectorFavorTokenManager::instance()->setupNewGame($players);
 
         // Setup main actions
         foreach ([BAM::instance(), PAM::instance(), MAM::instance(), SAM::instance(), SHAM::instance(), LAM::instance()] as $manager) {
