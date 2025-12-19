@@ -7,7 +7,7 @@ use Bga\Games\tycoonindianew\Contracts\Occupiable;
 use Bga\Games\tycoonindianew\Contracts\Placeable;
 
 use Bga\Games\tycoonindianew\Model\DBObject as DBO;
-use Bga\Games\tycoonindianew\Model\Token\Token;
+use Bga\Games\tycoonindianew\Model\DeckItem\Token\Token;
 
 use Bga\Games\tycoonindianew\Type\DataType as DT;
 
@@ -38,7 +38,7 @@ abstract class TokenSpace extends DBO implements Occupiable {
       self::COLUMN_OCCUPIED => ["column" => self::COLUMN_OCCUPIED, "name" => self::FIELD_OCCUPIED, "type" => DT::BOOL, "readOnly" => false]
     ];
   }
-
+  
   public static function staticFieldsList(): array {
     return [];
   }

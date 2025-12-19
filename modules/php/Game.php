@@ -20,26 +20,28 @@ namespace Bga\Games\tycoonindianew;
 
 use Bga\Games\tycoonindianew\States\PlayerTurn;
 
-use Bga\GameFramework\Components\Counters\PlayerCounter;
-
+use Bga\Games\tycoonindianew\Manager\CityManager;
 use Bga\Games\tycoonindianew\Manager\IndustrialistManager;
+
 use Bga\Games\tycoonindianew\Manager\Action\Main\BuildMainActionManager as BAM;
 use Bga\Games\tycoonindianew\Manager\Action\Main\PoliticsMainActionManager as PAM;
 use Bga\Games\tycoonindianew\Manager\Action\Main\MusterMainActionManager as MAM;
 use Bga\Games\tycoonindianew\Manager\Action\Main\StrategyMainActionManager as SAM;
 use Bga\Games\tycoonindianew\Manager\Action\Main\ShareMainActionManager as SHAM;
 use Bga\Games\tycoonindianew\Manager\Action\Main\LoanMainActionManager as LAM;
+
 use Bga\Games\tycoonindianew\Manager\Action\Main\Strategy\SalesStrategyMainActionManager as SSAM;
 use Bga\Games\tycoonindianew\Manager\Action\Main\Strategy\LobbyStrategyMainActionManager as LSAM;
 use Bga\Games\tycoonindianew\Manager\Action\Main\Strategy\OfficeStrategyMainActionManager as OSAM;
 use Bga\Games\tycoonindianew\Manager\Action\Main\Strategy\AdvertisingStrategyMainActionManager as ASAM;
 use Bga\Games\tycoonindianew\Manager\Action\Main\Strategy\ExportStrategyMainActionManager as ESAM;
+
 use Bga\Games\tycoonindianew\Manager\DeckItem\Card\CorporateAgendaCardManager;
 use Bga\Games\tycoonindianew\Manager\DeckItem\Card\IndustryCardManager;
 use Bga\Games\tycoonindianew\Manager\DeckItem\Card\MeritCardManager;
 use Bga\Games\tycoonindianew\Manager\DeckItem\Card\PlanningCommissionCardManager;
 use Bga\Games\tycoonindianew\Manager\DeckItem\Card\PolicyCardManager;
-use Bga\Games\tycoonindianew\Manager\CityManager;
+
 use Bga\Games\tycoonindianew\Manager\DeckItem\Token\Global\ConglomerateBonusTokenManager;
 use Bga\Games\tycoonindianew\Manager\DeckItem\Token\Global\EndgameSectorFavorTokenManager;
 
@@ -251,7 +253,7 @@ class Game extends \Bga\GameFramework\Table
 
         // Setup cities
         CityManager::instance()->setupNewGame($players);
-        
+
         // Setup tokens
         // Endgame sector favors
         EndgameSectorFavorTokenManager::instance()->setupNewGame($players);

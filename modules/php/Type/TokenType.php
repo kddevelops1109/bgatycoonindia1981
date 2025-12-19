@@ -14,7 +14,4 @@ enum TokenType: string {
   case PROMOTER = "Promoter";
   case FAVOR = "Favor";
   case PLUS_ONE_ACTION = "+1 Action";
-  case TYCOON = "Tycoon";
-  case TYCOON_REGION = "Tycoon Region";
-  case ROUND = "Round";
 }

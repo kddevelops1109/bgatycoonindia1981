@@ -26,15 +26,15 @@ class IndustrialistManager implements Manager {
 
   /**
    * Array of industrialists by their player id
-   * @var array
+   * @var array<int, Industrialist>
    */
-  protected static $industrialists = [];
+  protected static array $industrialists = [];
 
   /**
    * Array of all player counters
-   * @var array
+   * @var array<PlayerCounter>
    */
-  protected static $counters = [];
+  protected static array $counters = [];
 
   /**
    * Singleton instance of the Industrialist manager
@@ -273,6 +273,11 @@ class IndustrialistManager implements Manager {
     }
   }
 
+  /**
+   * Initialize db for all relevant counters
+   * @param mixed $players
+   * @return void
+   */
   private static function initDb($players) {
     $counterNames = [
       self::COUNTER_INDUSTRIALIST_INFLUENCE,
