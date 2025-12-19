@@ -32,7 +32,7 @@ class IndustrialistManager implements Manager {
 
   /**
    * Array of all player counters
-   * @var array<PlayerCounter>
+   * @var array<string, PlayerCounter>
    */
   protected static array $counters = [];
 

@@ -44,6 +44,7 @@ use Bga\Games\tycoonindianew\Manager\DeckItem\Card\PolicyCardManager;
 
 use Bga\Games\tycoonindianew\Manager\DeckItem\Token\Global\ConglomerateBonusTokenManager;
 use Bga\Games\tycoonindianew\Manager\DeckItem\Token\Global\EndgameSectorFavorTokenManager;
+use Bga\Games\tycoonindianew\Manager\Global\Round\RoundManager;
 
 define('PROJECT_ROOT', dirname(__DIR__, levels: 1));
 
@@ -228,6 +229,10 @@ class Game extends \Bga\GameFramework\Table
         // $this->playerStats->init('player_teststat1', 0);
 
         // TODO: Setup the initial game situation here.
+        // Setup round
+        RoundManager::instance()->setupNewGame($players);
+
+        // Setup industrialists
         IndustrialistManager::instance()->setupNewGame($players);
         
         // Setup cards
