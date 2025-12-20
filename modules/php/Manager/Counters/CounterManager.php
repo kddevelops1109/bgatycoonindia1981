@@ -35,21 +35,22 @@ abstract class CounterManager implements Manager {
 
   /**
    * Define init of specific counter(s)
+   * @param array $players
    * @return void
    */
-  abstract protected function initDb();
+  abstract protected function initDb(array $players): void;
 
   /**
    * Min value of table/player counter
-   * @param $counterName
+   * @param string $counterName
    * @return int
    */
   abstract protected function minValue(string $counterName): int;
 
   /**
    * Max value of table/player counter
-   * @param $counterName
-   * @return int
+   * @param string $counterName
+   * @return int|null
    */
-  abstract protected function maxValue(string $counterName): int;
+  abstract protected function maxValue(string $counterName): ?int;
 }

@@ -7,6 +7,36 @@ use Bga\Games\tycoonindianew\Game;
 use Bga\Games\tycoonindianew\Manager\Counters\CounterManager;
 
 abstract class PlayerCounterManager extends CounterManager {
+
+  /**
+   * Init db for given player counters
+   * @param array $players
+   * @param array<string> $counterNames
+   * @return void
+   */
+  protected function initDbPlayerCounters(array $players, array $counterNames) {
+    // Init db for all indicator player counters for all players to the min value
+    foreach ($counterNames as $counterName) {
+      $this->initCounter(array_keys($players), $counterName, $this->minValue($counterName));
+
+      // Set the indicator counter values to the initial value for this counter each player
+      foreach (array_keys($players) as $playerId) {
+        $playerNo = Game::get()->getPlayerNoById($playerId);
+        $initialValue = $this->initialValue($playerNo, $counterName);
+
+        // Set counter value to the initial value
+        $this->setCounterValue($playerId, $counterName, $initialValue);
+      }
+    }
+  }
+
+  /**
+   * Initial value of player counter for given player
+   * @param int $playerNo
+   * @param string $counterName
+   * @return int
+   */
+  abstract protected function initialValue(int $playerNo, string $counterName): int;
   
   /**
    * Init counter with given name with given initial value (default 0)
