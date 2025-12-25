@@ -35,7 +35,7 @@ use Bga\Games\tycoonindianew\Manager\Action\Main\Strategy\LobbyStrategyMainActio
 use Bga\Games\tycoonindianew\Manager\Action\Main\Strategy\OfficeStrategyMainActionManager as OSAM;
 use Bga\Games\tycoonindianew\Manager\Action\Main\Strategy\AdvertisingStrategyMainActionManager as ASAM;
 use Bga\Games\tycoonindianew\Manager\Action\Main\Strategy\ExportStrategyMainActionManager as ESAM;
-
+use Bga\Games\tycoonindianew\Manager\Counters\Player\PlayerIndicatorsManager;
 use Bga\Games\tycoonindianew\Manager\DeckItem\Card\CorporateAgendaCardManager;
 use Bga\Games\tycoonindianew\Manager\DeckItem\Card\IndustryCardManager;
 use Bga\Games\tycoonindianew\Manager\DeckItem\Card\MeritCardManager;
@@ -231,6 +231,9 @@ class Game extends \Bga\GameFramework\Table
         // TODO: Setup the initial game situation here.
         // Setup round
         RoundManager::instance()->setupNewGame($players);
+
+        // Setup player counters
+        PlayerIndicatorsManager::instance()->setupNewGame($players);
 
         // Setup industrialists
         IndustrialistManager::instance()->setupNewGame($players);
